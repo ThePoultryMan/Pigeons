@@ -1,0 +1,37 @@
+{
+    "schemaVersion": 1,
+    "id": "modid",
+    "version": "0.1.0",
+
+    "name": "Mod Name",
+    "description": "This mod is a template for other mods.",
+    "authors": [
+        "ThePoultryMan"
+    ],
+    "contact": {
+        "sources": "https://github.com/ThePoultryMan/Mod-Template"
+    },
+
+    "license": "CC0-1.0",
+    "icon": "assets/modid/icon.png",
+
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "thepoultryman.modid.ModClass"
+        ]
+    },
+    "mixins": [
+        "modid.mixins.json"
+    ],
+
+    "depends": {
+        "fabricloader": ">=0.12.12",
+        "fabric": "*",
+        "minecraft": "1.18.x",
+        "java": ">=17"
+    },
+    "suggests": {
+
+    }
+}
