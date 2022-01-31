@@ -1,28 +1,28 @@
 {
     "schemaVersion": 1,
-    "id": "modid",
+    "id": "pigeons",
     "version": "0.1.0",
 
-    "name": "Mod Name",
-    "description": "This mod is a template for other mods.",
+    "name": "Pigeons",
+    "description": "Adds Pigeons to minecraft.",
     "authors": [
         "ThePoultryMan"
     ],
     "contact": {
-        "sources": "https://github.com/ThePoultryMan/Mod-Template"
+        "sources": "https://github.com/ThePoultryMan/Pigeons"
     },
 
     "license": "CC0-1.0",
-    "icon": "assets/modid/icon.png",
+    "icon": "assets/pigeons/icon.png",
 
     "environment": "*",
     "entrypoints": {
         "main": [
-            "thepoultryman.modid.ModClass"
+            "thepoultryman.pigeons.Pigeons"
         ]
     },
     "mixins": [
-        "modid.mixins.json"
+
     ],
 
     "depends": {
