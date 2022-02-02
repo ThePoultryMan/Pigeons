@@ -9,6 +9,9 @@ import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.data.DataTracker;
+import net.minecraft.entity.data.TrackedData;
+import net.minecraft.entity.data.TrackedDataHandlerRegistry;
 import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
@@ -18,6 +21,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+import software.bernie.geckolib3.core.AnimationState;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -28,6 +32,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
     private final AnimationFactory factory = new AnimationFactory(this);
+    private static final TrackedData<Integer> IDLE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
@@ -44,9 +49,29 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         this.goalSelector.add(2, new WanderAroundGoal(this, 1D));
     }
 
+    @Override
+    protected void initDataTracker() {
+        super.initDataTracker();
+
+        this.dataTracker.startTracking(IDLE, 0);
+    }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.walk", true));
-        return PlayState.CONTINUE;
+        if (this.isInAir() && event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.fly", true));
+            return PlayState.CONTINUE;
+        } else if (!this.isInAir() && event.isMoving()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.walk", false));
+            return PlayState.CONTINUE;
+        } else if (this.getIdle() > 0) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.idle" + this.getIdle(), false));
+            return PlayState.CONTINUE;
+        }
+
+        if (event.getController().getAnimationState() == AnimationState.Running)
+            return PlayState.CONTINUE;
+        else
+            return PlayState.STOP;
     }
 
     @Override
@@ -57,6 +82,15 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @Override
+    protected void mobTick() {
+        if (!this.moveControl.isMoving() && this.random.nextInt(100) == 0) {
+            setIdle(this.random.nextInt(3));
+        } else {
+            setIdle(0);
+        }
     }
 
     @Override
@@ -92,6 +126,14 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
 
+    }
+
+    private void setIdle(int idle) {
+        this.dataTracker.set(IDLE, idle);
+    }
+
+    private Integer getIdle() {
+        return dataTracker.get(IDLE);
     }
 
     @Override
