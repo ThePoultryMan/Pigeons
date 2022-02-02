@@ -19,6 +19,9 @@
     "entrypoints": {
         "main": [
             "thepoultryman.pigeons.Pigeons"
+        ],
+        "client": [
+            "thepoultryman.pigeons.PigeonsClient"
         ]
     },
     "mixins": [
