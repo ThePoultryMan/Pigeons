@@ -1,6 +1,8 @@
 package thepoultryman.pigeons.entity;
 
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.EntityDimensions;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.Flutterer;
 import net.minecraft.entity.ai.FuzzyTargeting;
@@ -83,6 +85,11 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    @Override
+    protected float getActiveEyeHeight(EntityPose pose, EntityDimensions dimensions) {
+        return dimensions.height * 0.65f;
     }
 
     @Override

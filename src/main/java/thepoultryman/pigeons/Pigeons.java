@@ -19,7 +19,7 @@ public class Pigeons implements ModInitializer {
 
     public static final EntityType<PigeonEntity> PIGEON_ENTITY_TYPE = Registry.register(
             Registry.ENTITY_TYPE, new Identifier(MOD_ID, "pigeon"),
-            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, PigeonEntity::new).dimensions(EntityDimensions.fixed(0.75f, 0.75f)).build()
+            FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, PigeonEntity::new).dimensions(EntityDimensions.fixed(0.375f, 0.5f)).build()
     );
 
     @Override
