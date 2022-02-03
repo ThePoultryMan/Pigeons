@@ -128,11 +128,11 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     }
 
-    private void setIdle(int idle) {
+    public void setIdle(int idle) {
         this.dataTracker.set(IDLE, idle);
     }
 
-    private Integer getIdle() {
+    public Integer getIdle() {
         return dataTracker.get(IDLE);
     }
 
