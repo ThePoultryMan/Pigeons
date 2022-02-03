@@ -96,8 +96,8 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     @Override
     protected void mobTick() {
-        if (!this.moveControl.isMoving() && this.random.nextInt(75) == 0) {
-            setIdle(this.random.nextInt(4));
+        if (!this.moveControl.isMoving() && this.random.nextInt(100) == 0) {
+            setIdle(this.random.nextInt(3));
         }
     }
 
