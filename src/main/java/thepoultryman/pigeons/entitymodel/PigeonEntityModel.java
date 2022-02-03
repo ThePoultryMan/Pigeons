@@ -30,7 +30,7 @@ public class PigeonEntityModel extends AnimatedGeoModel<PigeonEntity> {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
 
         IBone head = this.getAnimationProcessor().getBone("head");
-        if (head != null) {
+        if (head != null && entity.getIdle() == 0) {
             EntityModelData extraData = (EntityModelData) customPredicate.getExtraDataOfType(EntityModelData.class).get(0);
             head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
             head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));

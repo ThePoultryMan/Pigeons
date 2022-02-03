@@ -62,9 +62,11 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (this.isInAir() && event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.fly", true));
+            setIdle(0);
             return PlayState.CONTINUE;
         } else if (!this.isInAir() && event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.walk", false));
+            setIdle(0);
             return PlayState.CONTINUE;
         } else if (this.getIdle() > 0) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.idle" + this.getIdle(), false));
@@ -96,8 +98,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     protected void mobTick() {
         if (!this.moveControl.isMoving() && this.random.nextInt(100) == 0) {
             setIdle(this.random.nextInt(3));
-        } else {
-            setIdle(0);
         }
     }
 
