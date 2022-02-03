@@ -7,6 +7,9 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemGroup;
+import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
@@ -22,10 +25,13 @@ public class Pigeons implements ModInitializer {
             FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, PigeonEntity::new).dimensions(EntityDimensions.fixed(0.375f, 0.5f)).build()
     );
 
+    public static final Item PIGEON_SPAWN_EGG = new SpawnEggItem(PIGEON_ENTITY_TYPE, 12895428, 11382189, new Item.Settings().group(ItemGroup.MISC));
+
     @Override
     public void onInitialize() {
         LOGGER.info("Initializing a pigeon army");
 
-        FabricDefaultAttributeRegistry.register(PIGEON_ENTITY_TYPE, PigeonEntity.createMobAttributes().add(EntityAttributes.GENERIC_FLYING_SPEED, 0.45D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2D));
+        FabricDefaultAttributeRegistry.register(PIGEON_ENTITY_TYPE, PigeonEntity.createMobAttributes().add(EntityAttributes.GENERIC_FLYING_SPEED, 0.65D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D));
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pigeon_spawn_egg"), PIGEON_SPAWN_EGG);
     }
 }
