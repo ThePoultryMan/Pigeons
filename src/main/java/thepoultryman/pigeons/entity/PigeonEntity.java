@@ -44,6 +44,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     protected void initGoals() {
         this.goalSelector.add(0, new EscapeDangerGoal(this, 1.25D));
         this.goalSelector.add(0, new SwimGoal(this));
+        this.goalSelector.add(1, new LookAroundGoal(this));
         this.goalSelector.add(1, new LookAtEntityGoal(this, PlayerEntity.class, 8f));
         this.goalSelector.add(2, new FlyRandomly(this, 1D));
         this.goalSelector.add(2, new WanderAroundGoal(this, 1D));
