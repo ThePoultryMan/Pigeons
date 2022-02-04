@@ -75,8 +75,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
         if (event.getController().getAnimationState() == AnimationState.Running)
             return PlayState.CONTINUE;
-        else
+        else {
+            setIdle(0);
             return PlayState.STOP;
+        }
     }
 
     @Override
