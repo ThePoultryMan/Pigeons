@@ -156,7 +156,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     }
 
     public String getPigeonTypeString() {
-        return this.getDataTracker().get(TYPE).toString();
+        return this.getDataTracker().get(TYPE);
     }
 
     public void setIdle(int idle) {
