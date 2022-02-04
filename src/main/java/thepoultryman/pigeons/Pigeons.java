@@ -10,6 +10,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
+import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import org.slf4j.Logger;
@@ -26,6 +27,9 @@ public class Pigeons implements ModInitializer {
     );
 
     public static final Item PIGEON_SPAWN_EGG = new SpawnEggItem(PIGEON_ENTITY_TYPE, 12895428, 11382189, new Item.Settings().group(ItemGroup.MISC));
+
+    // Tags
+    public static final Tag<Item> PIGEON_LIKE_FOODS = TagFactory.ITEM.create(new Identifier("c", "pigeon_like_foods"));
 
     @Override
     public void onInitialize() {

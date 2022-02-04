@@ -114,10 +114,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         if (this.isOwner(player)) {
             return ActionResult.PASS;
         } else {
+            if (player.getStackInHand(hand).isIn(Pigeons.PIGEON_LIKE_FOODS))
             this.setOwner(player);
             return ActionResult.SUCCESS;
         }
-
     }
 
     @Override
