@@ -34,6 +34,8 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
     private final AnimationFactory factory = new AnimationFactory(this);
+    private static final TrackedData<String> TYPE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.STRING);
+    private static final String[] TYPES = {"city", "antwerp_smerle_brown"};
     private static final TrackedData<Integer> IDLE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
@@ -56,6 +58,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     protected void initDataTracker() {
         super.initDataTracker();
 
+        this.dataTracker.startTracking(TYPE, TYPES[this.random.nextInt(2)]);
         this.dataTracker.startTracking(IDLE, 0);
     }
 
@@ -136,6 +139,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
 
+    }
+
+    public String getPigeonTypeString() {
+        return this.getDataTracker().get(TYPE).toString();
     }
 
     public void setIdle(int idle) {
