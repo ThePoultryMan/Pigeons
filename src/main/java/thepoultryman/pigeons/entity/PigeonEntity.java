@@ -19,6 +19,8 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.util.ActionResult;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
@@ -50,6 +52,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         this.goalSelector.add(0, new SwimGoal(this));
         this.goalSelector.add(1, new LookAroundGoal(this));
         this.goalSelector.add(1, new LookAtEntityGoal(this, PlayerEntity.class, 8f));
+        this.goalSelector.add(1, new FollowOwnerGoal(this, 1D, 15f, 75f, true));
         this.goalSelector.add(2, new FlyRandomly(this, 1D));
         this.goalSelector.add(2, new WanderAroundGoal(this, 1D));
     }
@@ -104,6 +107,17 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         if (!this.moveControl.isMoving() && this.random.nextInt(100) == 0) {
             setIdle(this.random.nextInt(5));
         }
+    }
+
+    @Override
+    public ActionResult interactMob(PlayerEntity player, Hand hand) {
+        if (this.isOwner(player)) {
+            return ActionResult.PASS;
+        } else {
+            this.setOwner(player);
+            return ActionResult.SUCCESS;
+        }
+
     }
 
     @Override
