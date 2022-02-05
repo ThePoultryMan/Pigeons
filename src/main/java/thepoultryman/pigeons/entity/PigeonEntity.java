@@ -256,4 +256,19 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             return Vec3d.ofBottomCenter(newPos);
         }
     }
+
+    @Override
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+
+        nbt.putString("PigeonType", this.getPigeonTypeString());
+    }
+
+    @Override
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        super.readCustomDataFromNbt(nbt);
+
+        if (nbt.contains("PigeonType"))
+            this.setPigeonType(this.getPigeonTypeInt(nbt.getString("PigeonType")));
+    }
 }
