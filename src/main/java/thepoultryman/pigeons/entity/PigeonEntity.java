@@ -18,6 +18,7 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -33,6 +34,7 @@ import software.bernie.geckolib3.core.controller.AnimationController;
 import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
+import thepoultryman.pigeons.Pigeons;
 
 public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -55,6 +57,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         this.goalSelector.add(1, new FollowOwnerGoal(this, 1D, 15f, 75f, true));
         this.goalSelector.add(2, new FlyRandomly(this, 1D));
         this.goalSelector.add(2, new WanderAroundGoal(this, 1D));
+        this.goalSelector.add(3, new AnimalMateGoal(this, 1D));
     }
 
     @Override
@@ -111,13 +114,36 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
-        if (this.isOwner(player)) {
-            return ActionResult.PASS;
-        } else {
-            if (player.getStackInHand(hand).isIn(Pigeons.PIGEON_LIKE_FOODS))
-            this.setOwner(player);
+        ItemStack stackInHand = player.getStackInHand(hand);
+        if (this.world.isClient)
+            return this.isOwner(player) ? ActionResult.CONSUME : ActionResult.PASS;
+        else if (!this.isOwner(player)) {
+            if (isBreedingItem(stackInHand)) {
+                if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(7 - stackInHand.getItem().getFoodComponent().getHunger(), 1)) == 0) {
+                    this.world.sendEntityStatus(this, (byte)7);
+                    this.navigation.stop();
+                    this.setOwner(player);
+                } else if (this.world.random.nextInt(15) == 0) {
+                    this.world.sendEntityStatus(this, (byte)7);
+                    this.navigation.stop();
+                    this.setOwner(player);
+                }
+                stackInHand.decrement(1);
+                return ActionResult.SUCCESS;
+            }
+        }
+
+        if (this.isBaby()) {
+            this.growUp((int)((float)(-this.getBreedingAge() / 20) * 0.1F), true);
             return ActionResult.SUCCESS;
         }
+
+        return super.interactMob(player, hand);
+    }
+
+    @Override
+    public boolean isBreedingItem(ItemStack stack) {
+        return stack.isIn(Pigeons.PIGEON_LIKE_FOODS);
     }
 
     @Override
@@ -147,12 +173,34 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Nullable
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
-        return null;
+        PigeonEntity pigeonEntity = Pigeons.PIGEON_ENTITY_TYPE.create(world);
+        if (pigeonEntity != null)
+            pigeonEntity.setPigeonType(this.getPigeonTypeInt(this.getPigeonTypeString()));
+
+        if (entity != null) {
+            pigeonEntity.setOwnerUuid(this.getOwnerUuid());
+            pigeonEntity.setTamed(true);
+            pigeonEntity.setBaby(true);
+        }
+
+        return pigeonEntity;
     }
 
     @Override
     protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
 
+    }
+
+    private void setPigeonType(int arrayId) {
+        this.getDataTracker().set(TYPE, TYPES[arrayId]);
+    }
+
+    private int getPigeonTypeInt(String name) {
+        for (int i = 0; i < TYPES.length; ++i) {
+            if (name.equals(TYPES[i])) return i;
+        }
+
+        return 0;
     }
 
     public String getPigeonTypeString() {

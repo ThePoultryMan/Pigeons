@@ -35,5 +35,13 @@ public class PigeonEntityModel extends AnimatedGeoModel<PigeonEntity> {
             head.setRotationX(extraData.headPitch * ((float) Math.PI / 180F));
             head.setRotationY(extraData.netHeadYaw * ((float) Math.PI / 180F));
         }
+
+        IBone root = this.getAnimationProcessor().getBone("root");
+        if (root != null && entity.isBaby()) {
+            root.setScaleX(0.5f);
+            root.setScaleY(0.5f);
+            root.setScaleZ(0.5f);
+            //root.setPositionY(root.getPositionX() * 0.75f);
+        }
     }
 }
