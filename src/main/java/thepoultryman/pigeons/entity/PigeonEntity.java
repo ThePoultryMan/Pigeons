@@ -43,6 +43,7 @@ import java.util.Random;
 public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final TrackedData<String> TYPE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.STRING);
+    private static final TrackedData<Boolean> SITTING = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final String[] TYPES = {"city", "antwerp_smerle_brown"};
     private static final TrackedData<Integer> IDLE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
@@ -56,11 +57,11 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     protected void initGoals() {
         this.goalSelector.add(0, new EscapeDangerGoal(this, 1.25D));
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new LookAroundGoal(this));
-        this.goalSelector.add(1, new LookAtEntityGoal(this, PlayerEntity.class, 8f));
+        this.goalSelector.add(2, new LookAroundGoal(this));
+        this.goalSelector.add(2, new LookAtEntityGoal(this, PlayerEntity.class, 8f));
+        this.goalSelector.add(1, new SitGoal(this));
         this.goalSelector.add(1, new FollowOwnerGoal(this, 1D, 15f, 75f, true));
-        this.goalSelector.add(2, new FlyRandomly(this, 1D));
-        this.goalSelector.add(2, new WanderAroundGoal(this, 1D));
+        this.goalSelector.add(1, new FlyRandomly(this, 1D));
         this.goalSelector.add(3, new AnimalMateGoal(this, 1D));
     }
 
@@ -69,6 +70,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         super.initDataTracker();
 
         this.dataTracker.startTracking(TYPE, TYPES[this.random.nextInt(2)]);
+        this.dataTracker.startTracking(SITTING, false);
         this.dataTracker.startTracking(IDLE, 0);
     }
 
@@ -78,25 +80,26 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (this.isInAir() && event.isMoving()) {
+        if (this.isInAir() && event.isMoving() && !this.isSitting()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.fly", true));
-            setIdle(0);
             return PlayState.CONTINUE;
-        } else if (!this.isInAir() && event.isMoving()) {
+        } /*else if (!this.isInAir() && event.isMoving()) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.walk", false));
             setIdle(0);
+            return PlayState.CONTINUE;*/
+        else if (this.isSitting()) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.sit", true));
             return PlayState.CONTINUE;
-        } else if (this.getIdle() > 0) {
+        } else if (this.getIdle() > 0 && !this.isSitting()) {
+            if (event.getController().getAnimationState() == AnimationState.Stopped) {
+                this.setIdle(0);
+                return PlayState.STOP;
+            }
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.idle" + this.getIdle().toString(), false));
             return PlayState.CONTINUE;
         }
 
-        if (event.getController().getAnimationState() == AnimationState.Running)
-            return PlayState.CONTINUE;
-        else {
-            setIdle(0);
-            return PlayState.STOP;
-        }
+        return PlayState.STOP;
     }
 
     @Override
@@ -128,15 +131,13 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack stackInHand = player.getStackInHand(hand);
-        if (this.world.isClient)
-            return this.isOwner(player) ? ActionResult.CONSUME : ActionResult.PASS;
-        else if (!this.isOwner(player)) {
+        if (!this.isOwner(player) && !this.world.isClient()) {
             if (isBreedingItem(stackInHand)) {
                 if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(7 - stackInHand.getItem().getFoodComponent().getHunger(), 1)) == 0) {
                     this.world.sendEntityStatus(this, (byte)7);
                     this.navigation.stop();
                     this.setOwner(player);
-                } else if (this.world.random.nextInt(15) == 0) {
+                } else if (this.world.random.nextInt(10) == 0) {
                     this.world.sendEntityStatus(this, (byte)7);
                     this.navigation.stop();
                     this.setOwner(player);
@@ -144,6 +145,14 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
                 stackInHand.decrement(1);
                 return ActionResult.SUCCESS;
             }
+        }
+
+        if (this.isOwner(player) && !this.isBreedingItem(stackInHand)) {
+            this.setSitting(!this.isSitting());
+            this.jumping = false;
+            this.navigation.stop();
+            this.setIdle(0);
+            return ActionResult.SUCCESS;
         }
 
         if (this.isBaby()) {
@@ -220,6 +229,16 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         return this.getDataTracker().get(TYPE);
     }
 
+    @Override
+    public void setSitting(boolean sitting) {
+        dataTracker.set(SITTING, sitting);
+    }
+
+    @Override
+    public boolean isSitting() {
+        return dataTracker.get(SITTING);
+    }
+
     public void setIdle(int idle) {
         this.dataTracker.set(IDLE, idle);
     }
@@ -244,6 +263,15 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static class FlyRandomly extends FlyOntoTreeGoal {
         public FlyRandomly(PathAwareEntity pathAwareEntity, double d) {
             super(pathAwareEntity, d);
+        }
+
+        @Override
+        public boolean canStart() {
+            if (this.mob instanceof TameableEntity tameableEntity) {
+                return !tameableEntity.isSitting() && super.canStart();
+            } else {
+                return false;
+            }
         }
 
         @Nullable
@@ -274,6 +302,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         super.writeCustomDataToNbt(nbt);
 
         nbt.putString("PigeonType", this.getPigeonTypeString());
+        nbt.putBoolean("Sitting", this.isSitting());
     }
 
     @Override
@@ -282,5 +311,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
         if (nbt.contains("PigeonType"))
             this.setPigeonType(this.getPigeonTypeInt(nbt.getString("PigeonType")));
+        if(nbt.contains("Sitting"))
+            this.setSitting(nbt.getBoolean("Sitting"));
     }
 }
