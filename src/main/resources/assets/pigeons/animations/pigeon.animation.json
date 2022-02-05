@@ -420,21 +420,6 @@
 							"easing": "easeInOutQuad"
 						}
 					}
-				},
-				"head": {
-					"rotation": {
-						"0.0": {
-							"vector": [0, 0, 0]
-						},
-						"0.8333": {
-							"vector": [-1, 0, 0],
-							"easing": "easeInOutQuad"
-						},
-						"1.6667": {
-							"vector": [0, 0, 0],
-							"easing": "easeInOutQuad"
-						}
-					}
 				}
 			}
 		}
