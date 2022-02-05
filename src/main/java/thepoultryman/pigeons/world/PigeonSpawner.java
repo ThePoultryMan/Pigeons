@@ -29,7 +29,7 @@ public class PigeonSpawner implements Spawner {
                     int z = (8 + random.nextInt(32)) * (random.nextBoolean() ? -1 : 1);
                     BlockPos pos = serverPlayerEntity.getBlockPos().add(x, y, z);
 
-                    if (world.getBiome(pos).getCategory().equals(Biome.Category.SAVANNA) || world.getBiome(pos).getCategory().equals(Biome.Category.PLAINS) ||world.getBiome(pos).getCategory().equals(Biome.Category.FOREST) && random.nextInt(3) == 0) {
+                    if (world.getBiome(pos).getCategory().equals(Biome.Category.SAVANNA) || world.getBiome(pos).getCategory().equals(Biome.Category.PLAINS) ||world.getBiome(pos).getCategory().equals(Biome.Category.FOREST) && random.nextInt(11) == 0) {
                         spawn(world, pos);
                     }
                 });
