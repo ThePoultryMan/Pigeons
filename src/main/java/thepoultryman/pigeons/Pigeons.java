@@ -1,6 +1,7 @@
 package thepoultryman.pigeons;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.fabricmc.fabric.api.tag.TagFactory;
@@ -14,9 +15,11 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.tag.Tag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import net.minecraft.world.Difficulty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thepoultryman.pigeons.entity.PigeonEntity;
+import thepoultryman.pigeons.world.PigeonSpawner;
 
 public class Pigeons implements ModInitializer {
     public static final String MOD_ID = "pigeons";
@@ -37,6 +40,15 @@ public class Pigeons implements ModInitializer {
         LOGGER.info("Initializing a pigeon army");
 
         FabricDefaultAttributeRegistry.register(PIGEON_ENTITY_TYPE, PigeonEntity.createMobAttributes().add(EntityAttributes.GENERIC_FLYING_SPEED, 0.65D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D));
+
+        // Pigeon Spawner
+        PigeonSpawner pigeonSpawner = new PigeonSpawner();
+        ServerTickEvents.END_SERVER_TICK.register(server -> {
+            server.getWorlds().forEach(serverWorld -> {
+                pigeonSpawner.spawn(serverWorld, server.getSaveProperties().getDifficulty() != Difficulty.PEACEFUL, server.shouldSpawnAnimals());
+            });
+        });
+
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pigeon_spawn_egg"), PIGEON_SPAWN_EGG);
     }
 }
