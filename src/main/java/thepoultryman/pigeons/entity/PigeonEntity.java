@@ -7,6 +7,8 @@ import net.minecraft.entity.ai.control.FlightMoveControl;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.ai.pathing.BirdNavigation;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
+import net.minecraft.entity.attribute.DefaultAttributeContainer;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -35,6 +37,8 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
+
+import java.util.Random;
 
 public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -103,6 +107,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     public AnimationFactory getFactory() {
         return this.factory;
+    }
+
+    public static DefaultAttributeContainer.Builder createPigeonAttributes() {
+        return PigeonEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 7).add(EntityAttributes.GENERIC_FLYING_SPEED, 0.65D).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.3D);
     }
 
     @Override
@@ -227,6 +235,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         if (!this.onGround && velocity.y < 0.0D) {
             this.setVelocity(velocity.multiply(1.0D, 0.6D, 1.0D));
         }
+    }
+
+    public static boolean canSpawn(EntityType<PigeonEntity> pigeonEntityType, ServerWorldAccess serverWorldAccess, SpawnReason spawnReason, BlockPos blockPos, Random random) {
+        return true;
     }
 
     private static class FlyRandomly extends FlyOntoTreeGoal {
