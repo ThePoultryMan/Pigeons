@@ -38,13 +38,14 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
 
+import java.util.List;
 import java.util.Random;
 
 public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final TrackedData<String> TYPE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.STRING);
     private static final TrackedData<Boolean> SITTING = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final String[] TYPES = {"city", "antwerp_smerle_brown"};
+    private static final List<String> TYPES = List.of("city", "antwerp_smerle_brown");
     private static final TrackedData<Integer> IDLE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.INTEGER);
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
@@ -69,7 +70,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     protected void initDataTracker() {
         super.initDataTracker();
 
-        this.dataTracker.startTracking(TYPE, TYPES[this.random.nextInt(2)]);
+        this.dataTracker.startTracking(TYPE, TYPES.get(this.random.nextInt(2)));
         this.dataTracker.startTracking(SITTING, false);
         this.dataTracker.startTracking(IDLE, 0);
     }
@@ -207,13 +208,13 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     }
 
-    private void setPigeonType(int arrayId) {
-        this.getDataTracker().set(TYPE, TYPES[arrayId]);
+    private void setPigeonType(int index) {
+        this.getDataTracker().set(TYPE, TYPES.get(index));
     }
 
     private int getPigeonTypeInt(String name) {
-        for (int i = 0; i < TYPES.length; ++i) {
-            if (name.equals(TYPES[i])) return i;
+        for (int i = 0; i < TYPES.size(); ++i) {
+            if (name.equals(TYPES.get(i))) return i;
         }
 
         return 0;
