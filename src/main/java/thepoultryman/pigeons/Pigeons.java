@@ -20,6 +20,7 @@ import net.minecraft.world.biome.Biome;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thepoultryman.pigeons.entity.PigeonEntity;
+import thepoultryman.registry.ItemRegistry;
 
 public class Pigeons implements ModInitializer {
     public static final String MOD_ID = "pigeons";
@@ -47,5 +48,7 @@ public class Pigeons implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.JUNGLE), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 25, 2, 5);
 
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pigeon_spawn_egg"), PIGEON_SPAWN_EGG);
+
+        ItemRegistry.registerItems();
     }
 }

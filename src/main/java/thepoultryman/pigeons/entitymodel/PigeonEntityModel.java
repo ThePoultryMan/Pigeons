@@ -43,5 +43,13 @@ public class PigeonEntityModel extends AnimatedGeoModel<PigeonEntity> {
             root.setScaleZ(0.65f);
             //root.setPositionY(root.getPositionX() * 0.75f);
         }
+
+        IBone topHatExtension = this.getAnimationProcessor().getBone("top_hat_extension");
+        if (entity.getAccessory().equals("top_hat") && entity.getPigeonTypeString().equals("city")) {
+
+            if (topHatExtension != null) {
+                topHatExtension.setHidden(false);
+            }
+        } else topHatExtension.setHidden(true);
     }
 }
