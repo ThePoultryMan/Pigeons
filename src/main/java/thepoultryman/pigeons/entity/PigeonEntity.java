@@ -218,10 +218,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         if (TYPES.contains(name)) this.dataTracker.set(TYPE, name);
     }
 
-    private int getPigeonTypeInt(String name) {
-        return TYPES.indexOf(name);
-    }
-
     public String getPigeonTypeString() {
         return this.getDataTracker().get(TYPE);
     }
