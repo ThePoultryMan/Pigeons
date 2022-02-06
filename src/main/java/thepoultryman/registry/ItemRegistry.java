@@ -8,9 +8,11 @@ import thepoultryman.pigeons.Pigeons;
 
 public class ItemRegistry {
     public static final Item TOP_HAT = new Item(new Item.Settings().group(ItemGroup.TOOLS));
+    public static final Item BEANIE = new Item(new Item.Settings().group(ItemGroup.TOOLS));
 
     public static void registerItems() {
         register("top_hat", TOP_HAT);
+        register("beanie", BEANIE);
     }
 
     private static void register(String name, Item item) {

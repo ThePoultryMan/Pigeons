@@ -52,12 +52,12 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final TrackedData<String> ACCESSORY = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.STRING);
     private static final TrackedData<Integer> IDLE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final List<String> TYPES = List.of("city", "antwerp_smerle_brown");
-    private static final List<Item> ACCESSORIES = new ArrayList<>(Arrays.asList(ItemRegistry.TOP_HAT));
+    private static final List<Item> ACCESSORIES = new ArrayList<>(Arrays.asList(ItemRegistry.TOP_HAT, ItemRegistry.BEANIE));
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.moveControl = new FlightMoveControl(this, 10, false);
-        this.ignoreCameraFrustum = true;
+        //this.ignoreCameraFrustum = true;
     }
 
     @Override
@@ -156,8 +156,8 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             this.setIdle(0);
             return ActionResult.SUCCESS;
         } else if (ACCESSORIES.contains(stackInHand.getItem()) && this.dataTracker.get(ACCESSORY).equals("none")) {
+            this.setAccessory(stackInHand.getItem().toString());
             stackInHand.decrement(1);
-            this.setAccessory(ACCESSORIES.get(0).toString());
             return ActionResult.SUCCESS;
         }
 
