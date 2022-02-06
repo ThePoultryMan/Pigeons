@@ -192,7 +192,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
         PigeonEntity pigeonEntity = Pigeons.PIGEON_ENTITY_TYPE.create(world);
         if (pigeonEntity != null)
-            pigeonEntity.setPigeonType(this.getPigeonTypeInt(this.getPigeonTypeString()));
+            pigeonEntity.setPigeonType(this.dataTracker.get(TYPE));
 
         if (entity != null) {
             pigeonEntity.setOwnerUuid(this.getOwnerUuid());
@@ -208,16 +208,12 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     }
 
-    private void setPigeonType(int index) {
-        this.getDataTracker().set(TYPE, TYPES.get(index));
+    private void setPigeonType(String name) {
+        if (TYPES.contains(name)) this.dataTracker.set(TYPE, name);
     }
 
     private int getPigeonTypeInt(String name) {
-        for (int i = 0; i < TYPES.size(); ++i) {
-            if (name.equals(TYPES.get(i))) return i;
-        }
-
-        return 0;
+        return TYPES.indexOf(name);
     }
 
     public String getPigeonTypeString() {
@@ -305,7 +301,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         super.readCustomDataFromNbt(nbt);
 
         if (nbt.contains("PigeonType"))
-            this.setPigeonType(this.getPigeonTypeInt(nbt.getString("PigeonType")));
+            this.setPigeonType(nbt.getString("PigeonType"));
         if(nbt.contains("Sitting"))
             this.setSitting(nbt.getBoolean("Sitting"));
     }
