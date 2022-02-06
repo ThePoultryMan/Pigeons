@@ -91,10 +91,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.sit", true));
             return PlayState.CONTINUE;
         } else if (this.getIdle() > 0 && !this.isSitting()) {
-            if (event.getController().getAnimationState() == AnimationState.Stopped) {
-                this.setIdle(0);
-                return PlayState.STOP;
-            }
             event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.idle" + this.getIdle().toString(), false));
             return PlayState.CONTINUE;
         }
