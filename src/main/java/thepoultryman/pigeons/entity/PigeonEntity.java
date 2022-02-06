@@ -154,11 +154,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             return ActionResult.SUCCESS;
         }
 
-        if (this.isBaby()) {
-            this.growUp((int)((float)(-this.getBreedingAge() / 20) * 0.1F), true);
-            return ActionResult.SUCCESS;
-        }
-
         return super.interactMob(player, hand);
     }
 
