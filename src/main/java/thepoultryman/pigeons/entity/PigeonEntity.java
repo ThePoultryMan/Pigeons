@@ -133,7 +133,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack stackInHand = player.getStackInHand(hand);
-        if (!this.isOwner(player) && !this.world.isClient()) {
+        if (!this.isTamed() && !this.world.isClient()) {
             if (isBreedingItem(stackInHand)) {
                 if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(7 - stackInHand.getItem().getFoodComponent().getHunger(), 1)) == 0) {
                     this.world.sendEntityStatus(this, (byte)7);
@@ -153,7 +153,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             this.navigation.stop();
             this.setIdle(0);
             return ActionResult.SUCCESS;
-        } else if (ACCESSORIES.contains(stackInHand.getItem()) && this.dataTracker.get(ACCESSORY).equals("none")) {
+        } else if (ACCESSORIES.contains(stackInHand.getItem()) && this.getAccessory().equals("none")) {
             this.setAccessory(stackInHand.getItem().toString());
             stackInHand.decrement(1);
             return ActionResult.SUCCESS;
@@ -195,13 +195,13 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
         PigeonEntity pigeonEntity = Pigeons.PIGEON_ENTITY_TYPE.create(world);
-        if (pigeonEntity != null)
+        if (pigeonEntity != null) {
+            if (entity != null) {
+                pigeonEntity.setOwnerUuid(this.getOwnerUuid());
+                pigeonEntity.setTamed(true);
+                pigeonEntity.setBaby(true);
+            }
             pigeonEntity.setPigeonType(this.dataTracker.get(TYPE));
-
-        if (entity != null) {
-            pigeonEntity.setOwnerUuid(this.getOwnerUuid());
-            pigeonEntity.setTamed(true);
-            pigeonEntity.setBaby(true);
         }
 
         return pigeonEntity;
