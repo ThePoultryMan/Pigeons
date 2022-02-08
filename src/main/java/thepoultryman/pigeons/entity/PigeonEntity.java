@@ -17,7 +17,6 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
@@ -37,26 +36,22 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
-import thepoultryman.registry.ItemRegistry;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
     private final AnimationFactory factory = new AnimationFactory(this);
     private static final TrackedData<String> TYPE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.STRING);
+    //private static final TrackedData<String> ACCESSORY = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.STRING); (#1)
     private static final TrackedData<Boolean> SITTING = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
-    private static final TrackedData<String> ACCESSORY = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.STRING);
     private static final TrackedData<Integer> IDLE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final List<String> TYPES = List.of("city", "antwerp_smerle_brown");
-    private static final List<Item> ACCESSORIES = new ArrayList<>(Arrays.asList(ItemRegistry.TOP_HAT, ItemRegistry.BEANIE));
+    //private static final List<String> ACCESSORIES = List.of("none", "top_hat", "beanie"); (#1)
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.moveControl = new FlightMoveControl(this, 10, false);
-        //this.ignoreCameraFrustum = true;
     }
 
     @Override
@@ -76,7 +71,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         super.initDataTracker();
 
         this.dataTracker.startTracking(TYPE, TYPES.get(this.random.nextInt(2)));
-        this.dataTracker.startTracking(ACCESSORY, "none");
+        //this.dataTracker.startTracking(ACCESSORY, ACCESSORIES.get(0)); (#1)
         this.dataTracker.startTracking(SITTING, false);
         this.dataTracker.startTracking(IDLE, 0);
     }
@@ -153,11 +148,11 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             this.navigation.stop();
             this.setIdle(0);
             return ActionResult.SUCCESS;
-        } else if (ACCESSORIES.contains(stackInHand.getItem()) && this.getAccessory().equals("none")) {
+        } /*else if (ACCESSORIES.contains(stackInHand.getItem().toString()) && this.getAccessory().equals("none")) {
             this.setAccessory(stackInHand.getItem().toString());
             stackInHand.decrement(1);
             return ActionResult.SUCCESS;
-        }
+        }*/ // (#1)
 
         return super.interactMob(player, hand);
     }
@@ -230,13 +225,13 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         return dataTracker.get(SITTING);
     }
 
-    public String getAccessory() {
+    /*public String getAccessory() {
         return this.dataTracker.get(ACCESSORY);
     }
 
     public void setAccessory(String accessory) {
         this.dataTracker.set(ACCESSORY, accessory);
-    }
+    }*/ //(#1)
 
     public void setIdle(int idle) {
         this.dataTracker.set(IDLE, idle);
@@ -301,6 +296,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         super.writeCustomDataToNbt(nbt);
 
         nbt.putString("PigeonType", this.getPigeonTypeString());
+        //nbt.putString("Accessory", this.getAccessory()); (#1)
         nbt.putBoolean("Sitting", this.isSitting());
     }
 
@@ -310,7 +306,9 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
         if (nbt.contains("PigeonType"))
             this.setPigeonType(nbt.getString("PigeonType"));
-        if(nbt.contains("Sitting"))
+        /*if (nbt.contains("Accessory"))
+            this.setAccessory(nbt.getString("Accessory"));*/ // (#1)
+        if (nbt.contains("Sitting"))
             this.setSitting(nbt.getBoolean("Sitting"));
     }
 }
