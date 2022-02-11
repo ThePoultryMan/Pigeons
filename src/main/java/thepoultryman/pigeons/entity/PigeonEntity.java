@@ -18,10 +18,12 @@ import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.LocalDifficulty;
@@ -119,6 +121,17 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     protected void mobTick() {
         if (!this.moveControl.isMoving() && this.random.nextInt(100) == 0) {
             setIdle(this.random.nextInt(5));
+        }
+
+        int chance = 10000;
+        if (this.world.isNight()) {
+            chance = 1000;
+        }
+
+        if (!this.moveControl.isMoving() && this.random.nextInt(chance) == 0) {
+            ItemStack spawnItem = new ItemStack(Items.WHEAT_SEEDS);
+
+            ItemScatterer.spawn(world, this.getX(), this.getY(), this.getZ(), spawnItem);
         }
     }
 
