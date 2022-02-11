@@ -10,7 +10,6 @@ public class PigeonEntityRenderer extends GeoEntityRenderer<PigeonEntity> {
     public PigeonEntityRenderer(EntityRendererFactory.Context context) {
         super(context, new PigeonEntityModel());
         this.shadowRadius = 0.15f;
-        //this.addLayer(new AccessoryFeatureRenderer(this, new AccessoryEntityRenderer(context, new PigeonEntityModel())));
     }
 
     public Identifier getTexture(PigeonEntity entity) {
