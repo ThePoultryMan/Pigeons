@@ -36,6 +36,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
+import thepoultryman.registry.ItemRegistry;
 
 import java.util.List;
 import java.util.Random;
@@ -149,7 +150,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             this.setIdle(0);
             return ActionResult.SUCCESS;
         } else if (ACCESSORIES.contains(stackInHand.getItem().toString()) && this.getAccessory().equals("none")) {
-            this.setAccessory(stackInHand.getItem().toString());
+            this.setAccessory(stackInHand.copy());
             stackInHand.decrement(1);
             return ActionResult.SUCCESS;
         }
@@ -226,11 +227,14 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     }
 
     public String getAccessory() {
-        return this.dataTracker.get(ACCESSORY);
+        Pigeons.LOGGER.info(this.getEquippedStack(EquipmentSlot.HEAD).toString());
+        if (this.getEquippedStack(EquipmentSlot.HEAD).getItem() == ItemRegistry.TOP_HAT)
+            return "top_hat";
+        else return "none";
     }
 
-    public void setAccessory(String accessory) {
-        this.dataTracker.set(ACCESSORY, accessory);
+    public void setAccessory(ItemStack accessory) {
+        this.equipStack(EquipmentSlot.HEAD, accessory);
     }
 
     public void setIdle(int idle) {
@@ -296,7 +300,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         super.writeCustomDataToNbt(nbt);
 
         nbt.putString("PigeonType", this.getPigeonTypeString());
-        nbt.putString("Accessory", this.getAccessory());
         nbt.putBoolean("Sitting", this.isSitting());
     }
 
@@ -306,8 +309,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
         if (nbt.contains("PigeonType"))
             this.setPigeonType(nbt.getString("PigeonType"));
-        if (nbt.contains("Accessory"))
-            this.setAccessory(nbt.getString("Accessory"));
         if (nbt.contains("Sitting"))
             this.setSitting(nbt.getBoolean("Sitting"));
     }

@@ -5,11 +5,12 @@ import net.minecraft.item.ItemGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import thepoultryman.pigeons.Pigeons;
+import thepoultryman.pigeons.accessory.item.AccessoryItem;
 
 public class ItemRegistry {
     // Accessories
-    public static final Item TOP_HAT = new Item(new Item.Settings().group(ItemGroup.TOOLS));
-    public static final Item BEANIE = new Item(new Item.Settings().group(ItemGroup.TOOLS));
+    public static final AccessoryItem TOP_HAT = new AccessoryItem(new Item.Settings().group(ItemGroup.TOOLS));
+    public static final AccessoryItem BEANIE = new AccessoryItem(new Item.Settings().group(ItemGroup.TOOLS));
 
     public static void registerItems() {
         // Accessories
