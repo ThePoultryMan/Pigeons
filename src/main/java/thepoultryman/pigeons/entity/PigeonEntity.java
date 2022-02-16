@@ -57,6 +57,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         super(entityType, world);
         this.moveControl = new FlightMoveControl(this, 10, false);
         TYPE_STRING_MAP.put(TYPES.get(0), Items.DIAMOND);
+        TYPE_STRING_MAP.put(TYPES.get(1), Items.RAW_IRON);
     }
 
     @Override
