@@ -31,7 +31,8 @@ public class Pigeons implements ModInitializer {
                     .dimensions(EntityDimensions.changing(0.45f, 0.5f))
                     .spawnRestriction(SpawnRestriction.Location.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PigeonEntity::canSpawn).build());
 
-    public static final Item PIGEON_SPAWN_EGG = new SpawnEggItem(PIGEON_ENTITY_TYPE, 12895428, 11382189, new Item.Settings().group(ItemGroup.MISC));
+    // Items
+    public static final Item PIGEON_SPAWN_EGG = new SpawnEggItem(PIGEON_ENTITY_TYPE, 7830400, 7628935, new Item.Settings().group(ItemGroup.MISC));
 
     // Tags
     public static final Tag<Item> PIGEON_LIKE_FOODS = TagFactory.ITEM.create(new Identifier("pigeons", "pigeon_like_foods"));
