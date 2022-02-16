@@ -17,6 +17,7 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
@@ -39,6 +40,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -48,10 +50,13 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final TrackedData<Boolean> SITTING = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> IDLE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final List<String> TYPES = List.of("city", "antwerp_smerle_brown");
+    private static final HashMap<String, Item> TYPE_STRING_MAP = new HashMap<String, Item>();
+    private static final List<Item> DROPS = List.of(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.RAW_IRON, Items.DIRT);
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.moveControl = new FlightMoveControl(this, 10, false);
+        TYPE_STRING_MAP.put(TYPES.get(0), Items.DIAMOND);
     }
 
     @Override
@@ -129,7 +134,14 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         }
 
         if (!this.moveControl.isMoving() && this.random.nextInt(chance) == 0) {
-            ItemStack spawnItem = new ItemStack(Items.WHEAT_SEEDS);
+            ItemStack spawnItem;
+            BlockPos pos = new BlockPos(this.getBlockX(), this.getBlockY() + 2, this.getBlockZ());
+
+            if (TYPE_STRING_MAP.containsKey(this.getPigeonTypeString()) && this.random.nextInt(100) == 0) {
+                spawnItem = new ItemStack(TYPE_STRING_MAP.get(this.getPigeonTypeString()));
+            } else {
+                spawnItem = new ItemStack(DROPS.get(this.random.nextInt(6)));
+            }
 
             ItemScatterer.spawn(world, this.getX(), this.getY(), this.getZ(), spawnItem);
         }
