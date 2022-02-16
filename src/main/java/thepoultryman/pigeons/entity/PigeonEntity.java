@@ -130,9 +130,9 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             setIdle(this.random.nextInt(5));
         }
 
-        int chance = 10000;
+        int chance = 17000;
         if (this.world.isNight()) {
-            chance = 1000;
+            chance = 5700;
         }
 
         if (!this.moveControl.isMoving() && this.random.nextInt(chance) == 0) {
