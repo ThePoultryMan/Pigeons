@@ -34,7 +34,7 @@ public class Pigeons implements ModInitializer {
     public static final Item PIGEON_SPAWN_EGG = new SpawnEggItem(PIGEON_ENTITY_TYPE, 12895428, 11382189, new Item.Settings().group(ItemGroup.MISC));
 
     // Tags
-    public static final Tag<Item> PIGEON_LIKE_FOODS = TagFactory.ITEM.create(new Identifier("c", "pigeon_like_foods"));
+    public static final Tag<Item> PIGEON_LIKE_FOODS = TagFactory.ITEM.create(new Identifier("pigeons", "pigeon_like_foods"));
 
     @Override
     public void onInitialize() {
