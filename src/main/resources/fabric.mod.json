@@ -3,8 +3,8 @@
     "id": "pigeons",
     "version": "0.1.0",
 
-    "name": "Pigeons",
-    "description": "Adds Pigeons to minecraft.",
+    "name": "Pretty Pigeons",
+    "description": "Adds Pigeons to Minecraft.",
     "authors": [
         "ThePoultryMan"
     ],
@@ -29,7 +29,7 @@
     ],
 
     "depends": {
-        "fabricloader": ">=0.12.12",
+        "fabricloader": ">=0.12.8",
         "fabric": "*",
         "minecraft": "1.18.x",
         "java": ">=17"
