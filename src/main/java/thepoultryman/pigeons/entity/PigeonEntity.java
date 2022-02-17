@@ -42,6 +42,7 @@ import thepoultryman.pigeons.Pigeons;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
@@ -152,19 +153,24 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack stackInHand = player.getStackInHand(hand);
-        if (!this.isTamed() && !this.world.isClient()) {
-            if (isBreedingItem(stackInHand)) {
-                if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(7 - stackInHand.getItem().getFoodComponent().getHunger(), 1)) == 0) {
-                    this.world.sendEntityStatus(this, (byte)7);
+
+        if (!this.isTamed() && this.isBreedingItem(stackInHand)) {
+            if (stackInHand.isIn(Pigeons.PIGEON_LIKE_FOODS)) {
+                if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(7 - Objects.requireNonNull(stackInHand.getItem().getFoodComponent()).getHunger(), 1)) == 0) {
+                    this.world.sendEntityStatus(this, (byte) 7);
                     this.navigation.stop();
                     this.setOwner(player);
                 } else if (this.world.random.nextInt(10) == 0) {
-                    this.world.sendEntityStatus(this, (byte)7);
+                    this.world.sendEntityStatus(this, (byte) 7);
                     this.navigation.stop();
                     this.setOwner(player);
                 }
                 stackInHand.decrement(1);
                 return ActionResult.SUCCESS;
+            } else if (this.random.nextInt(2) == 0) {
+                this.world.sendEntityStatus(this, (byte) 7);
+                this.navigation.stop();
+                this.setOwner(player);
             }
         } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand)) {
             this.setSitting(!this.isSitting());
@@ -179,7 +185,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     @Override
     public boolean isBreedingItem(ItemStack stack) {
-        return stack.isIn(Pigeons.PIGEON_LIKE_FOODS);
+        return stack.isIn(Pigeons.PIGEON_LIKE_FOODS) || stack.isIn(Pigeons.PIGEON_LOVE_FOODS);
     }
 
     @Override

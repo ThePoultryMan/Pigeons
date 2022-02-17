@@ -37,7 +37,8 @@ public class Pigeons implements ModInitializer {
     public static final Item BREAD_CRUMBS = new Item(new Item.Settings().group(ItemGroup.FOOD).food(new FoodComponent.Builder().hunger(1).build()));
 
     // Tags
-    public static final Tag<Item> PIGEON_LIKE_FOODS = TagFactory.ITEM.create(new Identifier("pigeons", "pigeon_like_foods"));
+    public static final Tag<Item> PIGEON_LIKE_FOODS = TagFactory.ITEM.create(new Identifier(MOD_ID, "pigeon_like_foods"));
+    public static final Tag<Item> PIGEON_LOVE_FOODS = TagFactory.ITEM.create(new Identifier(MOD_ID, "pigeon_love_foods"));
 
     @Override
     public void onInitialize() {
