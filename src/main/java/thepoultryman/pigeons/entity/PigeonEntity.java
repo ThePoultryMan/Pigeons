@@ -50,7 +50,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final TrackedData<String> TYPE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.STRING);
     private static final TrackedData<Boolean> SITTING = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     private static final TrackedData<Integer> IDLE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.INTEGER);
-    private static final List<String> TYPES = List.of("city", "antwerp_smerle_brown", "antwerp_smerle_gray");
+    private static final List<String> TYPES = List.of("city", "antwerp_smerle_brown", "antwerp_smerle_gray", "egyptian_swift");
     private static final HashMap<String, Item> TYPE_DROP_MAP = new HashMap<>();
     private static final List<Item> DROPS = List.of(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.RAW_IRON, Items.DIRT);
 
@@ -60,6 +60,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         TYPE_DROP_MAP.put(TYPES.get(0), Items.DIAMOND);
         TYPE_DROP_MAP.put(TYPES.get(1), Items.RAW_IRON);
         TYPE_DROP_MAP.put(TYPES.get(2), Items.RAW_COPPER);
+        TYPE_DROP_MAP.put(TYPES.get(3), Items.BEEF);
     }
 
     @Override
@@ -78,7 +79,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     protected void initDataTracker() {
         super.initDataTracker();
 
-        this.dataTracker.startTracking(TYPE, TYPES.get(this.random.nextInt(3)));
+        this.dataTracker.startTracking(TYPE, TYPES.get(this.random.nextInt(4)));
         this.dataTracker.startTracking(SITTING, false);
         this.dataTracker.startTracking(IDLE, 0);
     }
