@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.SpawnRestriction;
+import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
@@ -33,6 +34,7 @@ public class Pigeons implements ModInitializer {
 
     // Items
     public static final Item PIGEON_SPAWN_EGG = new SpawnEggItem(PIGEON_ENTITY_TYPE, 7830400, 7628935, new Item.Settings().group(ItemGroup.MISC));
+    public static final Item BREAD_CRUMBS = new Item(new Item.Settings().group(ItemGroup.FOOD).food(new FoodComponent.Builder().hunger(1).build()));
 
     // Tags
     public static final Tag<Item> PIGEON_LIKE_FOODS = TagFactory.ITEM.create(new Identifier("pigeons", "pigeon_like_foods"));
@@ -47,6 +49,8 @@ public class Pigeons implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.FOREST), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 65, 3, 5);
         BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.JUNGLE), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 25, 2, 5);
 
+        // Items
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pigeon_spawn_egg"), PIGEON_SPAWN_EGG);
+        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bread_crumbs"), BREAD_CRUMBS);
     }
 }
