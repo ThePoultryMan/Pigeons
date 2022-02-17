@@ -136,7 +136,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             chance = 5700;
         }
 
-        if (!this.moveControl.isMoving() && this.random.nextInt(chance) == 0) {
+        if (!this.moveControl.isMoving() && this.isTamed() && this.random.nextInt(chance) == 0) {
             ItemStack spawnItem;
             BlockPos pos = new BlockPos(this.getBlockX(), this.getBlockY() + 2, this.getBlockZ());
 
