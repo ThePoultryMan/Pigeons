@@ -1,8 +1,8 @@
-# Pleasent Pigeons
+# Pleasant Pigeons
 
 ## About
 
-Pleasent Pigeons adds pigeons to Minecraft. They will occasionaly drop items, and different pigeons will drop different types of items.
+Pleasant Pigeons adds pigeons to Minecraft. They will occasionally drop items, and different pigeons will drop different types of items.
 
 ### What Do They Do?
 
@@ -12,8 +12,8 @@ Different types of pigeons will drop different items as their special item drop,
 
 <br>
 
-<s>Did I mention that they're cute.</s>
+<s>Did I mention that they're cute?</s>
 
 ## Other
 
-If you have any feature request, suggestions, or bug reports you can let me know [here](https://github.com/ThePoultryMan/Pigeons/issues), on the GitHub repo's issue page.
+If you have any feature request, suggestions, or bug reports, you can let me know [here](https://github.com/ThePoultryMan/Pigeons/issues), on the GitHub repo's issue page.
