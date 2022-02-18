@@ -224,6 +224,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
                 pigeonEntity.setBaby(true);
             }
             pigeonEntity.setPigeonType(this.dataTracker.get(TYPE));
+            pigeonEntity.setPersistent();
         }
 
         return pigeonEntity;
