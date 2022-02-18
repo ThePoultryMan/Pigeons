@@ -218,12 +218,14 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     public PassiveEntity createChild(ServerWorld world, PassiveEntity entity) {
         PigeonEntity pigeonEntity = Pigeons.PIGEON_ENTITY_TYPE.create(world);
         if (pigeonEntity != null) {
+            String type = "city";
             if (entity != null) {
                 pigeonEntity.setOwnerUuid(this.getOwnerUuid());
                 pigeonEntity.setTamed(true);
                 pigeonEntity.setBaby(true);
+                type = ((PigeonEntity) entity).getPigeonTypeString();
             }
-            pigeonEntity.setPigeonType(this.dataTracker.get(TYPE));
+            pigeonEntity.setPigeonType(type);
             pigeonEntity.setPersistent();
         }
 
