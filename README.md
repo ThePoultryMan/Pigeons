@@ -8,9 +8,13 @@ Pleasant Pigeons adds pigeons to Minecraft. They will occasionally drop items, a
 
 They're cute. They also scare spiders away, <s>but them being cute is enough anyway</s>.
 
-Different types of pigeons will drop different items as their special item drop, and those are documented [here in the wiki](https://github.com/ThePoultryMan/Pigeons/wiki/Pigeons#special-drops). This gives the player the ability to create a farm for these items using pigeons.
+Different types of pigeons will drop different items as their special item drop, and those are documented [here in the wiki](https://github.com/ThePoultryMan/Pigeons/wiki/Pigeon#special-drops). This gives the player the ability to create a farm for these items using pigeons.
 
 <br>
+
+### Taming and Breeding
+
+The items needed to tame and breed the pigeons are documented [here](https://github.com/ThePoultryMan/Pigeons/wiki/Tags).
 
 <s>Did I mention that they're cute?</s>
 
