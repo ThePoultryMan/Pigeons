@@ -274,7 +274,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     }
 
     public static boolean canSpawn(EntityType<PigeonEntity> pigeonEntityEntityType, ServerWorldAccess serverWorldAccess, SpawnReason spawnReason, BlockPos blockPos, Random random) {
-        return serverWorldAccess.getBaseLightLevel(blockPos, 0) > 6;
+        return true;
     }
 
     private static class FlyRandomly extends FlyOntoTreeGoal {
