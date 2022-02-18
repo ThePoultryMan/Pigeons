@@ -21,6 +21,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.recipe.Ingredient;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -70,6 +71,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         this.goalSelector.add(1, new SitGoal(this));
         this.goalSelector.add(1, new FollowOwnerGoal(this, 1D, 30f, 7f, true));
         this.goalSelector.add(1, new FlyRandomly(this, 1D));
+        this.goalSelector.add(2, new TemptGoal(this, 1.1D, Ingredient.fromTag(Pigeons.PIGEON_LOVE_FOODS), false));
         this.goalSelector.add(2, new LookAroundGoal(this));
         this.goalSelector.add(2, new LookAtEntityGoal(this, PlayerEntity.class, 8f));
         this.goalSelector.add(3, new AnimalMateGoal(this, 1D));
