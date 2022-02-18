@@ -19,6 +19,6 @@ public class SpidersFleeFromPigeons extends HostileEntity {
 
     @Inject(at = @At("TAIL"), method = "initGoals")
     void initGoals(CallbackInfo ci) {
-        this.goalSelector.add(4, new FleeEntityGoal(this, PigeonEntity.class, 9f, 0.8D, 1D));
+        this.goalSelector.add(4, new FleeEntityGoal<>(this, PigeonEntity.class, 9f, 0.8D, 1D));
     }
 }

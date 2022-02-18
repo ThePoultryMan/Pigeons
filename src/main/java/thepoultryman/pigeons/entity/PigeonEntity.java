@@ -111,7 +111,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     @Override
     public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController(this, "controller", 0, this::predicate));
+        animationData.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
@@ -141,7 +141,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
         if (!this.moveControl.isMoving() && this.isTamed() && this.random.nextInt(chance) == 0) {
             ItemStack spawnItem;
-            BlockPos pos = new BlockPos(this.getBlockX(), this.getBlockY() + 2, this.getBlockZ());
 
             if (TYPE_DROP_MAP.containsKey(this.getPigeonTypeString()) && this.random.nextInt(100) == 0) {
                 spawnItem = new ItemStack(TYPE_DROP_MAP.get(this.getPigeonTypeString()));
