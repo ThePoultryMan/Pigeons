@@ -17,6 +17,7 @@ import net.minecraft.entity.mob.PathAwareEntity;
 import net.minecraft.entity.passive.PassiveEntity;
 import net.minecraft.entity.passive.TameableEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
@@ -39,6 +40,7 @@ import thepoultryman.pigeons.Pigeons;
 import thepoultryman.registry.ItemRegistry;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
@@ -129,32 +131,37 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack stackInHand = player.getStackInHand(hand);
-        if (!this.isTamed() && !this.world.isClient()) {
-            if (isBreedingItem(stackInHand)) {
-                if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(7 - stackInHand.getItem().getFoodComponent().getHunger(), 1)) == 0) {
-                    this.world.sendEntityStatus(this, (byte)7);
+        if (!this.isTamed() && this.isBreedingItem(stackInHand)) {
+            if (stackInHand.isIn(Pigeons.PIGEON_LIKE_FOODS)) {
+                if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(7 - Objects.requireNonNull(stackInHand.getItem().getFoodComponent()).getHunger(), 1)) == 0) {
+                    this.world.sendEntityStatus(this, (byte) 7);
                     this.navigation.stop();
                     this.setOwner(player);
                 } else if (this.world.random.nextInt(10) == 0) {
-                    this.world.sendEntityStatus(this, (byte)7);
+                    this.world.sendEntityStatus(this, (byte) 7);
                     this.navigation.stop();
                     this.setOwner(player);
                 }
                 stackInHand.decrement(1);
                 return ActionResult.SUCCESS;
+            } else if (this.random.nextInt(2) == 0) {
+                this.world.sendEntityStatus(this, (byte) 7);
+                this.navigation.stop();
+                this.setOwner(player);
             }
-        } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand)) {
+        } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty()) {
             this.setSitting(!this.isSitting());
             this.jumping = false;
             this.navigation.stop();
             this.setIdle(0);
             return ActionResult.SUCCESS;
         } else if (ACCESSORIES.contains(stackInHand.getItem().toString()) && this.getAccessory().equals("none")) {
-            this.setAccessory(stackInHand.copy());
-            stackInHand.decrement(1);
-            return ActionResult.SUCCESS;
+        	if(!this.world.isClient) {
+        		this.setAccessory(stackInHand.copy());        		
+        		stackInHand.decrement(1);
+        	}
+        	return ActionResult.success(this.world.isClient);
         }
-
         return super.interactMob(player, hand);
     }
 
@@ -227,14 +234,23 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     }
 
     public String getAccessory() {
-        Pigeons.LOGGER.info(this.getEquippedStack(EquipmentSlot.HEAD).toString());
-        if (this.getEquippedStack(EquipmentSlot.HEAD).getItem() == ItemRegistry.TOP_HAT)
-            return "top_hat";
-        else return "none";
+    	return this.dataTracker.get(ACCESSORY);
     }
 
     public void setAccessory(ItemStack accessory) {
-        this.equipStack(EquipmentSlot.HEAD, accessory);
+    	Item item = accessory.getItem();
+    	if (item.equals(ItemRegistry.BEANIE) || item.equals(ItemRegistry.TOP_HAT)) {    		
+    		this.equipStack(EquipmentSlot.HEAD, accessory);
+    		this.dataTracker.set(ACCESSORY, item.toString());
+    	}
+    }
+    
+    public void setAccessoryFromString(String accessory) {
+    	if (accessory.equals("top_hat")) {
+    		this.setAccessory(new ItemStack(ItemRegistry.TOP_HAT));
+    	} else if (accessory.equals("beanie")) {
+    		this.setAccessory(new ItemStack(ItemRegistry.BEANIE));
+    	}
     }
 
     public void setIdle(int idle) {
@@ -301,6 +317,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
         nbt.putString("PigeonType", this.getPigeonTypeString());
         nbt.putBoolean("Sitting", this.isSitting());
+        nbt.putString("PigeonAccessory", this.getAccessory());
     }
 
     @Override
@@ -311,5 +328,8 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             this.setPigeonType(nbt.getString("PigeonType"));
         if (nbt.contains("Sitting"))
             this.setSitting(nbt.getBoolean("Sitting"));
+        if (nbt.contains("PigeonAccessory"))
+			this.setAccessoryFromString(nbt.getString("PigeonAccessory"));
     }
+    
 }
