@@ -24,7 +24,7 @@ public class AccessoryFeatureRenderer extends GeoLayerRenderer<PigeonEntity> {
 
     @Override
     public void render(MatrixStack matrixStackIn, VertexConsumerProvider bufferIn, int packedLightIn, PigeonEntity pigeonEntity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-        if (!pigeonEntity.getAccessory().equals("nope")) {
+        if (!pigeonEntity.getAccessory().equals("none")) {
             switch (pigeonEntity.getEquippedStack(EquipmentSlot.HEAD).getItem().toString()) {
                 case "top_hat" -> accessoryEntityRenderer.render(getEntityModel().getModel(new Identifier(Pigeons.MOD_ID, MODEL_LOCATION)),
                         pigeonEntity, partialTicks,
