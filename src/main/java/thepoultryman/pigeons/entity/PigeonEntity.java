@@ -239,8 +239,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     public void setAccessory(ItemStack accessory) {
     	Item item = accessory.getItem();
-    	if (item.equals(ItemRegistry.BEANIE) || item.equals(ItemRegistry.TOP_HAT)) {    		
-    		this.equipStack(EquipmentSlot.HEAD, accessory);
+    	if (item.equals(ItemRegistry.BEANIE) || item.equals(ItemRegistry.TOP_HAT)) {
     		this.dataTracker.set(ACCESSORY, item.toString());
     	}
     }
