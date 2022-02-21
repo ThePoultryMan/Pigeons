@@ -18,6 +18,17 @@ The items needed to tame and breed the pigeons are documented [here](https://git
 
 <s>Did I mention that they're cute?</s>
 
+### Accessories
+**Thanks tristankechlo**
+
+You can craft different accesories to put on your pigeons. Accessories are purely cosmetic and don't have any sort of advantage. You can read more about the accesories [here]().
+
 ## Other
 
 If you have any feature request, suggestions, or bug reports, you can let me know [here](https://github.com/ThePoultryMan/Pigeons/issues), on the GitHub repo's issue page.
+
+### Translations
+
+| Language | File | Translator | PR |
+|--- | --- | --- | --: |
+| German | `de_de.json` | tristankechlo | [#2](https://github.com/ThePoultryMan/Pigeons/pull/2) |
