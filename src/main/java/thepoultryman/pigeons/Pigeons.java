@@ -21,6 +21,7 @@ import net.minecraft.world.biome.Biome;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thepoultryman.pigeons.entity.PigeonEntity;
+import thepoultryman.pigeons.registry.ItemRegistry;
 
 public class Pigeons implements ModInitializer {
     public static final String MOD_ID = "pigeons";
@@ -53,5 +54,7 @@ public class Pigeons implements ModInitializer {
         // Items
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pigeon_spawn_egg"), PIGEON_SPAWN_EGG);
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bread_crumbs"), BREAD_CRUMBS);
+
+        ItemRegistry.registerItems();
     }
 }

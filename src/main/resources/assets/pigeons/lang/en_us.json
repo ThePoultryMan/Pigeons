@@ -1,5 +1,7 @@
 {
     "entity.pigeons.pigeon": "Pigeon",
     "item.pigeons.pigeon_spawn_egg": "Pigeon Spawn Egg",
-    "item.pigeons.bread_crumbs": "Bread Crumbs"
+    "item.pigeons.bread_crumbs": "Bread Crumbs",
+    "item.pigeons.top_hat": "Top Hat",
+    "item.pigeons.beanie": "Beanie"
 }
