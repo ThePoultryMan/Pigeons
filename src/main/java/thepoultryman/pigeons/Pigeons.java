@@ -20,7 +20,7 @@ import net.minecraft.world.biome.Biome;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thepoultryman.pigeons.entity.PigeonEntity;
-import thepoultryman.registry.ItemRegistry;
+import thepoultryman.pigeons.registry.ItemRegistry;
 
 public class Pigeons implements ModInitializer {
     public static final String MOD_ID = "pigeons";

@@ -1,4 +1,4 @@
-package thepoultryman.registry;
+package thepoultryman.pigeons.registry;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;

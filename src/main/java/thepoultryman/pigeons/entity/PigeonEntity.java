@@ -37,7 +37,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
-import thepoultryman.registry.ItemRegistry;
+import thepoultryman.pigeons.registry.ItemRegistry;
 
 import java.util.List;
 import java.util.Objects;
