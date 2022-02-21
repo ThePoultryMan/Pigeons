@@ -246,11 +246,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     }
     
     public void setAccessoryFromString(String accessory) {
-    	if (accessory.equals("top_hat")) {
-    		this.setAccessory(new ItemStack(ItemRegistry.TOP_HAT));
-    	} else if (accessory.equals("beanie")) {
-    		this.setAccessory(new ItemStack(ItemRegistry.BEANIE));
-    	}
+        switch (accessory) {
+            case "top_hat" -> this.setAccessory(new ItemStack(ItemRegistry.TOP_HAT));
+            case "beanie" -> this.setAccessory(new ItemStack(ItemRegistry.BEANIE));
+        }
     }
 
     public void setIdle(int idle) {
@@ -331,5 +330,4 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         if (nbt.contains("PigeonAccessory"))
 			this.setAccessoryFromString(nbt.getString("PigeonAccessory"));
     }
-    
 }
