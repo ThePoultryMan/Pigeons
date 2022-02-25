@@ -189,18 +189,21 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             this.jumping = false;
             this.navigation.stop();
             this.setIdle(0);
-            return ActionResult.SUCCESS;
-        } else if (ACCESSORIES.contains(stackInHand.getItem().toString()) && this.getAccessory().equals("none") && !player.isSneaking()) {
-        	if(!this.world.isClient) {
-        		this.setAccessory(stackInHand.copy());
-        		stackInHand.decrement(1);
-        	}
-        	return ActionResult.success(this.world.isClient);
-        } else if (player.isSneaking() && stackInHand.isEmpty() && !this.getAccessory().equals("none")) {
-            player.giveItemStack(new ItemStack(ACCESSORY_NAME_ITEM_MAP.get(this.getAccessory())));
-            this.setAccessoryFromString("none");
-            return ActionResult.SUCCESS;
+            return ActionResult.success(this.world.isClient());
+        } else if (this.isOwner(player)) {
+            if (ACCESSORIES.contains(stackInHand.getItem().toString()) && this.getAccessory().equals("none") && !player.isSneaking()) {
+                if(!this.world.isClient) {
+                    this.setAccessory(stackInHand.copy());
+                    stackInHand.decrement(1);
+                }
+                return ActionResult.success(this.world.isClient);
+            } else if (player.isSneaking() && stackInHand.isEmpty() && !this.getAccessory().equals("none")) {
+                player.giveItemStack(new ItemStack(ACCESSORY_NAME_ITEM_MAP.get(this.getAccessory())));
+                this.setAccessoryFromString("none");
+                return ActionResult.success(this.world.isClient());
+            }
         }
+
         return super.interactMob(player, hand);
     }
 
