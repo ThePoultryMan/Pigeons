@@ -178,12 +178,12 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
                     this.setOwner(player);
                 }
                 stackInHand.decrement(1);
-                return ActionResult.SUCCESS;
             } else if (this.random.nextInt(2) == 0) {
                 this.world.sendEntityStatus(this, (byte) 7);
                 this.navigation.stop();
                 this.setOwner(player);
             }
+            return ActionResult.success(this.world.isClient());
         } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty() && !player.isSneaking()) {
             this.setSitting(!this.isSitting());
             this.jumping = false;
