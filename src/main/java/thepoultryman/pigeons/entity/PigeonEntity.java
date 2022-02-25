@@ -57,14 +57,20 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final HashMap<String, Item> TYPE_DROP_MAP = new HashMap<>();
     private static final List<Item> DROPS = List.of(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.RAW_IRON, Items.DIRT);
     private static final List<String> ACCESSORIES = List.of("none", "top_hat", "beanie");
+    private static final HashMap<String, Item> ACCESSORY_NAME_ITEM_MAP = new HashMap<>();
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.moveControl = new FlightMoveControl(this, 10, false);
+        // Type-Specific Drops
         TYPE_DROP_MAP.put(TYPES.get(0), Items.DIAMOND);
         TYPE_DROP_MAP.put(TYPES.get(1), Items.RAW_IRON);
         TYPE_DROP_MAP.put(TYPES.get(2), Items.RAW_COPPER);
         TYPE_DROP_MAP.put(TYPES.get(3), Items.BEEF);
+        // Accessories map defined by string keys
+        ACCESSORY_NAME_ITEM_MAP.put("none", Items.AIR);
+        ACCESSORY_NAME_ITEM_MAP.put("top_hat", ItemRegistry.TOP_HAT);
+        ACCESSORY_NAME_ITEM_MAP.put("beanie", ItemRegistry.BEANIE);
     }
 
     @Override
@@ -159,6 +165,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     @Override
     public ActionResult interactMob(PlayerEntity player, Hand hand) {
         ItemStack stackInHand = player.getStackInHand(hand);
+
         if (!this.isTamed() && this.isBreedingItem(stackInHand)) {
             if (stackInHand.isIn(Pigeons.PIGEON_LIKE_FOODS)) {
                 if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(7 - Objects.requireNonNull(stackInHand.getItem().getFoodComponent()).getHunger(), 1)) == 0) {
@@ -177,18 +184,22 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
                 this.navigation.stop();
                 this.setOwner(player);
             }
-        } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty()) {
+        } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty() && !player.isSneaking()) {
             this.setSitting(!this.isSitting());
             this.jumping = false;
             this.navigation.stop();
             this.setIdle(0);
             return ActionResult.SUCCESS;
-        } else if (ACCESSORIES.contains(stackInHand.getItem().toString()) && this.getAccessory().equals("none")) {
+        } else if (ACCESSORIES.contains(stackInHand.getItem().toString()) && this.getAccessory().equals("none") && !player.isSneaking()) {
         	if(!this.world.isClient) {
         		this.setAccessory(stackInHand.copy());
         		stackInHand.decrement(1);
         	}
         	return ActionResult.success(this.world.isClient);
+        } else if (player.isSneaking() && stackInHand.isEmpty() && !this.getAccessory().equals("none")) {
+            player.giveItemStack(new ItemStack(ACCESSORY_NAME_ITEM_MAP.get(this.getAccessory())));
+            this.setAccessoryFromString("none");
+            return ActionResult.SUCCESS;
         }
         return super.interactMob(player, hand);
     }
@@ -270,15 +281,18 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     public void setAccessory(ItemStack accessory) {
     	Item item = accessory.getItem();
-    	if (item.equals(ItemRegistry.BEANIE) || item.equals(ItemRegistry.TOP_HAT)) {
+    	if (ACCESSORIES.contains(item.toString())) {
     		this.dataTracker.set(ACCESSORY, item.toString());
-    	}
+    	} else if (item.equals(Items.AIR))
+            this.dataTracker.set(ACCESSORY, "none");
     }
 
     public void setAccessoryFromString(String accessory) {
         switch (accessory) {
+            case "none" -> this.setAccessory(ItemStack.EMPTY);
             case "top_hat" -> this.setAccessory(new ItemStack(ItemRegistry.TOP_HAT));
             case "beanie" -> this.setAccessory(new ItemStack(ItemRegistry.BEANIE));
+            default -> Pigeons.LOGGER.info("That is not an accessory silly! ( " + accessory + " )");
         }
     }
 
