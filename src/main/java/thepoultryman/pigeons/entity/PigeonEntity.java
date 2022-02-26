@@ -258,6 +258,13 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     }
 
     @Override
+    public void onDeath(DamageSource source) {
+        super.onDeath(source);
+        if (!this.getAccessory().equals("none"))
+            ItemScatterer.spawn(this.world, this.getX(), this.getY(), this.getZ(), new ItemStack(ACCESSORY_NAME_ITEM_MAP.get(this.getAccessory())));
+    }
+
+    @Override
     protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
 
     }
