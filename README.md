@@ -33,4 +33,4 @@ If you have any feature request, suggestions, or bug reports, you can let me kno
 |--- | --- | --- | --: |
 | German | `de_de.json` | tristankechlo | [#2](https://github.com/ThePoultryMan/Pigeons/pull/2) |
 | Russian | `ru_ru.json` | _awaiting response_ | [#4](https://github.com/ThePoultryMan/Pigeons/pull/4) |
-| Ukranian | `uk_ua.json` | _awaiting response_ | [#5](https://github.com/ThePoultryMan/Pigeons/pull/5) |
+| Ukrainian | `uk_ua.json` | _awaiting response_ | [#5](https://github.com/ThePoultryMan/Pigeons/pull/5) |
