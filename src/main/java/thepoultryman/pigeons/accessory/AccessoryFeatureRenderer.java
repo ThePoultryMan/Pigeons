@@ -13,8 +13,11 @@ import thepoultryman.pigeons.entity.PigeonEntity;
 public class AccessoryFeatureRenderer extends GeoLayerRenderer<PigeonEntity> {
     private final static String MODEL_LOCATION = "geo/pigeon.geo.json";
     private final AccessoryEntityRenderer accessoryEntityRenderer;
+    // Texture Locations
     private final static Identifier TOP_HAT_LOCATION = new Identifier(Pigeons.MOD_ID, "textures/entity/pigeon/accessories/top_hat.png");
     private final static Identifier BEANIE_LOCATION = new Identifier(Pigeons.MOD_ID, "textures/entity/pigeon/accessories/beanie.png");
+    private final static Identifier DRESS_SHOES_LOCATION = new Identifier(Pigeons.MOD_ID, "/textures/entity/pigeon/accessories/dress_shoes.png");
+    private final static Identifier TIE_LOCATION = new Identifier(Pigeons.MOD_ID, "/textures/entity/pigeon/accessories/tie.png");
 
     public AccessoryFeatureRenderer(IGeoRenderer<PigeonEntity> entityRendererIn, AccessoryEntityRenderer partyHatEntityRenderer) {
         super(entityRendererIn);
@@ -34,6 +37,16 @@ public class AccessoryFeatureRenderer extends GeoLayerRenderer<PigeonEntity> {
                         pigeonEntity, partialTicks,
                         RenderLayer.getEntityCutout(BEANIE_LOCATION), matrixStackIn, bufferIn,
                         bufferIn.getBuffer(RenderLayer.getEntityCutout(BEANIE_LOCATION)),
+                        packedLightIn, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+                case "dress_shoes" -> accessoryEntityRenderer.render(getEntityModel().getModel(new Identifier(Pigeons.MOD_ID, MODEL_LOCATION)),
+                        pigeonEntity, partialTicks,
+                        RenderLayer.getEntityCutout(DRESS_SHOES_LOCATION), matrixStackIn, bufferIn,
+                        bufferIn.getBuffer(RenderLayer.getEntityCutout(DRESS_SHOES_LOCATION)),
+                        packedLightIn, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+                case "tie" -> accessoryEntityRenderer.render(getEntityModel().getModel(new Identifier(Pigeons.MOD_ID, MODEL_LOCATION)),
+                        pigeonEntity, partialTicks,
+                        RenderLayer.getEntityCutout(TIE_LOCATION), matrixStackIn, bufferIn,
+                        bufferIn.getBuffer(RenderLayer.getEntityCutout(TIE_LOCATION)),
                         packedLightIn, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
             }
         }
