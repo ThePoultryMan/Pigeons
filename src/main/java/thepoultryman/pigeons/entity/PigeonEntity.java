@@ -170,7 +170,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
         if (!this.isTamed() && this.isBreedingItem(stackInHand)) {
             if (stackInHand.isIn(Pigeons.PIGEON_LIKE_FOODS)) {
-                if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(7 - Objects.requireNonNull(stackInHand.getItem().getFoodComponent()).getHunger(), 1)) == 0) {
+                if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(8 - Objects.requireNonNull(stackInHand.getItem().getFoodComponent()).getHunger(), 2)) == 0) {
                     this.world.sendEntityStatus(this, (byte) 7);
                     this.navigation.stop();
                     this.setOwner(player);
@@ -185,6 +185,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
                 this.navigation.stop();
                 this.setOwner(player);
             }
+
             return ActionResult.success(this.world.isClient());
         } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty() && !player.isSneaking()) {
             this.setSitting(!this.isSitting());
