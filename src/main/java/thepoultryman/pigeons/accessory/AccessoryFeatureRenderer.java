@@ -18,6 +18,7 @@ public class AccessoryFeatureRenderer extends GeoLayerRenderer<PigeonEntity> {
     private final static Identifier BEANIE_LOCATION = new Identifier(Pigeons.MOD_ID, "textures/entity/pigeon/accessories/beanie.png");
     private final static Identifier DRESS_SHOES_LOCATION = new Identifier(Pigeons.MOD_ID, "/textures/entity/pigeon/accessories/dress_shoes.png");
     private final static Identifier TIE_LOCATION = new Identifier(Pigeons.MOD_ID, "/textures/entity/pigeon/accessories/tie.png");
+    private final static Identifier MOSS_LOCATION = new Identifier(Pigeons.MOD_ID, "/textures/entity/pigeon/accessories/moss.png");
 
     public AccessoryFeatureRenderer(IGeoRenderer<PigeonEntity> entityRendererIn, AccessoryEntityRenderer partyHatEntityRenderer) {
         super(entityRendererIn);
@@ -47,6 +48,11 @@ public class AccessoryFeatureRenderer extends GeoLayerRenderer<PigeonEntity> {
                         pigeonEntity, partialTicks,
                         RenderLayer.getEntityCutout(TIE_LOCATION), matrixStackIn, bufferIn,
                         bufferIn.getBuffer(RenderLayer.getEntityCutout(TIE_LOCATION)),
+                        packedLightIn, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
+                case "moss_carpet" -> accessoryEntityRenderer.render(getEntityModel().getModel(new Identifier(Pigeons.MOD_ID, MODEL_LOCATION)),
+                        pigeonEntity, partialTicks,
+                        RenderLayer.getEntityCutout(MOSS_LOCATION), matrixStackIn, bufferIn,
+                        bufferIn.getBuffer(RenderLayer.getEntityCutout(MOSS_LOCATION)),
                         packedLightIn, OverlayTexture.DEFAULT_UV, 1, 1, 1, 1);
             }
         }

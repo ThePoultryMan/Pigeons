@@ -56,7 +56,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final List<String> TYPES = List.of("city", "antwerp_smerle_brown", "antwerp_smerle_gray", "egyptian_swift");
     private static final HashMap<String, Item> TYPE_DROP_MAP = new HashMap<>();
     private static final List<Item> DROPS = List.of(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.RAW_IRON, Items.DIRT);
-    private static final List<String> ACCESSORIES = List.of("none", "top_hat", "beanie", "dress_shoes", "tie");
+    private static final List<String> ACCESSORIES = List.of("none", "top_hat", "beanie", "dress_shoes", "tie", "moss_carpet");
     private static final HashMap<String, Item> ACCESSORY_NAME_ITEM_MAP = new HashMap<>();
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
@@ -73,6 +73,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         ACCESSORY_NAME_ITEM_MAP.put("beanie", ItemRegistry.BEANIE);
         ACCESSORY_NAME_ITEM_MAP.put("dress_shoes", ItemRegistry.DRESS_SHOES);
         ACCESSORY_NAME_ITEM_MAP.put("tie", ItemRegistry.TIE);
+        ACCESSORY_NAME_ITEM_MAP.put("moss_carpet", Items.MOSS_CARPET);
     }
 
     @Override
@@ -316,6 +317,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             case "beanie" -> this.setAccessory(new ItemStack(ItemRegistry.BEANIE));
             case "dress_shoes" -> this.setAccessory(new ItemStack(ItemRegistry.DRESS_SHOES));
             case "tie" -> this.setAccessory(new ItemStack(ItemRegistry.TIE));
+            case "moss_carpet" -> this.setAccessory(new ItemStack(Items.MOSS_CARPET));
             default -> Pigeons.LOGGER.info("That is not an accessory silly! ( " + accessory + " )");
         }
     }
