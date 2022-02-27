@@ -68,12 +68,12 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         TYPE_DROP_MAP.put(TYPES.get(2), Items.RAW_COPPER);
         TYPE_DROP_MAP.put(TYPES.get(3), Items.BEEF);
         // Accessories map defined by string keys
-        ACCESSORY_NAME_ITEM_MAP.put("none", Items.AIR);
-        ACCESSORY_NAME_ITEM_MAP.put("top_hat", ItemRegistry.TOP_HAT);
-        ACCESSORY_NAME_ITEM_MAP.put("beanie", ItemRegistry.BEANIE);
-        ACCESSORY_NAME_ITEM_MAP.put("dress_shoes", ItemRegistry.DRESS_SHOES);
-        ACCESSORY_NAME_ITEM_MAP.put("tie", ItemRegistry.TIE);
-        ACCESSORY_NAME_ITEM_MAP.put("moss_carpet", Items.MOSS_CARPET);
+        ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(0), Items.AIR);
+        ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(1), ItemRegistry.TOP_HAT);
+        ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(2), ItemRegistry.BEANIE);
+        ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(3), ItemRegistry.DRESS_SHOES);
+        ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(4), ItemRegistry.TIE);
+        ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(5), Items.MOSS_CARPET);
     }
 
     @Override
