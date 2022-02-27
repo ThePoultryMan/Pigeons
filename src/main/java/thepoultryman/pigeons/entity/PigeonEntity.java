@@ -311,15 +311,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     }
 
     public void setAccessoryFromString(String accessory) {
-        switch (accessory) {
-            case "none" -> this.setAccessory(ItemStack.EMPTY);
-            case "top_hat" -> this.setAccessory(new ItemStack(ItemRegistry.TOP_HAT));
-            case "beanie" -> this.setAccessory(new ItemStack(ItemRegistry.BEANIE));
-            case "dress_shoes" -> this.setAccessory(new ItemStack(ItemRegistry.DRESS_SHOES));
-            case "tie" -> this.setAccessory(new ItemStack(ItemRegistry.TIE));
-            case "moss_carpet" -> this.setAccessory(new ItemStack(Items.MOSS_CARPET));
-            default -> Pigeons.LOGGER.info("That is not an accessory silly! ( " + accessory + " )");
-        }
+        if (!accessory.equals("none") && ACCESSORIES.contains(accessory))
+            this.setAccessory(new ItemStack(ACCESSORY_NAME_ITEM_MAP.get(accessory)));
+        else if (accessory.equals("none"))
+            Pigeons.LOGGER.warn("The accessory cannot be set because " + accessory + " is not a valid accessory.");
     }
 
     public void setIdle(int idle) {
