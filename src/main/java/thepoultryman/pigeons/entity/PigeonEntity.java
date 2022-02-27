@@ -170,23 +170,32 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
         if (!this.isTamed() && this.isBreedingItem(stackInHand)) {
             if (stackInHand.isIn(Pigeons.PIGEON_LIKE_FOODS)) {
-                if (stackInHand.getItem().isFood() && this.world.random.nextInt(Math.max(8 - Objects.requireNonNull(stackInHand.getItem().getFoodComponent()).getHunger(), 2)) == 0) {
-                    this.world.sendEntityStatus(this, (byte) 7);
-                    this.navigation.stop();
-                    this.setOwner(player);
+                if (stackInHand.getItem().isFood()) {
+                    if (this.world.random.nextInt(Math.max(8 - Objects.requireNonNull(stackInHand.getItem().getFoodComponent()).getHunger(), 2)) == 0) {
+                        this.world.sendEntityStatus(this, (byte) 7);
+                        this.navigation.stop();
+                        this.setOwner(player);
+                    } else {
+                        this.world.sendEntityStatus(this, (byte) 6);
+                    }
                 } else if (this.world.random.nextInt(10) == 0) {
                     this.world.sendEntityStatus(this, (byte) 7);
                     this.navigation.stop();
                     this.setOwner(player);
+                } else {
+                    this.world.sendEntityStatus(this, (byte) 6);
                 }
-                stackInHand.decrement(1);
-            } else if (this.random.nextInt(2) == 0) {
-                this.world.sendEntityStatus(this, (byte) 7);
-                this.navigation.stop();
-                this.setOwner(player);
+            } else if (stackInHand.isIn(Pigeons.PIGEON_LOVE_FOODS)) {
+                if (this.random.nextInt(2) == 0) {
+                    this.world.sendEntityStatus(this, (byte) 7);
+                    this.navigation.stop();
+                    this.setOwner(player);
+                } else {
+                    this.world.sendEntityStatus(this, (byte) 6);
+                }
             }
-
-            return ActionResult.success(this.world.isClient());
+            stackInHand.decrement(1);
+            return ActionResult.CONSUME;
         } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty() && !player.isSneaking()) {
             this.setSitting(!this.isSitting());
             this.jumping = false;
