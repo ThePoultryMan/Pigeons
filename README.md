@@ -1,6 +1,6 @@
-<img src="https://user-images.githubusercontent.com/66281330/155865075-7360c978-2826-4474-84aa-0d1a73ac8971.png" alt="Pigeon wearing a top hat" width=205 align="right">
-
 # Pleasant Pigeons
+
+<img src="https://user-images.githubusercontent.com/66281330/155865075-7360c978-2826-4474-84aa-0d1a73ac8971.png" alt="Pigeon wearing a top hat" width=205 align="right">
 
 ## About
 
@@ -27,6 +27,8 @@ The items needed to tame and breed the pigeons are documented [here](https://git
 You can craft different accesories to put on your pigeons. Equip your pigeons with an accessory by right clicking it, and unequip it by shift clicking. You can read more about the accesories [here](https://github.com/ThePoultryMan/Pigeons/wiki/Pigeon#accessories).
 
 ## Other
+
+<img src="https://user-images.githubusercontent.com/66281330/155865523-1a97c8b1-09ed-4530-b4fc-9ec7926a5181.png" alt="Pigeon wearing a red tie" width=205 align="right">
 
 If you have any feature request, suggestions, or bug reports, you can let me know [here](https://github.com/ThePoultryMan/Pigeons/issues), on the GitHub repo's issue page.
 
