@@ -311,9 +311,9 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     }
 
     public void setAccessoryFromString(String accessory) {
-        if (!accessory.equals("none") && ACCESSORIES.contains(accessory))
+        if (ACCESSORIES.contains(accessory))
             this.setAccessory(new ItemStack(ACCESSORY_NAME_ITEM_MAP.get(accessory)));
-        else if (accessory.equals("none"))
+        else if (!accessory.equals("none") && !ACCESSORIES.contains(accessory))
             Pigeons.LOGGER.warn("The accessory cannot be set because " + accessory + " is not a valid accessory.");
     }
 
