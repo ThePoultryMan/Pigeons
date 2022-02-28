@@ -39,4 +39,4 @@ If you have any feature request, suggestions, or bug reports, you can let me kno
 | German | `de_de.json` | tristankechlo | [#2](https://github.com/ThePoultryMan/Pigeons/pull/2) | Partial (1.2.0) |
 | Russian | `ru_ru.json` | qualterz | [#4](https://github.com/ThePoultryMan/Pigeons/pull/4) | Partial (1.2.0) |
 | Ukrainian | `uk_ua.json` | qualterz | [#5](https://github.com/ThePoultryMan/Pigeons/pull/5) | Partial (1.2.0) |
-| French | `fr_fr.json` | Akarys42 | [#6](https://github.com/ThePoultryMan/Pigeons/pull/6) | Partial (1.2.0 |
+| French | `fr_fr.json` | Akarys42 | [#6](https://github.com/ThePoultryMan/Pigeons/pull/6) | Partial (1.2.0) |
