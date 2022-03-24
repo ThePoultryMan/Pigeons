@@ -15,10 +15,12 @@ public class DropConfig implements ModInitializer {
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     // Config Values
-    public DropElements.DropData cityDrop = new DropElements.DropData("minecraft:item", 1);
-    public DropElements.DropData antwerpSmerleBrownDrop = new DropElements.DropData("minecraft:steak", 3);
+    public DropElements.DropData cityDrop = new DropElements.DropData("minecraft:diamond", 1);
+    public DropElements.DropData antwerpSmerleBrownDrop = new DropElements.DropData("minecraft:raw_iron", 3);
+    public DropElements.DropData antwerpSmerleBrownGray = new DropElements.DropData("minecraft:raw_copper", 7);
+    public DropElements.DropData egyptianSwift = new DropElements.DropData("minecraft:cooked_beef", 5);
 
-    public JsonElement configJson = gson.toJsonTree(new DropElements(cityDrop, antwerpSmerleBrownDrop));
+    public JsonElement configJson = gson.toJsonTree(new DropElements(cityDrop, antwerpSmerleBrownDrop, antwerpSmerleBrownGray, egyptianSwift));
 
     @Override
     public void onInitialize() {
@@ -41,8 +43,6 @@ public class DropConfig implements ModInitializer {
                 e.printStackTrace();
             }
         }
-
-        Pigeons.LOGGER.info(getSpecialDrop("city"));
     }
 
     public String getSpecialDrop(String pigeonType) {
