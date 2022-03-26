@@ -3,6 +3,7 @@ package thepoultryman.pigeons.config;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
@@ -19,13 +20,12 @@ public class DropConfig implements ModInitializer {
 
     static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
-    // Config Values
+    // Default Config Values
     public static DropElements.DropData cityDrop = new DropElements.DropData("minecraft:diamond", 1);
     public static DropElements.DropData antwerpSmerleBrownDrop = new DropElements.DropData("minecraft:raw_iron", 3);
     public static DropElements.DropData antwerpSmerleBrownGray = new DropElements.DropData("minecraft:raw_copper", 7);
     public static DropElements.DropData egyptianSwift = new DropElements.DropData("minecraft:cooked_beef", 5);
-
-    public static JsonElement configJson = gson.toJsonTree(new DropElements(cityDrop, antwerpSmerleBrownDrop, antwerpSmerleBrownGray, egyptianSwift));
+    public JsonElement configJson = gson.toJsonTree(new DropElements(cityDrop, antwerpSmerleBrownDrop, antwerpSmerleBrownGray, egyptianSwift));
 
     @Override
     public void onInitialize() {
@@ -34,20 +34,21 @@ public class DropConfig implements ModInitializer {
             FileWriter writer = null;
             try {
                 writer = new FileWriter(CONFIG_LOCATION);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
-            gson.toJson(configJson, writer);
+                JsonObject finalJson = new JsonObject();
+                finalJson.add("special_drops", configJson);
 
-            // Finish the writing process
-            if (writer != null) {
+                gson.toJson(finalJson, writer);
+
+                // Finish the writing process
                 try {
                     writer.flush();
                     writer.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
