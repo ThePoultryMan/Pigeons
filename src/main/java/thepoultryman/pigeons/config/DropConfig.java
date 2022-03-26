@@ -5,6 +5,11 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
+import net.minecraft.util.Identifier;
+import net.minecraft.util.registry.Registry;
 import thepoultryman.pigeons.Pigeons;
 
 import java.io.*;
@@ -12,53 +17,61 @@ import java.io.*;
 public class DropConfig implements ModInitializer {
     private static final String CONFIG_LOCATION = FabricLoader.getInstance().getConfigDir() + "/pleasant-pigeons.json";
 
-    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    static Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     // Config Values
-    public DropElements.DropData cityDrop = new DropElements.DropData("minecraft:diamond", 1);
-    public DropElements.DropData antwerpSmerleBrownDrop = new DropElements.DropData("minecraft:raw_iron", 3);
-    public DropElements.DropData antwerpSmerleBrownGray = new DropElements.DropData("minecraft:raw_copper", 7);
-    public DropElements.DropData egyptianSwift = new DropElements.DropData("minecraft:cooked_beef", 5);
+    public static DropElements.DropData cityDrop = new DropElements.DropData("minecraft:diamond", 1);
+    public static DropElements.DropData antwerpSmerleBrownDrop = new DropElements.DropData("minecraft:raw_iron", 3);
+    public static DropElements.DropData antwerpSmerleBrownGray = new DropElements.DropData("minecraft:raw_copper", 7);
+    public static DropElements.DropData egyptianSwift = new DropElements.DropData("minecraft:cooked_beef", 5);
 
-    public JsonElement configJson = gson.toJsonTree(new DropElements(cityDrop, antwerpSmerleBrownDrop, antwerpSmerleBrownGray, egyptianSwift));
+    public static JsonElement configJson = gson.toJsonTree(new DropElements(cityDrop, antwerpSmerleBrownDrop, antwerpSmerleBrownGray, egyptianSwift));
 
     @Override
     public void onInitialize() {
-        // Start the writing process
-        FileWriter writer = null;
-        try {
-            writer = new FileWriter(CONFIG_LOCATION);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        gson.toJson(configJson, writer);
-
-        // Finish the writing process
-        if (writer != null) {
+        if (!new File(CONFIG_LOCATION).exists()) {
+            // Start the writing process
+            FileWriter writer = null;
             try {
-                writer.flush();
-                writer.close();
+                writer = new FileWriter(CONFIG_LOCATION);
             } catch (IOException e) {
                 e.printStackTrace();
+            }
+
+            gson.toJson(configJson, writer);
+
+            // Finish the writing process
+            if (writer != null) {
+                try {
+                    writer.flush();
+                    writer.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
-    public String getSpecialDrop(String pigeonType) {
-        BufferedReader reader = null;
+    // Config Reading
+
+    public static ItemStack getSpecialDrop(String pigeonType) {
         try {
-            reader = new BufferedReader(new FileReader(CONFIG_LOCATION));
+            BufferedReader reader = new BufferedReader(new FileReader(CONFIG_LOCATION));
+
+            DropElements.DropData dropElement = switch(pigeonType.toLowerCase()) {
+                case "antwerp_smerle_brown" -> gson.fromJson(reader, DropElements.class).getAntwerpSmerle("brown");
+                case "antwerp_smerle_gray" -> gson.fromJson(reader, DropElements.class).getAntwerpSmerle("gray");
+                case "egyptian_swift" -> gson.fromJson(reader, DropElements.class).getEgyptianSwift();
+                default -> gson.fromJson(reader, DropElements.class).getCity();
+            };
+                Item item = Registry.ITEM.get(new Identifier(dropElement.getItem()));
+
+                return new ItemStack(item, dropElement.getCount());
         } catch (FileNotFoundException e) {
-            Pigeons.LOGGER.warn("There was an issue finding the config file. " +
-                    "Please check if your config file is in your config directory. The stack trace will be printed below.");
             e.printStackTrace();
         }
 
-        if (reader != null)
-            return gson.fromJson(reader, DropElements.class).getCity().getItem();
-        else {
-            return "green, lmao";
-        }
+        Pigeons.LOGGER.warn("There was an error finding your config file for Pleasant Pigeons.");
+        return new ItemStack(Items.COAL, 64);
     }
 }
