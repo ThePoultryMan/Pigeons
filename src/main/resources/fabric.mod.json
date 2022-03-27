@@ -18,7 +18,8 @@
     "environment": "*",
     "entrypoints": {
         "main": [
-            "thepoultryman.pigeons.Pigeons"
+            "thepoultryman.pigeons.Pigeons",
+            "thepoultryman.pigeons.config.DropConfig"
         ],
         "client": [
             "thepoultryman.pigeons.PigeonsClient"
