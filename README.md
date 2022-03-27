@@ -26,6 +26,10 @@ The items needed to tame and breed the pigeons are documented [here](https://git
 
 You can craft different accessories to put on your pigeons. Equip your pigeons with an accessory by right clicking it, and unequip it by shift clicking. You can read more about the accessories [here](https://github.com/ThePoultryMan/Pigeons/wiki/Pigeon#accessories).
 
+## Configuration
+
+As of version 1.3.0, you can configure the special drops of the different pigeon types, and the chance of drops happening. See [this page](https://github.com/ThePoultryMan/Pigeons/wiki/Configuration) of the wiki for more instruction.
+
 ## Other
 
 <img src="https://user-images.githubusercontent.com/66281330/155865523-1a97c8b1-09ed-4530-b4fc-9ec7926a5181.png" alt="Pigeon wearing a red tie" width=205 align="right">
