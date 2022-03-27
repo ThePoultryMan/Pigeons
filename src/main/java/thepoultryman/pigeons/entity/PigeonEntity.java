@@ -60,6 +60,11 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final List<String> ACCESSORIES = List.of("none", "top_hat", "beanie", "dress_shoes", "tie", "moss_carpet");
     private static final HashMap<String, Item> ACCESSORY_NAME_ITEM_MAP = new HashMap<>();
 
+    // Config values for drops
+    private static final int dropChanceDay = DropConfig.getDropChanceDay();
+    private static final int dropChanceNight = DropConfig.getDropChanceNight();
+    private static final int specialDropChance = DropConfig.getSpecialDropChance();
+
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.moveControl = new FlightMoveControl(this, 10, false);
@@ -148,16 +153,16 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             setIdle(this.random.nextInt(5));
         }
 
-        int chance = 17000;
+        int chance = dropChanceDay;
         if (this.world.isNight()) {
-            chance = 5700;
+            chance = dropChanceNight;
         }
 
         if (!this.moveControl.isMoving() && this.isTamed() && this.random.nextInt(chance) == 0) {
             ItemStack spawnItem;
 
-            if (TYPE_DROP_MAP.containsKey(this.getPigeonTypeString()) && this.random.nextInt(100) == 0) {
-                spawnItem = new ItemStack(TYPE_DROP_MAP.get(this.getPigeonTypeString()));
+            if (TYPE_DROP_MAP.containsKey(this.getPigeonTypeString()) && this.random.nextInt(specialDropChance) == 0) {
+                spawnItem = TYPE_DROP_MAP.get(this.getPigeonTypeString());
             } else {
                 spawnItem = new ItemStack(DROPS.get(this.random.nextInt(6)));
             }
