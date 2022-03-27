@@ -161,7 +161,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         if (!this.moveControl.isMoving() && this.isTamed() && this.random.nextInt(chance) == 0) {
             ItemStack spawnItem;
 
-            if (TYPE_DROP_MAP.containsKey(this.getPigeonTypeString()) && this.random.nextInt(specialDropChance) == 0) {
+            if (TYPE_DROP_MAP.containsKey(this.getPigeonTypeString()) && this.random.nextInt(Math.max(specialDropChance, 2)) == 0) {
                 spawnItem = TYPE_DROP_MAP.get(this.getPigeonTypeString());
             } else {
                 spawnItem = new ItemStack(DROPS.get(this.random.nextInt(6)));
