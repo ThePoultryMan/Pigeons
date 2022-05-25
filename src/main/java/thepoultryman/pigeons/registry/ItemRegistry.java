@@ -7,6 +7,7 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import thepoultryman.pigeons.Pigeons;
+import thepoultryman.pigeons.item.Letter;
 
 public class ItemRegistry {
     // Spawn Egg
@@ -18,6 +19,8 @@ public class ItemRegistry {
     public static final Item BEANIE = new Item(new Item.Settings().group(ItemGroup.TOOLS));
     public static final Item DRESS_SHOES = new Item(new Item.Settings().group(ItemGroup.TOOLS));
     public static final Item TIE = new Item(new Item.Settings().group(ItemGroup.TOOLS));
+    // Other
+    public static final Letter LETTER = new Letter(new Item.Settings().group(ItemGroup.MISC));
 
     public static void registerItems() {
         // Spawn Egg
@@ -29,6 +32,8 @@ public class ItemRegistry {
         register("beanie", BEANIE);
         register("dress_shoes", DRESS_SHOES);
         register("tie", TIE);
+        // Other
+        register("letter", LETTER);
     }
 
     private static void register(String name, Item item) {
