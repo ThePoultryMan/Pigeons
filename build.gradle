@@ -1,7 +1,8 @@
 plugins {
 	id 'fabric-loom' version '0.10-SNAPSHOT'
 	id 'maven-publish'
-	id "org.quiltmc.quilt-mappings-on-loom" version "3.1.1"
+	id "org.quiltmc.quilt-mappings-on-loom" version "4.2.0"
+	id "io.github.p03w.machete" version "1.0.11"
 }
 
 sourceCompatibility = JavaVersion.VERSION_17
