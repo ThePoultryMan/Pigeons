@@ -3,15 +3,12 @@ package thepoultryman.pigeons;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
-import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
-import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.item.Item;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -21,8 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thepoultryman.pigeons.entity.PigeonEntity;
 import thepoultryman.pigeons.registry.ItemRegistry;
-import thepoultryman.pigeons.screen.LetterScreen;
-import thepoultryman.pigeons.screen.LetterScreenHandler;
 
 public class Pigeons implements ModInitializer {
     public static final String MOD_ID = "pigeons";
@@ -38,9 +33,6 @@ public class Pigeons implements ModInitializer {
     public static final TagKey<Item> PIGEON_LIKE_FOODS = TagKey.of(Registry.ITEM_KEY, new Identifier(MOD_ID, "pigeon_like_foods"));
     public static final TagKey<Item> PIGEON_LOVE_FOODS = TagKey.of(Registry.ITEM_KEY, new Identifier(MOD_ID, "pigeon_love_foods"));
 
-    // Screen Stuff
-    public static final ScreenHandlerType<LetterScreenHandler> LETTER_SCREEN_TYPE = ScreenHandlerRegistry.registerExtended(new Identifier(MOD_ID, "letter_screen"),LetterScreenHandler::new);
-
     @Override
     public void onInitialize() {
         LOGGER.info("Initializing a pigeon army");
@@ -52,7 +44,5 @@ public class Pigeons implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.JUNGLE), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 40, 2, 5);
 
         ItemRegistry.registerItems();
-
-        ScreenRegistry.register(LETTER_SCREEN_TYPE, LetterScreen::new);
     }
 }
