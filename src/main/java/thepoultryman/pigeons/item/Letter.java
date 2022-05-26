@@ -66,13 +66,15 @@ public class Letter extends BundleItem {
             tooltip.add(new TranslatableText("pigeons.letter.sealed").formatted(Formatting.ITALIC, Formatting.GRAY));
     }
 
-    public static void sealLetter(ItemStack letterStack, int[] coordinates) {
+    public static void sealLetter(ItemStack letterStack, int[] coordinates, String message) {
         if (letterStack.getItem() instanceof Letter letterItem) {
             NbtCompound letterNbt = letterStack.getOrCreateNbt();
             // Seal the letter
             letterNbt.putBoolean("Sealed", true);
             // Save the destination coordinates to NBT
             letterNbt.putIntArray("Destination", coordinates);
+            // Save the message to NBT
+            letterNbt.putString("Message", message);
         }
     }
 

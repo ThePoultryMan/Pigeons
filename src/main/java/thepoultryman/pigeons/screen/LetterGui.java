@@ -39,10 +39,6 @@ public class LetterGui extends LightweightGuiDescription {
 
         WButton sealButton = new WButton(new TranslatableText("gui.pigeons.sealLetter"));
         sealButton.setEnabled(false);
-        sealButton.setOnClick(() -> {
-            Letter.sealLetter(letterItemStack, getDestinationArray(coordinateFields));
-            LetterScreen.closeScreen();
-        });
         root.add(sealButton, 3, 7, 4, 1);
 
         WTextField messageField = new WTextField(new TranslatableText("gui.pigeons.messageField"));
@@ -50,6 +46,11 @@ public class LetterGui extends LightweightGuiDescription {
         messageField.setChangedListener(s -> updateInfoAndButton(coordinateFields, infoText, sealButton, messageField.getText(), letterItemStack));
         root.add(messageField, 2, 1, 6, 1);
 
+
+        sealButton.setOnClick(() -> {
+            Letter.sealLetter(letterItemStack, getDestinationArray(coordinateFields), messageField.getText());
+            LetterScreen.closeScreen();
+        });
         coordinateFields[0].setChangedListener(s -> updateInfoAndButton(coordinateFields, infoText, sealButton, messageField.getText(), letterItemStack));
         coordinateFields[1].setChangedListener(s -> updateInfoAndButton(coordinateFields, infoText, sealButton, messageField.getText(), letterItemStack));
         coordinateFields[2].setChangedListener(s -> updateInfoAndButton(coordinateFields, infoText, sealButton, messageField.getText(), letterItemStack));
