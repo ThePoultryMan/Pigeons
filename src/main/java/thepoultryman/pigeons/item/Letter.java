@@ -49,8 +49,10 @@ public class Letter extends BundleItem {
                 MinecraftClient.getInstance().setScreen(new LetterScreen(new LetterGui(stackInHand)));
             }
             return TypedActionResult.success(stackInHand, world.isClient());
-        } else {
+        } else if (isDelivered(stackInHand)) {
             return super.use(world, user, hand);
+        } else {
+            return TypedActionResult.fail(stackInHand);
         }
     }
 
@@ -94,5 +96,10 @@ public class Letter extends BundleItem {
         } else {
             return new int[] {0, 0, 0};
         }
+    }
+
+    public static boolean isDelivered(ItemStack letterStack) {
+        NbtCompound letterNbt = letterStack.getOrCreateNbt();
+        return letterNbt.contains("Delivered") && letterNbt.getBoolean("Delivered");
     }
 }
