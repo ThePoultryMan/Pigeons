@@ -57,6 +57,11 @@ public class Letter extends BundleItem {
     }
 
     @Override
+    public boolean canBeNested() {
+        return false;
+    }
+
+    @Override
     public boolean hasGlint(ItemStack stack) {
         return isSealed(stack);
     }
