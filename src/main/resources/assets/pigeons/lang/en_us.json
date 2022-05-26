@@ -6,5 +6,6 @@
     "item.pigeons.beanie": "Beanie",
     "item.pigeons.dress_shoes": "Dress Shoes",
     "item.pigeons.tie": "Tie",
-    "item.pigeons.letter": "Letter"
+    "item.pigeons.letter": "Letter",
+    "gui.pigeons.sealLetter": "Seal Letter"
 }
