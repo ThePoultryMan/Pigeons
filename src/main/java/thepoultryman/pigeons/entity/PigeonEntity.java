@@ -41,6 +41,7 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
 import thepoultryman.pigeons.config.DropConfig;
+import thepoultryman.pigeons.item.Letter;
 import thepoultryman.pigeons.registry.ItemRegistry;
 
 import java.util.HashMap;
@@ -59,6 +60,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final List<Item> DROPS = List.of(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.RAW_IRON, Items.DIRT);
     private static final List<String> ACCESSORIES = List.of("none", "top_hat", "beanie", "dress_shoes", "tie", "moss_carpet");
     private static final HashMap<String, Item> ACCESSORY_NAME_ITEM_MAP = new HashMap<>();
+    private static final TrackedData<BlockPos> DELIVERY_POS = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
 
     // Config values for drops
     private static final int dropChanceDay = DropConfig.getDropChanceDay();
@@ -103,6 +105,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         this.dataTracker.startTracking(ACCESSORY, ACCESSORIES.get(0));
         this.dataTracker.startTracking(SITTING, false);
         this.dataTracker.startTracking(IDLE, 0);
+        this.dataTracker.startTracking(DELIVERY_POS, new BlockPos(0, 0, 0));
     }
 
     @Override
@@ -203,6 +206,9 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             }
             stackInHand.decrement(1);
             return ActionResult.CONSUME;
+        } else if (this.world.isClient() && this.isOwner(player) && stackInHand.getItem() instanceof Letter && Letter.isSealed(stackInHand)) {
+            int[] coordinates = Letter.getDestinationCoordinates(stackInHand);
+            this.setDeliveryPos(new BlockPos(coordinates[0], coordinates[1], coordinates[2]));
         } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty() && !player.isSneaking()) {
             this.setSitting(!this.isSitting());
             this.jumping = false;
@@ -329,6 +335,14 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     public Integer getIdle() {
         return dataTracker.get(IDLE);
+    }
+
+    public void setDeliveryPos(BlockPos pos) {
+        this.dataTracker.set(DELIVERY_POS, pos);
+    }
+
+    public BlockPos getDeliveryPos() {
+        return this.dataTracker.get(DELIVERY_POS);
     }
 
     @Override
