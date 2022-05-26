@@ -37,7 +37,10 @@ public class LetterGui extends LightweightGuiDescription {
 
         WButton sealButton = new WButton(new TranslatableText("gui.pigeons.sealLetter"));
         sealButton.setEnabled(false);
-        sealButton.setOnClick(() -> Letter.setSealed(true, letterItemStack));
+        sealButton.setOnClick(() -> {
+            Letter.setSealed(true, letterItemStack);
+            LetterScreen.closeScreen();
+        });
         root.add(sealButton, 3, 7, 4, 1);
 
         WTextField messageField = new WTextField(new TranslatableText("gui.pigeons.messageField"));
