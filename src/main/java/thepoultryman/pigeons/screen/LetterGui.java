@@ -36,6 +36,7 @@ public class LetterGui extends LightweightGuiDescription {
         root.add(coordinateFields[2], 7, 3, 2, 1);
 
         WButton sealButton = new WButton(new TranslatableText("gui.pigeons.sealLetter"));
+        sealButton.setEnabled(false);
         sealButton.setOnClick(() -> letterItem.setSealed(true));
         root.add(sealButton, 3, 7, 4, 1);
 
