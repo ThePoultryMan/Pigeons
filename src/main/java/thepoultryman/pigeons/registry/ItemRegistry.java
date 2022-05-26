@@ -20,7 +20,7 @@ public class ItemRegistry {
     public static final Item DRESS_SHOES = new Item(new Item.Settings().group(ItemGroup.TOOLS));
     public static final Item TIE = new Item(new Item.Settings().group(ItemGroup.TOOLS));
     // Other
-    public static final Letter LETTER = new Letter(new Item.Settings().group(ItemGroup.MISC));
+    public static final Letter LETTER = new Letter(new Item.Settings().group(ItemGroup.MISC).maxCount(1));
 
     public static void registerItems() {
         // Spawn Egg
