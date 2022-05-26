@@ -4,7 +4,6 @@ import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 
@@ -68,7 +67,7 @@ public class LetterGui extends LightweightGuiDescription {
                 sealButton.setEnabled(false);
                 break;
             } else {
-                infoText.setText(new LiteralText(""));
+                infoText.setText(new TranslatableText("gui.pigeons.info.ready"));
                 sealButton.setEnabled(true);
             }
         }

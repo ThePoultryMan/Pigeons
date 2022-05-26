@@ -15,6 +15,7 @@
     "gui.pigeons.info.missing.coordX": "Missing value in X coordinate field.",
     "gui.pigeons.info.missing.coordY": "Missing value in Y coordinate field.",
     "gui.pigeons.info.missing.coordZ": "Missing value in Z coordinate field.",
+    "gui.pigeons.info.ready": "Ready to seal.",
     "gui.pigeons.xCoord": "x",
     "gui.pigeons.yCoord": "y",
     "gui.pigeons.zCoord": "z",
