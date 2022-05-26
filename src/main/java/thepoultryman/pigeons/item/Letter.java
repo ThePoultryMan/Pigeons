@@ -57,6 +57,11 @@ public class Letter extends BundleItem {
     }
 
     @Override
+    public boolean hasGlint(ItemStack stack) {
+        return isSealed(stack);
+    }
+
+    @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
         if (isSealed(stack))
