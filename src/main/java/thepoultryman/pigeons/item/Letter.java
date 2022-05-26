@@ -17,8 +17,9 @@ public class Letter extends BundleItem {
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+        ItemStack stackInHand = user.getStackInHand(hand);
         if (world.isClient())
-            MinecraftClient.getInstance().setScreen(new LetterScreen(new LetterGui()));
-        return TypedActionResult.success(user.getStackInHand(hand), world.isClient());
+            MinecraftClient.getInstance().setScreen(new LetterScreen(new LetterGui(stackInHand)));
+        return TypedActionResult.success(stackInHand, world.isClient());
     }
 }
