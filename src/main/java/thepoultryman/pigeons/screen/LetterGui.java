@@ -16,7 +16,7 @@ public class LetterGui extends LightweightGuiDescription {
     private static final Text[] MISSING_COORD_TEXT = new Text[] {new TranslatableText("gui.pigeons.info.missing.coordX"),
             new TranslatableText("gui.pigeons.info.missing.coordY"), new TranslatableText("gui.pigeons.info.missing.coordZ")};
 
-    public LetterGui(ItemStack letterItemStack, Letter letterItem) {
+    public LetterGui(ItemStack letterItemStack) {
         WGridPanel root = new WGridPanel();
         setRootPanel(root);
         root.setSize(198, 162);
@@ -37,7 +37,7 @@ public class LetterGui extends LightweightGuiDescription {
 
         WButton sealButton = new WButton(new TranslatableText("gui.pigeons.sealLetter"));
         sealButton.setEnabled(false);
-        sealButton.setOnClick(() -> letterItem.setSealed(true));
+        sealButton.setOnClick(() -> Letter.setSealed(true, letterItemStack));
         root.add(sealButton, 3, 7, 4, 1);
 
         WTextField messageField = new WTextField(new TranslatableText("gui.pigeons.messageField"));
