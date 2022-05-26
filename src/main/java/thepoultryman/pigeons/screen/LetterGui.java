@@ -2,6 +2,7 @@ package thepoultryman.pigeons.screen;
 
 import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
+import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
@@ -14,7 +15,7 @@ public class LetterGui extends LightweightGuiDescription {
     public LetterGui() {
         WGridPanel root = new WGridPanel();
         setRootPanel(root);
-        root.setSize(198, 144);
+        root.setSize(198, 162);
         root.setInsets(Insets.ROOT_PANEL);
 
         WLabel title = new WLabel(new TranslatableText("item.pigeons.letter"));
@@ -25,7 +26,8 @@ public class LetterGui extends LightweightGuiDescription {
         root.add(messageField, 2, 1, 6, 1);
 
         WText infoText = new WText(ENTER_COORDS_TEXT);
-        root.add(infoText, 3, 4, 4, 1);
+        infoText.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        root.add(infoText, 1, 5, 8, 1);
 
         WTextField xCoord = new WTextField(new TranslatableText("gui.pigeons.xCoord"));
         xCoord.setChangedListener((s -> {
@@ -44,7 +46,7 @@ public class LetterGui extends LightweightGuiDescription {
         root.add(zCoord, 7, 3, 2, 1);
 
         WButton button = new WButton(new TranslatableText("gui.pigeons.sealLetter"));
-        root.add(button, 3, 6, 4, 1);
+        root.add(button, 3, 7, 4, 1);
 
         root.validate(this);
     }
