@@ -7,6 +7,7 @@ import io.github.cottonmc.cotton.gui.widget.data.Insets;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import thepoultryman.pigeons.item.Letter;
 
 public class LetterGui extends LightweightGuiDescription {
     private static final Text ENTER_COORDS_TEXT = new TranslatableText("gui.pigeons.info.enterCoords");
@@ -15,7 +16,7 @@ public class LetterGui extends LightweightGuiDescription {
     private static final Text[] MISSING_COORD_TEXT = new Text[] {new TranslatableText("gui.pigeons.info.missing.coordX"),
             new TranslatableText("gui.pigeons.info.missing.coordY"), new TranslatableText("gui.pigeons.info.missing.coordZ")};
 
-    public LetterGui(ItemStack letterItemStack) {
+    public LetterGui(ItemStack letterItemStack, Letter letterItem) {
         WGridPanel root = new WGridPanel();
         setRootPanel(root);
         root.setSize(198, 162);
@@ -35,6 +36,7 @@ public class LetterGui extends LightweightGuiDescription {
         root.add(coordinateFields[2], 7, 3, 2, 1);
 
         WButton sealButton = new WButton(new TranslatableText("gui.pigeons.sealLetter"));
+        sealButton.setOnClick(() -> letterItem.setSealed(true));
         root.add(sealButton, 3, 7, 4, 1);
 
         WTextField messageField = new WTextField(new TranslatableText("gui.pigeons.messageField"));

@@ -7,6 +7,7 @@
     "item.pigeons.dress_shoes": "Dress Shoes",
     "item.pigeons.tie": "Tie",
     "item.pigeons.letter": "Letter",
+    "pigeons.letter.sealed": "Sealed",
     "gui.pigeons.messageField": "Message...",
     "gui.pigeons.info.enterCoords": "Enter coordinates to seal the letter.",
     "gui.pigeons.info.invalid.coordX": "Invalid value in X coordinate field.",
