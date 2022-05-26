@@ -21,6 +21,8 @@ import thepoultryman.pigeons.screen.LetterScreen;
 import java.util.List;
 
 public class Letter extends BundleItem {
+    private boolean sealed = false;
+
     public Letter(Settings settings) {
         super(settings);
     }
@@ -63,14 +65,22 @@ public class Letter extends BundleItem {
 
     public static void setSealed(boolean sealed, ItemStack letterStack) {
         letterStack.getOrCreateNbt().putBoolean("Sealed", sealed);
+        if (letterStack.getItem() instanceof Letter letterItem) {
+            letterItem.sealed = true;
+        }
     }
 
     public static boolean isSealed(ItemStack letterStack) {
-        NbtCompound nbtCompound = letterStack.getOrCreateNbt();
-        if (nbtCompound.contains("Sealed")) {
-            return nbtCompound.getBoolean("Sealed");
-        } else {
-            return false;
+        if (letterStack.getItem() instanceof Letter letterItem) {
+            if (!letterItem.sealed) {
+                NbtCompound nbtCompound = letterStack.getOrCreateNbt();
+                if (nbtCompound.contains("Sealed")) {
+                    return nbtCompound.getBoolean("Sealed");
+                }
+            } else {
+                return true;
+            }
         }
+        return false;
     }
 }
