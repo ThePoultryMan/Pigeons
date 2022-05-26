@@ -73,10 +73,14 @@ public class Letter extends BundleItem {
             tooltip.add(new TranslatableText("pigeons.letter.sealed").formatted(Formatting.ITALIC, Formatting.GRAY));
     }
 
-    public static void setSealed(boolean sealed, ItemStack letterStack) {
-        letterStack.getOrCreateNbt().putBoolean("Sealed", sealed);
+    public static void sealLetter(ItemStack letterStack, int[] coordinates) {
         if (letterStack.getItem() instanceof Letter letterItem) {
+            NbtCompound letterNbt = letterStack.getOrCreateNbt();
+            // Seal the letter
+            letterNbt.putBoolean("Sealed", true);
             letterItem.sealed = true;
+            // Save the destination coordinates to NBT
+            letterNbt.putIntArray("Destination", coordinates);
         }
     }
 
@@ -92,5 +96,14 @@ public class Letter extends BundleItem {
             }
         }
         return false;
+    }
+
+    public static int[] getDestinationCoordinates(ItemStack letterStack) {
+        NbtCompound letterNbt = letterStack.getOrCreateNbt();
+        if (letterNbt.contains("Destination")) {
+            return letterNbt.getIntArray("Destination");
+        } else {
+            return new int[] {0, 0, 0};
+        }
     }
 }

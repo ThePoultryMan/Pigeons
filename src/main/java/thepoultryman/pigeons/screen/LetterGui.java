@@ -9,6 +9,8 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import thepoultryman.pigeons.item.Letter;
 
+import java.util.Objects;
+
 public class LetterGui extends LightweightGuiDescription {
     private static final Text ENTER_COORDS_TEXT = new TranslatableText("gui.pigeons.info.enterCoords");
     private static final Text[] INVALID_COORD_TEXT = new Text[] {new TranslatableText("gui.pigeons.info.invalid.coordX"),
@@ -38,7 +40,7 @@ public class LetterGui extends LightweightGuiDescription {
         WButton sealButton = new WButton(new TranslatableText("gui.pigeons.sealLetter"));
         sealButton.setEnabled(false);
         sealButton.setOnClick(() -> {
-            Letter.setSealed(true, letterItemStack);
+            Letter.sealLetter(letterItemStack, getDestinationArray(coordinateFields));
             LetterScreen.closeScreen();
         });
         root.add(sealButton, 3, 7, 4, 1);
@@ -85,5 +87,13 @@ public class LetterGui extends LightweightGuiDescription {
         } catch (NumberFormatException ignored) {
             return null;
         }
+    }
+
+    private static int[] getDestinationArray(WTextField[] textFields) {
+        int[] destinationArray = new int[3];
+        for (int i = 0; i < destinationArray.length; ++i) {
+            destinationArray[i] = Objects.requireNonNullElse(tryIntegerParse(textFields[i].getText()), 0);
+        }
+        return destinationArray;
     }
 }
