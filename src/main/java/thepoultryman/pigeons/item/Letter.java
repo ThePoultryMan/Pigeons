@@ -98,8 +98,11 @@ public class Letter extends BundleItem {
         }
     }
 
+    public static void setDelivered(ItemStack letterStack, boolean delivered) {
+        letterStack.getOrCreateNbt().putBoolean("Delivered", delivered);
+    }
+
     public static boolean isDelivered(ItemStack letterStack) {
-        NbtCompound letterNbt = letterStack.getOrCreateNbt();
-        return letterNbt.contains("Delivered") && letterNbt.getBoolean("Delivered");
+        return letterStack.getOrCreateNbt().getBoolean("Delivered");
     }
 }

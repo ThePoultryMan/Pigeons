@@ -176,6 +176,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
         if (!this.world.isClient() && !this.moveControl.isMoving() && Objects.equals(this.getDeliveryPos(), this.getBlockPos())) {
             this.setDeliveryPos(new BlockPos(0, 0, 0));
+            if (this.getEquippedStack(EquipmentSlot.MAINHAND).getItem() instanceof Letter) {
+                Letter.setDelivered(this.getEquippedStack(EquipmentSlot.MAINHAND), true);
+            }
+            ItemScatterer.spawn(this.getWorld(), this.getX(), this.getY(), this.getZ(), this.getEquippedStack(EquipmentSlot.MAINHAND));
         }
     }
 
