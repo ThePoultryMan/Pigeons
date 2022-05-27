@@ -27,7 +27,7 @@ public class Letter extends BundleItem {
 
     @Override
     public boolean onStackClicked(ItemStack stack, Slot slot, ClickType clickType, PlayerEntity player) {
-        if (!isSealed(stack))
+        if (!LetterHelper.isSealed(stack))
             return super.onStackClicked(stack, slot, clickType, player);
         else
             return false;
@@ -35,7 +35,7 @@ public class Letter extends BundleItem {
 
     @Override
     public boolean onClicked(ItemStack stack, ItemStack otherStack, Slot slot, ClickType clickType, PlayerEntity player, StackReference cursorStackReference) {
-        if (!isSealed(stack))
+        if (!LetterHelper.isSealed(stack))
             return super.onClicked(stack, otherStack, slot, clickType, player, cursorStackReference);
         else
             return false;
@@ -44,12 +44,12 @@ public class Letter extends BundleItem {
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         ItemStack stackInHand = user.getStackInHand(hand);
-        if (!isSealed(stackInHand)) {
+        if (!LetterHelper.isSealed(stackInHand)) {
             if (world.isClient()) {
                 MinecraftClient.getInstance().setScreen(new LetterScreen(new LetterGui(stackInHand)));
             }
             return TypedActionResult.success(stackInHand, world.isClient());
-        } else if (isDelivered(stackInHand)) {
+        } else if (LetterHelper.isDelivered(stackInHand)) {
             return super.use(world, user, hand);
         } else {
             return TypedActionResult.fail(stackInHand);
@@ -64,45 +64,47 @@ public class Letter extends BundleItem {
     @Override
     public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
-        if (isSealed(stack))
+        if (LetterHelper.isSealed(stack))
             tooltip.add(new TranslatableText("pigeons.letter.sealed").formatted(Formatting.ITALIC, Formatting.GRAY));
     }
 
-    public static void sealLetter(ItemStack letterStack, int[] coordinates, String message) {
-        if (letterStack.getItem() instanceof Letter letterItem) {
+    public static class LetterHelper {
+        public static void sealLetter(ItemStack letterStack, int[] coordinates, String message) {
+            if (letterStack.getItem() instanceof Letter letterItem) {
+                NbtCompound letterNbt = letterStack.getOrCreateNbt();
+                // Seal the letter
+                letterNbt.putBoolean("Sealed", true);
+                // Save the destination coordinates to NBT
+                letterNbt.putIntArray("Destination", coordinates);
+                // Save the message to NBT
+                letterNbt.putString("Message", message);
+            }
+        }
+
+        public static boolean isSealed(ItemStack letterStack) {
+            NbtCompound nbtCompound = letterStack.getOrCreateNbt();
+            if (nbtCompound.contains("Sealed")) {
+                return nbtCompound.getBoolean("Sealed");
+            } else {
+                return false;
+            }
+        }
+
+        public static int[] getDestinationCoordinates(ItemStack letterStack) {
             NbtCompound letterNbt = letterStack.getOrCreateNbt();
-            // Seal the letter
-            letterNbt.putBoolean("Sealed", true);
-            // Save the destination coordinates to NBT
-            letterNbt.putIntArray("Destination", coordinates);
-            // Save the message to NBT
-            letterNbt.putString("Message", message);
+            if (letterNbt.contains("Destination")) {
+                return letterNbt.getIntArray("Destination");
+            } else {
+                return new int[] {0, 0, 0};
+            }
         }
-    }
 
-    public static boolean isSealed(ItemStack letterStack) {
-        NbtCompound nbtCompound = letterStack.getOrCreateNbt();
-        if (nbtCompound.contains("Sealed")) {
-            return nbtCompound.getBoolean("Sealed");
-        } else {
-            return false;
+        public static void setDelivered(ItemStack letterStack, boolean delivered) {
+            letterStack.getOrCreateNbt().putBoolean("Delivered", delivered);
         }
-    }
 
-    public static int[] getDestinationCoordinates(ItemStack letterStack) {
-        NbtCompound letterNbt = letterStack.getOrCreateNbt();
-        if (letterNbt.contains("Destination")) {
-            return letterNbt.getIntArray("Destination");
-        } else {
-            return new int[] {0, 0, 0};
+        public static boolean isDelivered(ItemStack letterStack) {
+            return letterStack.getOrCreateNbt().getBoolean("Delivered");
         }
-    }
-
-    public static void setDelivered(ItemStack letterStack, boolean delivered) {
-        letterStack.getOrCreateNbt().putBoolean("Delivered", delivered);
-    }
-
-    public static boolean isDelivered(ItemStack letterStack) {
-        return letterStack.getOrCreateNbt().getBoolean("Delivered");
     }
 }

@@ -48,7 +48,7 @@ public class LetterGui extends LightweightGuiDescription {
 
 
         sealButton.setOnClick(() -> {
-            Letter.sealLetter(letterItemStack, getDestinationArray(coordinateFields), messageField.getText());
+            Letter.LetterHelper.sealLetter(letterItemStack, getDestinationArray(coordinateFields), messageField.getText());
             LetterScreen.closeScreen();
         });
         coordinateFields[0].setChangedListener(s -> updateInfoAndButton(coordinateFields, infoText, sealButton, messageField.getText(), letterItemStack));

@@ -177,7 +177,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         if (!this.world.isClient() && !this.moveControl.isMoving() && Objects.equals(this.getDeliveryPos(), this.getBlockPos())) {
             this.setDeliveryPos(new BlockPos(0, 0, 0));
             if (this.getEquippedStack(EquipmentSlot.MAINHAND).getItem() instanceof Letter) {
-                Letter.setDelivered(this.getEquippedStack(EquipmentSlot.MAINHAND), true);
+                Letter.LetterHelper.setDelivered(this.getEquippedStack(EquipmentSlot.MAINHAND), true);
             }
             ItemScatterer.spawn(this.getWorld(), this.getX(), this.getY(), this.getZ(), this.getEquippedStack(EquipmentSlot.MAINHAND));
         }
@@ -215,8 +215,8 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             }
             stackInHand.decrement(1);
             return ActionResult.CONSUME;
-        } else if (!this.world.isClient() && this.isOwner(player) && stackInHand.getItem() instanceof Letter && Letter.isSealed(stackInHand)) {
-            int[] coordinates = Letter.getDestinationCoordinates(stackInHand);
+        } else if (!this.world.isClient() && this.isOwner(player) && stackInHand.getItem() instanceof Letter && Letter.LetterHelper.isSealed(stackInHand)) {
+            int[] coordinates = Letter.LetterHelper.getDestinationCoordinates(stackInHand);
             this.setDeliveryPos(new BlockPos(coordinates[0], coordinates[1], coordinates[2]));
             this.equipStack(EquipmentSlot.MAINHAND, stackInHand);
         } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty() && !player.isSneaking()) {
