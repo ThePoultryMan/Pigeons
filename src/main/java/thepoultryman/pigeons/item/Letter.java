@@ -17,6 +17,8 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import thepoultryman.pigeons.screen.LetterGui;
 import thepoultryman.pigeons.screen.LetterScreen;
+import thepoultryman.pigeons.screen.MessageGui;
+import thepoultryman.pigeons.screen.MessageScreen;
 
 import java.util.List;
 
@@ -50,6 +52,9 @@ public class Letter extends BundleItem {
             }
             return TypedActionResult.success(stackInHand, world.isClient());
         } else if (LetterHelper.isDelivered(stackInHand)) {
+            if (world.isClient()) {
+                MinecraftClient.getInstance().setScreen(new MessageScreen(new MessageGui(LetterHelper.getMessage(stackInHand))));
+            }
             return super.use(world, user, hand);
         } else {
             return TypedActionResult.fail(stackInHand);
@@ -105,6 +110,10 @@ public class Letter extends BundleItem {
 
         public static boolean isDelivered(ItemStack letterStack) {
             return letterStack.getOrCreateNbt().getBoolean("Delivered");
+        }
+
+        public static String getMessage(ItemStack letterStack) {
+            return letterStack.getOrCreateNbt().getString("Message");
         }
     }
 }
