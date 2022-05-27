@@ -211,14 +211,9 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             }
             stackInHand.decrement(1);
             return ActionResult.CONSUME;
-        } else if (this.isOwner(player) && stackInHand.getItem() instanceof Letter && Letter.isSealed(stackInHand)) {
-            if (!this.world.isClient()) {
-                int[] coordinates = Letter.getDestinationCoordinates(stackInHand);
-                this.setDeliveryPos(new BlockPos(coordinates[0], coordinates[1], coordinates[2]));
-                this.setSitting(false);
-            } else {
-                this.setSitting(false);
-            }
+        } else if (!this.world.isClient() && this.isOwner(player) && stackInHand.getItem() instanceof Letter && Letter.isSealed(stackInHand)) {
+            int[] coordinates = Letter.getDestinationCoordinates(stackInHand);
+            this.setDeliveryPos(new BlockPos(coordinates[0], coordinates[1], coordinates[2]));
         } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty() && !player.isSneaking()) {
             this.setSitting(!this.isSitting());
             this.jumping = false;
