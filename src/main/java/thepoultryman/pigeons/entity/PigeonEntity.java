@@ -86,15 +86,16 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(0, new EscapeDangerGoal(this, 1.25D));
-        this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new SitGoal(this));
-        this.goalSelector.add(1, new FollowOwnerGoal(this, 1D, 30f, 7f, true));
-        this.goalSelector.add(1, new FlyRandomly(this, 1D));
-        this.goalSelector.add(2, new TemptGoal(this, 1.1D, Ingredient.ofItems(ItemRegistry.BREAD_CRUMBS), false));
-        this.goalSelector.add(2, new LookAroundGoal(this));
-        this.goalSelector.add(2, new LookAtEntityGoal(this, PlayerEntity.class, 8f));
-        this.goalSelector.add(3, new AnimalMateGoal(this, 1D));
+        this.goalSelector.add(0, new DeliverLetterGoal(this, 1D));
+        this.goalSelector.add(1, new EscapeDangerGoal(this, 1.25D));
+        this.goalSelector.add(1, new SwimGoal(this));
+        this.goalSelector.add(2, new SitGoal(this));
+        this.goalSelector.add(2, new FollowOwnerGoal(this, 1D, 30f, 7f, true));
+        this.goalSelector.add(2, new FlyRandomly(this, 1D));
+        this.goalSelector.add(3, new TemptGoal(this, 1.1D, Ingredient.ofItems(ItemRegistry.BREAD_CRUMBS), false));
+        this.goalSelector.add(3, new LookAroundGoal(this));
+        this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 8f));
+        this.goalSelector.add(4, new AnimalMateGoal(this, 1D));
     }
 
     @Override
@@ -172,6 +173,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
             ItemScatterer.spawn(world, this.getX(), this.getY(), this.getZ(), spawnItem);
         }
+
+        if (!this.world.isClient() && !this.moveControl.isMoving() && Objects.equals(this.getDeliveryPos(), this.getBlockPos())) {
+            this.setDeliveryPos(new BlockPos(0, 0, 0));
+        }
     }
 
     @Override
@@ -206,9 +211,14 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             }
             stackInHand.decrement(1);
             return ActionResult.CONSUME;
-        } else if (this.world.isClient() && this.isOwner(player) && stackInHand.getItem() instanceof Letter && Letter.isSealed(stackInHand)) {
-            int[] coordinates = Letter.getDestinationCoordinates(stackInHand);
-            this.setDeliveryPos(new BlockPos(coordinates[0], coordinates[1], coordinates[2]));
+        } else if (this.isOwner(player) && stackInHand.getItem() instanceof Letter && Letter.isSealed(stackInHand)) {
+            if (!this.world.isClient()) {
+                int[] coordinates = Letter.getDestinationCoordinates(stackInHand);
+                this.setDeliveryPos(new BlockPos(coordinates[0], coordinates[1], coordinates[2]));
+                this.setSitting(false);
+            } else {
+                this.setSitting(false);
+            }
         } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty() && !player.isSneaking()) {
             this.setSitting(!this.isSitting());
             this.jumping = false;
@@ -366,7 +376,12 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         @Override
         public boolean canStart() {
             if (this.mob instanceof TameableEntity tameableEntity) {
-                return !tameableEntity.isSitting() && super.canStart();
+                boolean firstCheck = !tameableEntity.isSitting() && super.canStart();
+                if (tameableEntity instanceof PigeonEntity pigeonEntity) {
+                    return Objects.equals(pigeonEntity.getDeliveryPos(), new BlockPos(0, 0, 0)) && firstCheck;
+                } else {
+                    return firstCheck;
+                }
             } else {
                 return false;
             }
@@ -395,6 +410,37 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         }
     }
 
+    private static class DeliverLetterGoal extends WanderAroundFarGoal {
+        public DeliverLetterGoal(PathAwareEntity pathAwareEntity, double d) {
+            super(pathAwareEntity, d);
+        }
+
+        @Override
+        public boolean canStart() {
+            if (this.mob instanceof PigeonEntity pigeonEntity) {
+                if (!Objects.equals(pigeonEntity.getDeliveryPos(), new BlockPos(0, 0, 0)) && super.canStart()) {
+                    pigeonEntity.setSitting(false);
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }
+
+        @Nullable
+        @Override
+        protected Vec3d getWanderTarget() {
+            if (this.mob instanceof PigeonEntity pigeonEntity) {
+                BlockPos deliveryPos = pigeonEntity.getDeliveryPos();
+                return new Vec3d(deliveryPos.getX(), deliveryPos.getY(), deliveryPos.getZ());
+            } else {
+                return super.getWanderTarget();
+            }
+        }
+    }
+
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
@@ -402,6 +448,9 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         nbt.putString("PigeonType", this.getPigeonTypeString());
         nbt.putBoolean("Sitting", this.isSitting());
         nbt.putString("PigeonAccessory", this.getAccessory());
+
+        BlockPos deliveryPos = this.getDeliveryPos();
+        nbt.putIntArray("DeliveryPosition", new int[] {deliveryPos.getX(), deliveryPos.getY(), deliveryPos.getZ()});
     }
 
     @Override
@@ -414,5 +463,9 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             this.setSitting(nbt.getBoolean("Sitting"));
         if (nbt.contains("PigeonAccessory"))
 			this.setAccessoryFromString(nbt.getString("PigeonAccessory"));
+        if (nbt.contains("DeliveryPosition")) {
+            int[] deliveryPos = nbt.getIntArray("DeliveryPosition");
+            this.setDeliveryPos(new BlockPos(deliveryPos[0], deliveryPos[1], deliveryPos[2]));
+        }
     }
 }
