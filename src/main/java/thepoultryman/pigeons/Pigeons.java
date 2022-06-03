@@ -3,14 +3,12 @@ package thepoultryman.pigeons;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder;
 import net.minecraft.entity.EntityDimensions;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.entity.SpawnRestriction;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tag.TagKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
@@ -19,7 +17,6 @@ import net.minecraft.world.biome.Biome;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import thepoultryman.pigeons.entity.PigeonEntity;
-import thepoultryman.pigeons.item.Letter;
 import thepoultryman.pigeons.registry.ItemRegistry;
 
 public class Pigeons implements ModInitializer {
@@ -45,13 +42,6 @@ public class Pigeons implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.SAVANNA), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 80, 1, 7);
         BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.FOREST), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 75, 3, 5);
         BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.JUNGLE), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 40, 2, 5);
-
-        ServerPlayNetworking.registerGlobalReceiver(new Identifier(MOD_ID, "seal_letter"), ((server, player, handler, buf, responseSender) -> {
-            ItemStack letterStack = buf.readItemStack();
-            int[] coordinates = buf.readIntArray();
-            String message = buf.readString();
-            server.execute(() -> Letter.LetterHelper.sealLetter(letterStack, coordinates, message));
-        }));
 
         ItemRegistry.registerItems();
     }

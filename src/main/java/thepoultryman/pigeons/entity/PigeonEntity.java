@@ -41,7 +41,6 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
 import thepoultryman.pigeons.config.DropConfig;
-import thepoultryman.pigeons.item.Letter;
 import thepoultryman.pigeons.registry.ItemRegistry;
 
 import java.util.HashMap;
@@ -60,7 +59,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final List<Item> DROPS = List.of(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.RAW_IRON, Items.DIRT);
     private static final List<String> ACCESSORIES = List.of("none", "top_hat", "beanie", "dress_shoes", "tie", "moss_carpet");
     private static final HashMap<String, Item> ACCESSORY_NAME_ITEM_MAP = new HashMap<>();
-    private static final TrackedData<BlockPos> DELIVERY_POS = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.BLOCK_POS);
 
     // Config values for drops
     private static final int dropChanceDay = DropConfig.getDropChanceDay();
@@ -86,16 +84,15 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     @Override
     protected void initGoals() {
-        this.goalSelector.add(0, new DeliverLetterGoal(this, 1D));
-        this.goalSelector.add(1, new EscapeDangerGoal(this, 1.25D));
-        this.goalSelector.add(1, new SwimGoal(this));
-        this.goalSelector.add(2, new SitGoal(this));
-        this.goalSelector.add(2, new PigeonFollowOwnerGoal(this, 1D, 30f, 7f, true));
-        this.goalSelector.add(2, new FlyRandomly(this, 1D));
-        this.goalSelector.add(3, new TemptGoal(this, 1.1D, Ingredient.ofItems(ItemRegistry.BREAD_CRUMBS), false));
-        this.goalSelector.add(3, new LookAroundGoal(this));
-        this.goalSelector.add(3, new LookAtEntityGoal(this, PlayerEntity.class, 8f));
-        this.goalSelector.add(4, new AnimalMateGoal(this, 1D));
+        this.goalSelector.add(0, new EscapeDangerGoal(this, 1.25D));
+        this.goalSelector.add(0, new SwimGoal(this));
+        this.goalSelector.add(1, new SitGoal(this));
+        this.goalSelector.add(1, new FollowOwnerGoal(this, 1D, 30f, 7f, true));
+        this.goalSelector.add(1, new FlyRandomly(this, 1D));
+        this.goalSelector.add(2, new TemptGoal(this, 1.1D, Ingredient.ofItems(ItemRegistry.BREAD_CRUMBS), false));
+        this.goalSelector.add(2, new LookAroundGoal(this));
+        this.goalSelector.add(2, new LookAtEntityGoal(this, PlayerEntity.class, 8f));
+        this.goalSelector.add(3, new AnimalMateGoal(this, 1D));
     }
 
     @Override
@@ -106,7 +103,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         this.dataTracker.startTracking(ACCESSORY, ACCESSORIES.get(0));
         this.dataTracker.startTracking(SITTING, false);
         this.dataTracker.startTracking(IDLE, 0);
-        this.dataTracker.startTracking(DELIVERY_POS, new BlockPos(0, 0, 0));
     }
 
     @Override
@@ -173,14 +169,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
             ItemScatterer.spawn(world, this.getX(), this.getY(), this.getZ(), spawnItem);
         }
-
-        if (!this.world.isClient() && !this.moveControl.isMoving() && Objects.equals(this.getDeliveryPos(), this.getBlockPos())) {
-            this.setDeliveryPos(new BlockPos(0, 0, 0));
-            if (this.getEquippedStack(EquipmentSlot.MAINHAND).getItem() instanceof Letter) {
-                Letter.LetterHelper.setDelivered(this.getEquippedStack(EquipmentSlot.MAINHAND), true);
-            }
-            ItemScatterer.spawn(this.getWorld(), this.getX(), this.getY(), this.getZ(), this.getEquippedStack(EquipmentSlot.MAINHAND));
-        }
     }
 
     @Override
@@ -215,15 +203,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             }
             stackInHand.decrement(1);
             return ActionResult.CONSUME;
-        } else if (!this.world.isClient() && this.isOwner(player) && stackInHand.getItem() instanceof Letter && Letter.LetterHelper.isSealed(stackInHand)) {
-            int[] coordinates = Letter.LetterHelper.getDestinationCoordinates(stackInHand);
-            this.setDeliveryPos(new BlockPos(coordinates[0], coordinates[1], coordinates[2]));
-            this.equipStack(EquipmentSlot.MAINHAND, stackInHand.copy());
-            stackInHand.decrement(1);
-        } else if (!this.world.isClient() && player.isSneaking() && stackInHand.isEmpty() && this.hasLetter()) {
-            this.setDeliveryPos(new BlockPos(0, 0, 0));
-            this.dropStack(this.getEquippedStack(EquipmentSlot.MAINHAND));
-            this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty() && !player.isSneaking()) {
             this.setSitting(!this.isSitting());
             this.jumping = false;
@@ -237,7 +216,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
                     stackInHand.decrement(1);
                 }
                 return ActionResult.success(this.world.isClient);
-            } else if (player.isSneaking() && stackInHand.isEmpty() && !this.getAccessory().equals("none") && !this.hasLetter()) {
+            } else if (player.isSneaking() && stackInHand.isEmpty() && !this.getAccessory().equals("none")) {
                 player.giveItemStack(new ItemStack(ACCESSORY_NAME_ITEM_MAP.get(this.getAccessory())));
                 this.setAccessoryFromString("none");
                 return ActionResult.success(this.world.isClient());
@@ -352,18 +331,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         return dataTracker.get(IDLE);
     }
 
-    public void setDeliveryPos(BlockPos pos) {
-        this.dataTracker.set(DELIVERY_POS, pos);
-    }
-
-    public BlockPos getDeliveryPos() {
-        return this.dataTracker.get(DELIVERY_POS);
-    }
-
-    private boolean hasLetter() {
-        return !this.getEquippedStack(EquipmentSlot.MAINHAND).isEmpty();
-    }
-
     @Override
     public void tickMovement() {
         super.tickMovement();
@@ -385,12 +352,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         @Override
         public boolean canStart() {
             if (this.mob instanceof TameableEntity tameableEntity) {
-                boolean firstCheck = !tameableEntity.isSitting() && super.canStart();
-                if (tameableEntity instanceof PigeonEntity pigeonEntity) {
-                    return Objects.equals(pigeonEntity.getDeliveryPos(), new BlockPos(0, 0, 0)) && firstCheck;
-                } else {
-                    return firstCheck;
-                }
+                return !tameableEntity.isSitting() && super.canStart();
             } else {
                 return false;
             }
@@ -419,55 +381,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         }
     }
 
-    private static class DeliverLetterGoal extends WanderAroundFarGoal {
-        public DeliverLetterGoal(PathAwareEntity pathAwareEntity, double d) {
-            super(pathAwareEntity, d);
-        }
-
-        @Override
-        public boolean canStart() {
-            if (this.mob instanceof PigeonEntity pigeonEntity) {
-                if (!Objects.equals(pigeonEntity.getDeliveryPos(), new BlockPos(0, 0, 0)) && super.canStart()) {
-                    pigeonEntity.setSitting(false);
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-
-        @Nullable
-        @Override
-        protected Vec3d getWanderTarget() {
-            if (this.mob instanceof PigeonEntity pigeonEntity) {
-                BlockPos deliveryPos = pigeonEntity.getDeliveryPos();
-                return new Vec3d(deliveryPos.getX(), deliveryPos.getY(), deliveryPos.getZ());
-            } else {
-                return super.getWanderTarget();
-            }
-        }
-    }
-
-    private static class PigeonFollowOwnerGoal extends FollowOwnerGoal {
-        private final TameableEntity tameable;
-
-        public PigeonFollowOwnerGoal(TameableEntity tameableEntity, double d, float f, float g, boolean bl) {
-            super(tameableEntity, d, f, g, bl);
-            this.tameable = tameableEntity;
-        }
-
-        @Override
-        public boolean canStart() {
-            boolean hasDelivery = false;
-            if (this.tameable instanceof PigeonEntity pigeonEntity) {
-                hasDelivery = pigeonEntity.hasLetter();
-            }
-            return super.canStart() && !hasDelivery;
-        }
-    }
-
     @Override
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
@@ -475,9 +388,6 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         nbt.putString("PigeonType", this.getPigeonTypeString());
         nbt.putBoolean("Sitting", this.isSitting());
         nbt.putString("PigeonAccessory", this.getAccessory());
-
-        BlockPos deliveryPos = this.getDeliveryPos();
-        nbt.putIntArray("DeliveryPosition", new int[] {deliveryPos.getX(), deliveryPos.getY(), deliveryPos.getZ()});
     }
 
     @Override
@@ -490,9 +400,5 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             this.setSitting(nbt.getBoolean("Sitting"));
         if (nbt.contains("PigeonAccessory"))
 			this.setAccessoryFromString(nbt.getString("PigeonAccessory"));
-        if (nbt.contains("DeliveryPosition")) {
-            int[] deliveryPos = nbt.getIntArray("DeliveryPosition");
-            this.setDeliveryPos(new BlockPos(deliveryPos[0], deliveryPos[1], deliveryPos[2]));
-        }
     }
 }

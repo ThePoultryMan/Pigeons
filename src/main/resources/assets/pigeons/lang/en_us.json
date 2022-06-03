@@ -5,21 +5,5 @@
     "item.pigeons.top_hat": "Top Hat",
     "item.pigeons.beanie": "Beanie",
     "item.pigeons.dress_shoes": "Dress Shoes",
-    "item.pigeons.tie": "Tie",
-    "item.pigeons.letter": "Letter",
-    "pigeons.letter.sealed": "Sealed",
-    "gui.pigeons.messageField": "Message...",
-    "gui.pigeons.info.enterCoords": "Enter coordinates to seal the letter.",
-    "gui.pigeons.info.invalid.coordX": "Invalid value in X coordinate field.",
-    "gui.pigeons.info.invalid.coordY": "Invalid value in Y coordinate field.",
-    "gui.pigeons.info.invalid.coordZ": "Invalid value in Z coordinate field.",
-    "gui.pigeons.info.missing.coordX": "Missing value in X coordinate field.",
-    "gui.pigeons.info.missing.coordY": "Missing value in Y coordinate field.",
-    "gui.pigeons.info.missing.coordZ": "Missing value in Z coordinate field.",
-    "gui.pigeons.info.ready": "Ready to seal.",
-    "gui.pigeons.info.needsMessageOrItem": "This letter needs a message and/or an item before you can seal it.",
-    "gui.pigeons.xCoord": "x",
-    "gui.pigeons.yCoord": "y",
-    "gui.pigeons.zCoord": "z",
-    "gui.pigeons.sealLetter": "Seal Letter"
+    "item.pigeons.tie": "Tie"
 }
