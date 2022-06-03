@@ -218,7 +218,12 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         } else if (!this.world.isClient() && this.isOwner(player) && stackInHand.getItem() instanceof Letter && Letter.LetterHelper.isSealed(stackInHand)) {
             int[] coordinates = Letter.LetterHelper.getDestinationCoordinates(stackInHand);
             this.setDeliveryPos(new BlockPos(coordinates[0], coordinates[1], coordinates[2]));
-            this.equipStack(EquipmentSlot.MAINHAND, stackInHand);
+            this.equipStack(EquipmentSlot.MAINHAND, stackInHand.copy());
+            stackInHand.decrement(1);
+        } else if (!this.world.isClient() && player.isSneaking() && stackInHand.isEmpty() && this.hasLetter()) {
+            this.setDeliveryPos(new BlockPos(0, 0, 0));
+            this.dropStack(this.getEquippedStack(EquipmentSlot.MAINHAND));
+            this.equipStack(EquipmentSlot.MAINHAND, ItemStack.EMPTY);
         } else if (this.isOwner(player) && !this.isBreedingItem(stackInHand) && stackInHand.isEmpty() && !player.isSneaking()) {
             this.setSitting(!this.isSitting());
             this.jumping = false;
@@ -232,7 +237,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
                     stackInHand.decrement(1);
                 }
                 return ActionResult.success(this.world.isClient);
-            } else if (player.isSneaking() && stackInHand.isEmpty() && !this.getAccessory().equals("none")) {
+            } else if (player.isSneaking() && stackInHand.isEmpty() && !this.getAccessory().equals("none") && !this.hasLetter()) {
                 player.giveItemStack(new ItemStack(ACCESSORY_NAME_ITEM_MAP.get(this.getAccessory())));
                 this.setAccessoryFromString("none");
                 return ActionResult.success(this.world.isClient());
@@ -353,6 +358,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
 
     public BlockPos getDeliveryPos() {
         return this.dataTracker.get(DELIVERY_POS);
+    }
+
+    private boolean hasLetter() {
+        return !this.getEquippedStack(EquipmentSlot.MAINHAND).isEmpty();
     }
 
     @Override
