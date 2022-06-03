@@ -90,7 +90,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         this.goalSelector.add(1, new EscapeDangerGoal(this, 1.25D));
         this.goalSelector.add(1, new SwimGoal(this));
         this.goalSelector.add(2, new SitGoal(this));
-        this.goalSelector.add(2, new FollowOwnerGoal(this, 1D, 30f, 7f, true));
+        this.goalSelector.add(2, new PigeonFollowOwnerGoal(this, 1D, 30f, 7f, true));
         this.goalSelector.add(2, new FlyRandomly(this, 1D));
         this.goalSelector.add(3, new TemptGoal(this, 1.1D, Ingredient.ofItems(ItemRegistry.BREAD_CRUMBS), false));
         this.goalSelector.add(3, new LookAroundGoal(this));
@@ -447,6 +447,24 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             } else {
                 return super.getWanderTarget();
             }
+        }
+    }
+
+    private static class PigeonFollowOwnerGoal extends FollowOwnerGoal {
+        private final TameableEntity tameable;
+
+        public PigeonFollowOwnerGoal(TameableEntity tameableEntity, double d, float f, float g, boolean bl) {
+            super(tameableEntity, d, f, g, bl);
+            this.tameable = tameableEntity;
+        }
+
+        @Override
+        public boolean canStart() {
+            boolean hasDelivery = false;
+            if (this.tameable instanceof PigeonEntity pigeonEntity) {
+                hasDelivery = pigeonEntity.hasLetter();
+            }
+            return super.canStart() && !hasDelivery;
         }
     }
 
