@@ -4,9 +4,14 @@ import io.github.cottonmc.cotton.gui.client.LightweightGuiDescription;
 import io.github.cottonmc.cotton.gui.widget.*;
 import io.github.cottonmc.cotton.gui.widget.data.HorizontalAlignment;
 import io.github.cottonmc.cotton.gui.widget.data.Insets;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
+import net.minecraft.util.Identifier;
+import thepoultryman.pigeons.Pigeons;
 import thepoultryman.pigeons.item.Letter;
 
 import java.util.Objects;
@@ -48,6 +53,13 @@ public class LetterGui extends LightweightGuiDescription {
 
 
         sealButton.setOnClick(() -> {
+            // Send packet to server to seal the letter there as well.
+            PacketByteBuf buf = PacketByteBufs.create();
+            buf.writeItemStack(letterItemStack);
+            buf.writeIntArray(getDestinationArray(coordinateFields));
+            buf.writeString(messageField.getText());
+            ClientPlayNetworking.send(new Identifier(Pigeons.MOD_ID, "seal_letter"), buf);
+
             Letter.LetterHelper.sealLetter(letterItemStack, getDestinationArray(coordinateFields), messageField.getText());
             LetterScreen.closeScreen();
         });
