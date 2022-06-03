@@ -1,20 +1,16 @@
 package thepoultryman.pigeons.config;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import thepoultryman.pigeons.Pigeons;
 
 import java.util.HashMap;
 
-public class DropConfigFormat {
+public class DropConfigFormatOld {
     private final HashMap<String, DropData> specialDrops = new HashMap<>();
     private final int dropChanceDay;
     private final int dropChanceNight;
     private final int specialDropChance;
 
-    public DropConfigFormat(DropData city, DropData antwerpSmerleBrown, DropData antwerpSmerleGray, DropData egyptianSwift, int dropChanceDay, int dropChanceNight, int specialDropChance) {
+    public DropConfigFormatOld(DropData city, DropData antwerpSmerleBrown, DropData antwerpSmerleGray, DropData egyptianSwift, int dropChanceDay, int dropChanceNight, int specialDropChance) {
         specialDrops.put("city", city);
         specialDrops.put("antwerp_smerle_brown", antwerpSmerleBrown);
         specialDrops.put("antwerp_smerle_gray", antwerpSmerleGray);
@@ -54,19 +50,6 @@ public class DropConfigFormat {
 
     public int getSpecialDropChance() {
         return this.specialDropChance;
-    }
-
-    public ItemStack getSpecialDrop(String type) {
-        DropData dropData = switch (type) {
-            case "city" -> this.getCity();
-            case "antwerp_smerle_brown" -> this.getAntwerpSmerle("brown");
-            case "antwerp_smerle_gray" -> this.getAntwerpSmerle("gray");
-            case "egyptian_swift" -> this.getEgyptianSwift();
-            default -> new DropData("minecraft:coal", 1);
-        };
-
-        Item item = Registry.ITEM.get(new Identifier(dropData.getItem()));
-        return new ItemStack(item, dropData.getCount());
     }
 
     public static class DropData {

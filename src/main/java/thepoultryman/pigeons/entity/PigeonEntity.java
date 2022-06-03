@@ -40,7 +40,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
-import thepoultryman.pigeons.config.DropConfig;
 import thepoultryman.pigeons.registry.ItemRegistry;
 
 import java.util.HashMap;
@@ -61,18 +60,18 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final HashMap<String, Item> ACCESSORY_NAME_ITEM_MAP = new HashMap<>();
 
     // Config values for drops
-    private static final int dropChanceDay = DropConfig.getDropChanceDay();
-    private static final int dropChanceNight = DropConfig.getDropChanceNight();
-    private static final int specialDropChance = DropConfig.getSpecialDropChance();
+    private static final int dropChanceDay = Pigeons.config.getDropChanceDay();
+    private static final int dropChanceNight = Pigeons.config.getDropChanceNight();
+    private static final int specialDropChance = Pigeons.config.getSpecialDropChance();
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.moveControl = new FlightMoveControl(this, 10, false);
         // Type-Specific Drops
-        TYPE_DROP_MAP.put(TYPES.get(0), DropConfig.getSpecialDrop(TYPES.get(0)));
-        TYPE_DROP_MAP.put(TYPES.get(1), DropConfig.getSpecialDrop(TYPES.get(1)));
-        TYPE_DROP_MAP.put(TYPES.get(2), DropConfig.getSpecialDrop(TYPES.get(2)));
-        TYPE_DROP_MAP.put(TYPES.get(3), DropConfig.getSpecialDrop(TYPES.get(3)));
+        TYPE_DROP_MAP.put(TYPES.get(0), Pigeons.config.getSpecialDrop(TYPES.get(0)));
+        TYPE_DROP_MAP.put(TYPES.get(1), Pigeons.config.getSpecialDrop(TYPES.get(1)));
+        TYPE_DROP_MAP.put(TYPES.get(2), Pigeons.config.getSpecialDrop(TYPES.get(2)));
+        TYPE_DROP_MAP.put(TYPES.get(3), Pigeons.config.getSpecialDrop(TYPES.get(3)));
         // Accessories map defined by string keys
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(0), Items.AIR);
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(1), ItemRegistry.TOP_HAT);
