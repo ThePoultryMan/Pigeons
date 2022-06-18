@@ -48,9 +48,9 @@ public class Pigeons implements ModInitializer {
         LOGGER.info("Initializing a pigeon army");
 
         // Pigeon Spawner
-        BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_H), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 75, 1, 9);
-        BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_M), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 55, 1, 6);
-        BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_L), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 10, 1, 2);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_H), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 65, 1, 9);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_M), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 45, 1, 6);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_L), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 15, 1, 2);
 
         // Items
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pigeon_spawn_egg"), PIGEON_SPAWN_EGG);
