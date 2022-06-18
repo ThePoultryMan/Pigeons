@@ -28,6 +28,7 @@ import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.random.RandomGenerator;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -46,7 +47,6 @@ import thepoultryman.pigeons.registry.ItemRegistry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.Random;
 
 public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
     private final AnimationFactory factory = new AnimationFactory(this);
@@ -340,7 +340,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         }
     }
 
-    public static boolean canSpawn(EntityType<PigeonEntity> pigeonEntityEntityType, ServerWorldAccess serverWorldAccess, SpawnReason spawnReason, BlockPos blockPos, Random random) {
+    public static boolean canSpawn(EntityType<PigeonEntity> pigeonEntityEntityType, ServerWorldAccess serverWorldAccess, SpawnReason spawnReason, BlockPos blockPos, RandomGenerator randomGenerator) {
         return true;
     }
 

@@ -16,6 +16,6 @@ public class PigeonEntityRenderer extends GeoEntityRenderer<PigeonEntity> {
     }
 
     public Identifier getTexture(PigeonEntity entity) {
-        return this.getTextureLocation(entity);
+        return this.getTextureResource(entity);
     }
 }

@@ -37,6 +37,9 @@ public class Pigeons implements ModInitializer {
     public static final Item BREAD_CRUMBS = new Item(new Item.Settings().group(ItemGroup.FOOD).food(new FoodComponent.Builder().hunger(1).build()));
 
     // Tags
+    public static final TagKey<Biome> PIGEON_SPAWN_BIOMES_H = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "pigeon_spawn_biomes_high"));
+    public static final TagKey<Biome> PIGEON_SPAWN_BIOMES_M = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "pigeon_spawn_biomes_medium"));
+    public static final TagKey<Biome> PIGEON_SPAWN_BIOMES_L = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "pigeon_spawn_biomes_low"));
     public static final TagKey<Item> PIGEON_LIKE_FOODS = TagKey.of(Registry.ITEM_KEY, new Identifier(MOD_ID, "pigeon_like_foods"));
     public static final TagKey<Item> PIGEON_LOVE_FOODS = TagKey.of(Registry.ITEM_KEY, new Identifier(MOD_ID, "pigeon_love_foods"));
 
@@ -45,10 +48,9 @@ public class Pigeons implements ModInitializer {
         LOGGER.info("Initializing a pigeon army");
 
         // Pigeon Spawner
-        BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.PLAINS), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 85, 2, 9);
-        BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.SAVANNA), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 80, 1, 7);
-        BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.FOREST), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 75, 3, 5);
-        BiomeModifications.addSpawn(BiomeSelectors.categories(Biome.Category.JUNGLE), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 40, 2, 5);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_H), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 65, 3, 9);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_M), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 45, 2, 6);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_L), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 15, 1, 2);
 
         // Items
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pigeon_spawn_egg"), PIGEON_SPAWN_EGG);
