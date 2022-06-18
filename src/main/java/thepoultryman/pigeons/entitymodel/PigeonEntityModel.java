@@ -11,17 +11,17 @@ import thepoultryman.pigeons.entity.PigeonEntity;
 public class PigeonEntityModel extends AnimatedGeoModel<PigeonEntity> {
 
     @Override
-    public Identifier getModelLocation(PigeonEntity object) {
+    public Identifier getModelResource(PigeonEntity object) {
         return new Identifier(Pigeons.MOD_ID, "geo/pigeon.geo.json");
     }
 
     @Override
-    public Identifier getTextureLocation(PigeonEntity pigeonEntity) {
+    public Identifier getTextureResource(PigeonEntity pigeonEntity) {
         return new Identifier(Pigeons.MOD_ID, "textures/entity/pigeon/pigeon_" + pigeonEntity.getPigeonTypeString() + ".png");
     }
 
     @Override
-    public Identifier getAnimationFileLocation(PigeonEntity animatable) {
+    public Identifier getAnimationResource(PigeonEntity animatable) {
         return new Identifier(Pigeons.MOD_ID, "animations/pigeon.animation.json");
     }
 
