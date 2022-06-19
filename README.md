@@ -1,4 +1,5 @@
 # Pleasant Pigeons
+_Please note that the information below only reflects the 1.19 versions (1.4.0 and above)._
 
 <img src="https://user-images.githubusercontent.com/66281330/155865075-7360c978-2826-4474-84aa-0d1a73ac8971.png" alt="Pigeon wearing a top hat" width=205 align="right">
 
@@ -29,6 +30,8 @@ You can craft different accessories to put on your pigeons. Equip your pigeons w
 ## Configuration
 
 As of version 1.3.0, you can configure the special drops of the different pigeon types, and the chance of drops happening. See [this page](https://github.com/ThePoultryMan/Pigeons/wiki/Configuration) of the wiki for more instruction.
+
+As of version 1.4.0, you can configure where they spawn using tags. Please refer to the [tag page](https://github.com/ThePoultryMan/Pigeons/wiki/Tags) in the wiki for more information.
 
 ## Other
 
