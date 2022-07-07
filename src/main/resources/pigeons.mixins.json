@@ -6,6 +6,9 @@
     "mixins": [
         "SpidersFleeFromPigeons"
     ],
+    "client": [
+        "config.TitleScreenJsonWarning"
+    ],
     "injectors": {
         "defaultRequire": 1
     }

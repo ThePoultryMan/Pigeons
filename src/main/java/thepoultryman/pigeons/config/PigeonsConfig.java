@@ -14,6 +14,8 @@ import java.io.File;
 public class PigeonsConfig {
     private final FileConfig config;
 
+    private boolean jsonFileExists = false;
+
     private ItemStack cityDrop;
     private ItemStack antwerpBrownDrop;
     private ItemStack antwerpGrayDrop;
@@ -66,6 +68,7 @@ public class PigeonsConfig {
     private boolean useJsonConfig() {
         if (new File(FabricLoader.getInstance().getConfigDir() + "/pleasant-pigeons.json").exists()) {
             Pigeons.LOGGER.info("Pleasant Pigeons has moved to a TOML config system. All of your changes in the JSON config file are being moved over to the new TOML file.");
+            this.jsonFileExists = true;
             this.cityDrop = DropConfig.getSpecialDrop("city");
             this.antwerpBrownDrop = DropConfig.getSpecialDrop("antwerp_smerle_brown");
             this.antwerpGrayDrop = DropConfig.getSpecialDrop("antwerp_smerle_gray");
@@ -81,6 +84,10 @@ public class PigeonsConfig {
         } else {
             return false;
         }
+    }
+
+    public boolean doesJsonConfigExist() {
+        return this.jsonFileExists;
     }
 
     private ItemStack getItemStack(String itemIdentifier, int count) {
