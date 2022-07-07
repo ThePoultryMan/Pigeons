@@ -8,6 +8,8 @@ import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+import java.io.File;
+
 public class PigeonsConfig {
     private final FileConfig config;
 
@@ -26,6 +28,10 @@ public class PigeonsConfig {
     public void loadConfig() {
         this.config.load();
 
+        if (this.useJsonConfig()) {
+            return;
+        }
+
         this.cityDrop = this.getItemStack(this.config.getOrElse("special_drops.city.item", "minecraft:diamond"),
                 this.config.getOrElse("special_drops.city.count", 1));
         this.antwerpBrownDrop = this.getItemStack(this.config.getOrElse("special_drops.antwerp_brown.item", "minecraft:raw_iron"),
@@ -38,6 +44,37 @@ public class PigeonsConfig {
         this.dropChanceDay = this.config.getOrElse("drop_chances.day", 17000);
         this.dropChanceNight = this.config.getOrElse("drop_chances.night", 5700);
         this.specialDropChance = this.config.getOrElse("drop_chances.special", 100);
+    }
+
+    public void completelySaveConfig() {
+        this.config.set("drop_chances.day", this.dropChanceDay);
+        this.config.set("drop_chances.night", this.dropChanceNight);
+        this.config.set("drop_chances.special", this.specialDropChance);
+        this.config.set("special_drops.city.item", Registry.ITEM.getId(this.cityDrop.getItem()).toString());
+        this.config.set("special_drops.city.count", this.cityDrop.getCount());
+        this.config.set("special_drops.antwerp_brown.item", Registry.ITEM.getId(this.antwerpBrownDrop.getItem()).toString());
+        this.config.set("special_drops.antwerp_brown.count", this.antwerpBrownDrop.getCount());
+        this.config.set("special_drops.antwerp_gray.item", Registry.ITEM.getId(this.antwerpGrayDrop.getItem()).toString());
+        this.config.set("special_drops.antwerp_gray.count", this.antwerpGrayDrop.getCount());
+        this.config.set("special_drops.egyptian.item", Registry.ITEM.getId(this.egyptianDrop.getItem()).toString());
+        this.config.set("special_drops.egyptian.count", this.egyptianDrop.getCount());
+    }
+
+    private boolean useJsonConfig() {
+        if (new File(FabricLoader.getInstance().getConfigDir() + "/pleasant-pigeons.json").exists()) {
+            this.cityDrop = DropConfig.getSpecialDrop("city");
+            this.antwerpBrownDrop = DropConfig.getSpecialDrop("antwerp_smerle_brown");
+            this.antwerpGrayDrop = DropConfig.getSpecialDrop("antwerp_smerle_gray");
+            this.egyptianDrop = DropConfig.getSpecialDrop("egyptian_swift");
+            this.dropChanceDay = DropConfig.getDropChanceDay();
+            this.dropChanceNight = DropConfig.getDropChanceNight();
+            this.specialDropChance = DropConfig.getSpecialDropChance();
+            this.completelySaveConfig();
+
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private ItemStack getItemStack(String itemIdentifier, int count) {
