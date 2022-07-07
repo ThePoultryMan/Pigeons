@@ -19,12 +19,15 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.Biome;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import thepoultryman.pigeons.config.PigeonsConfig;
 import thepoultryman.pigeons.entity.PigeonEntity;
 import thepoultryman.pigeons.registry.ItemRegistry;
 
 public class Pigeons implements ModInitializer {
     public static final String MOD_ID = "pigeons";
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
+
+    public static final PigeonsConfig CONFIG = new PigeonsConfig();
 
     public static final EntityType<PigeonEntity> PIGEON_ENTITY_TYPE = Registry.register(Registry.ENTITY_TYPE, new Identifier(MOD_ID, "pigeon"),
             FabricEntityTypeBuilder.<PigeonEntity>createMob().spawnGroup(SpawnGroup.CREATURE).entityFactory(PigeonEntity::new)
@@ -46,6 +49,8 @@ public class Pigeons implements ModInitializer {
     @Override
     public void onInitialize() {
         LOGGER.info("Initializing a pigeon army");
+
+        CONFIG.loadConfig();
 
         // Pigeon Spawner
         BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_H), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 65, 3, 9);

@@ -2,8 +2,6 @@ package thepoultryman.pigeons.config;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
-import net.fabricmc.api.ModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,45 +10,13 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 import thepoultryman.pigeons.Pigeons;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 
-public class DropConfig implements ModInitializer {
+public class DropConfig {
     private static final String CONFIG_LOCATION = FabricLoader.getInstance().getConfigDir() + "/pleasant-pigeons.json";
-
     static Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-    // Default Config Values
-    public static DropConfigFormat.DropData cityDrop = new DropConfigFormat.DropData("minecraft:diamond", 1);
-    public static DropConfigFormat.DropData antwerpSmerleBrownDrop = new DropConfigFormat.DropData("minecraft:raw_iron", 3);
-    public static DropConfigFormat.DropData antwerpSmerleBrownGray = new DropConfigFormat.DropData("minecraft:raw_copper", 7);
-    public static DropConfigFormat.DropData egyptianSwift = new DropConfigFormat.DropData("minecraft:cooked_beef", 5);
-    public JsonElement configJson = gson.toJsonTree(new DropConfigFormat(cityDrop, antwerpSmerleBrownDrop, antwerpSmerleBrownGray, egyptianSwift,
-            17000, 5700, 100));
-
-    @Override
-    public void onInitialize() {
-        if (!new File(CONFIG_LOCATION).exists()) {
-            // Start the writing process
-            FileWriter writer;
-            try {
-                writer = new FileWriter(CONFIG_LOCATION);
-
-                gson.toJson(configJson, writer);
-
-                // Finish the writing process
-                try {
-                    writer.flush();
-                    writer.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    // Config Reading
 
     public static ItemStack getSpecialDrop(String pigeonType) {
         try {

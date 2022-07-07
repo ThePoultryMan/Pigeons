@@ -5,5 +5,7 @@
     "item.pigeons.top_hat": "Top Hat",
     "item.pigeons.beanie": "Beanie",
     "item.pigeons.dress_shoes": "Dress Shoes",
-    "item.pigeons.tie": "Tie"
+    "item.pigeons.tie": "Tie",
+    "config.pigeons.json_file_warning1": "Your configurations for Pleasant Pigeons have been moved to the new TOML",
+    "config.pigeons.json_file_warning2": "configuration file. To avoid any problems, you should delete the old JSON file."
 }

@@ -1,0 +1,24 @@
+# A lower number will lead to a higher chance of dropping.
+[drop_chances]
+    # If set to 1 or below, the value will be overriden and set to 2.
+    special = 100
+    night = 5700
+    day = 17000
+
+[special_drops]
+
+    [special_drops.city]
+        item = "minecraft:diamond"
+        count = 1
+
+    [special_drops.egyptian]
+        item = "minecraft:cooked_beef"
+        count = 5
+
+    [special_drops.antwerp_gray]
+        item = "minecraft:raw_copper"
+        count = 7
+
+    [special_drops.antwerp_brown]
+        item = "minecraft:raw_iron"
+        count = 3
