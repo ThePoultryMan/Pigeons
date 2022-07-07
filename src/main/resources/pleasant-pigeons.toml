@@ -1,4 +1,4 @@
 [special_drops]
     [special_drops.city]
-        item = "minecraft:cooked_beef"
-        count = 5
+        item = "minecraft:diamond"
+        count = 1
