@@ -69,10 +69,9 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         super(entityType, world);
         this.moveControl = new FlightMoveControl(this, 10, false);
         // Type-Specific Drops
-        TYPE_DROP_MAP.put(TYPES.get(0), DropConfig.getSpecialDrop(TYPES.get(0)));
-        TYPE_DROP_MAP.put(TYPES.get(1), DropConfig.getSpecialDrop(TYPES.get(1)));
-        TYPE_DROP_MAP.put(TYPES.get(2), DropConfig.getSpecialDrop(TYPES.get(2)));
-        TYPE_DROP_MAP.put(TYPES.get(3), DropConfig.getSpecialDrop(TYPES.get(3)));
+        for (String type : TYPES) {
+            TYPE_DROP_MAP.put(type, Pigeons.CONFIG.getSpecialDrop(type));
+        }
         // Accessories map defined by string keys
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(0), Items.AIR);
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(1), ItemRegistry.TOP_HAT);
