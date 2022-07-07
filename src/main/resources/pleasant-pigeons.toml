@@ -2,3 +2,12 @@
     [special_drops.city]
         item = "minecraft:diamond"
         count = 1
+    [special_drops.antwerp_brown]
+        item = "minecraft:raw_iron"
+        count = 3
+    [special_drops.antwerp_gray]
+        item = "minecraft:raw_copper"
+        count = 7
+    [special_drops.egyptian]
+        item = "minecraft:cooked_beef"
+        count = 5
