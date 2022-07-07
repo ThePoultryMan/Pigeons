@@ -14,6 +14,9 @@ public class PigeonsConfig {
     private ItemStack antwerpBrownDrop;
     private ItemStack antwerpGrayDrop;
     private ItemStack egyptianDrop;
+    private int dropChanceDay;
+    private int dropChanceNight;
+    private int specialDropChance;
 
     public PigeonsConfig() {
         this.config = FileConfig.builder(FabricLoader.getInstance().getConfigDir() + "/pleasant-pigeons.toml").defaultResource("/pleasant-pigeons.toml").autosave().build();
@@ -30,6 +33,10 @@ public class PigeonsConfig {
                 this.config.getOrElse("special_drops.antwerp_gray.count", 7));
         this.egyptianDrop = this.getSpecialDrop(this.config.getOrElse("special_drops.egyptian.item", "minecraft:cooked_beef"),
                 this.config.getOrElse("special_drops.egyptian.count", 5));
+
+        this.dropChanceDay = this.config.getOrElse("drop_chances.day", 17000);
+        this.dropChanceNight = this.config.getOrElse("drop_chances.night", 5700);
+        this.specialDropChance = this.config.getOrElse("drop_chances.special", 100);
     }
 
     private ItemStack getSpecialDrop(String itemIdentifier, int count) {

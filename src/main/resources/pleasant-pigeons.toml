@@ -11,3 +11,8 @@
     [special_drops.egyptian]
         item = "minecraft:cooked_beef"
         count = 5
+
+[drop_chances]
+    day = 17000
+    night = 5700
+    special = 100
