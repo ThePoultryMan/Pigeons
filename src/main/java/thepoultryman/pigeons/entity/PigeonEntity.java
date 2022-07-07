@@ -60,9 +60,9 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final HashMap<String, Item> ACCESSORY_NAME_ITEM_MAP = new HashMap<>();
 
     // Config values for drops
-    private static final int dropChanceDay = Pigeons.CONFIG.getDropChanceDay();
-    private static final int dropChanceNight = Pigeons.CONFIG.getDropChanceNight();
-    private static final int specialDropChance = Pigeons.CONFIG.getSpecialDropChance();
+    private static int dropChanceDay;
+    private static int dropChanceNight;
+    private static int specialDropChance;
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
@@ -78,6 +78,10 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(3), ItemRegistry.DRESS_SHOES);
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(4), ItemRegistry.TIE);
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(5), Items.MOSS_CARPET);
+
+        dropChanceDay = Pigeons.CONFIG.getDropChanceDay();
+        dropChanceNight = Pigeons.CONFIG.getDropChanceNight();
+        specialDropChance = Pigeons.CONFIG.getSpecialDropChance();
     }
 
     @Override
