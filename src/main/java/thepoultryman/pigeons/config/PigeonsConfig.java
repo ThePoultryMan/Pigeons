@@ -49,7 +49,28 @@ public class PigeonsConfig {
         this.specialDropChance = this.config.getOrElse("drop_chances.special", 100);
     }
 
-    public void completelySaveConfig() {
+    private boolean useJsonConfig() {
+        if (new File(FabricLoader.getInstance().getConfigDir() + "/pleasant-pigeons.json").exists()) {
+            Pigeons.LOGGER.info("Pleasant Pigeons has moved to a TOML config system. All of your changes in the JSON config file are being moved over to the new TOML file.");
+            this.jsonFileExists = true;
+            this.cityDrop = DropConfig.getSpecialDrop("city");
+            this.antwerpBrownDrop = DropConfig.getSpecialDrop("antwerp_smerle_brown");
+            this.antwerpGrayDrop = DropConfig.getSpecialDrop("antwerp_smerle_gray");
+            this.egyptianDrop = DropConfig.getSpecialDrop("egyptian_swift");
+            this.dropChanceDay = DropConfig.getDropChanceDay();
+            this.dropChanceNight = DropConfig.getDropChanceNight();
+            this.specialDropChance = DropConfig.getSpecialDropChance();
+            this.saveConfigAfterJson();
+
+            Pigeons.LOGGER.info("The config-file conversion has been completed, and you should now delete the old JSON file.");
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public void saveConfigAfterJson() {
         this.config.set("drop_chances.day", this.dropChanceDay);
         this.config.set("drop_chances.night", this.dropChanceNight);
         this.config.set("drop_chances.special", this.specialDropChance);
@@ -63,27 +84,6 @@ public class PigeonsConfig {
         this.config.set("special_drops.egyptian.count", this.egyptianDrop.getCount());
 
         Pigeons.LOGGER.debug("The Pleasant Pigeons config file has been completely saved.");
-    }
-
-    private boolean useJsonConfig() {
-        if (new File(FabricLoader.getInstance().getConfigDir() + "/pleasant-pigeons.json").exists()) {
-            Pigeons.LOGGER.info("Pleasant Pigeons has moved to a TOML config system. All of your changes in the JSON config file are being moved over to the new TOML file.");
-            this.jsonFileExists = true;
-            this.cityDrop = DropConfig.getSpecialDrop("city");
-            this.antwerpBrownDrop = DropConfig.getSpecialDrop("antwerp_smerle_brown");
-            this.antwerpGrayDrop = DropConfig.getSpecialDrop("antwerp_smerle_gray");
-            this.egyptianDrop = DropConfig.getSpecialDrop("egyptian_swift");
-            this.dropChanceDay = DropConfig.getDropChanceDay();
-            this.dropChanceNight = DropConfig.getDropChanceNight();
-            this.specialDropChance = DropConfig.getSpecialDropChance();
-            this.completelySaveConfig();
-
-            Pigeons.LOGGER.info("The config-file conversion has been completed, and you should now delete the old JSON file.");
-
-            return true;
-        } else {
-            return false;
-        }
     }
 
     public boolean doesJsonConfigExist() {
