@@ -53,13 +53,13 @@ public class PigeonsConfig {
         this.config.set("drop_chances.day", this.dropChanceDay);
         this.config.set("drop_chances.night", this.dropChanceNight);
         this.config.set("drop_chances.special", this.specialDropChance);
-        this.config.set("special_drops.city.item", Registry.ITEM.getId(this.cityDrop.getItem()).toString());
+        this.config.set("special_drops.city.item", this.getItemIdentifier(this.cityDrop.getItem()));
         this.config.set("special_drops.city.count", this.cityDrop.getCount());
-        this.config.set("special_drops.antwerp_brown.item", Registry.ITEM.getId(this.antwerpBrownDrop.getItem()).toString());
+        this.config.set("special_drops.antwerp_brown.item", this.getItemIdentifier(this.antwerpBrownDrop.getItem()));
         this.config.set("special_drops.antwerp_brown.count", this.antwerpBrownDrop.getCount());
-        this.config.set("special_drops.antwerp_gray.item", Registry.ITEM.getId(this.antwerpGrayDrop.getItem()).toString());
+        this.config.set("special_drops.antwerp_gray.item", this.getItemIdentifier(this.antwerpGrayDrop.getItem()));
         this.config.set("special_drops.antwerp_gray.count", this.antwerpGrayDrop.getCount());
-        this.config.set("special_drops.egyptian.item", Registry.ITEM.getId(this.egyptianDrop.getItem()).toString());
+        this.config.set("special_drops.egyptian.item", this.getItemIdentifier(this.egyptianDrop.getItem()));
         this.config.set("special_drops.egyptian.count", this.egyptianDrop.getCount());
 
         Pigeons.LOGGER.debug("The Pleasant Pigeons config file has been completely saved.");
@@ -115,5 +115,9 @@ public class PigeonsConfig {
 
     public int getSpecialDropChance() {
         return this.specialDropChance;
+    }
+
+    private String getItemIdentifier(Item item) {
+        return Registry.ITEM.getId(item).toString();
     }
 }
