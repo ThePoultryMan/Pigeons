@@ -23,7 +23,7 @@ public class PigeonsConfig {
     }
 
     private ItemStack getSpecialDrop(String itemIdentifier, int count) {
-        Item item = Registry.ITEM.get(new Identifier("minecraft:cooked_beef"));
+        Item item = Registry.ITEM.get(new Identifier(itemIdentifier));
         return new ItemStack(item, count);
     }
 }
