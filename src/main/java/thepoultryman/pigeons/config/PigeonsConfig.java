@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
+import thepoultryman.pigeons.Pigeons;
 
 import java.io.File;
 
@@ -58,10 +59,13 @@ public class PigeonsConfig {
         this.config.set("special_drops.antwerp_gray.count", this.antwerpGrayDrop.getCount());
         this.config.set("special_drops.egyptian.item", Registry.ITEM.getId(this.egyptianDrop.getItem()).toString());
         this.config.set("special_drops.egyptian.count", this.egyptianDrop.getCount());
+
+        Pigeons.LOGGER.debug("The Pleasant Pigeons config file has been completely saved.");
     }
 
     private boolean useJsonConfig() {
         if (new File(FabricLoader.getInstance().getConfigDir() + "/pleasant-pigeons.json").exists()) {
+            Pigeons.LOGGER.info("Pleasant Pigeons has moved to a TOML config system. All of your changes in the JSON config file are being moved over to the new TOML file.");
             this.cityDrop = DropConfig.getSpecialDrop("city");
             this.antwerpBrownDrop = DropConfig.getSpecialDrop("antwerp_smerle_brown");
             this.antwerpGrayDrop = DropConfig.getSpecialDrop("antwerp_smerle_gray");
@@ -70,6 +74,8 @@ public class PigeonsConfig {
             this.dropChanceNight = DropConfig.getDropChanceNight();
             this.specialDropChance = DropConfig.getSpecialDropChance();
             this.completelySaveConfig();
+
+            Pigeons.LOGGER.info("The config-file conversion has been completed, and you should now delete the old JSON file.");
 
             return true;
         } else {
