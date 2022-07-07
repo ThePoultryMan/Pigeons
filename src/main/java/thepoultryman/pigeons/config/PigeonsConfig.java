@@ -54,4 +54,16 @@ public class PigeonsConfig {
             default -> new ItemStack(Items.BREAD);
         };
     }
+
+    public int getDropChanceDay() {
+        return this.dropChanceDay;
+    }
+
+    public int getDropChanceNight() {
+        return this.dropChanceNight;
+    }
+
+    public int getSpecialDropChance() {
+        return this.specialDropChance;
+    }
 }

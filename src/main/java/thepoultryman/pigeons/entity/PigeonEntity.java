@@ -41,7 +41,6 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
-import thepoultryman.pigeons.config.DropConfig;
 import thepoultryman.pigeons.registry.ItemRegistry;
 
 import java.util.HashMap;
@@ -61,9 +60,9 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final HashMap<String, Item> ACCESSORY_NAME_ITEM_MAP = new HashMap<>();
 
     // Config values for drops
-    private static final int dropChanceDay = DropConfig.getDropChanceDay();
-    private static final int dropChanceNight = DropConfig.getDropChanceNight();
-    private static final int specialDropChance = DropConfig.getSpecialDropChance();
+    private static final int dropChanceDay = Pigeons.CONFIG.getDropChanceDay();
+    private static final int dropChanceNight = Pigeons.CONFIG.getDropChanceNight();
+    private static final int specialDropChance = Pigeons.CONFIG.getSpecialDropChance();
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
