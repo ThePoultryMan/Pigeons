@@ -43,6 +43,7 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
 import thepoultryman.pigeons.registry.ItemRegistry;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -55,7 +56,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final TrackedData<Integer> IDLE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final List<String> TYPES = List.of("city", "antwerp_smerle_brown", "antwerp_smerle_gray", "egyptian_swift");
     private static final HashMap<String, ItemStack> TYPE_DROP_MAP = new HashMap<>();
-    private static final List<Item> DROPS = List.of(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.RAW_IRON, Items.DIRT);
+    private static List<Item> DROPS = new ArrayList<>();
     private static final List<String> ACCESSORIES = List.of("none", "top_hat", "beanie", "dress_shoes", "tie", "moss_carpet");
     private static final HashMap<String, Item> ACCESSORY_NAME_ITEM_MAP = new HashMap<>();
 
@@ -78,6 +79,8 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(3), ItemRegistry.DRESS_SHOES);
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(4), ItemRegistry.TIE);
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(5), Items.MOSS_CARPET);
+
+        DROPS = Pigeons.CONFIG.getCommonDrops();
 
         dropChanceDay = Pigeons.CONFIG.getDropChanceDay();
         dropChanceNight = Pigeons.CONFIG.getDropChanceNight();
@@ -166,7 +169,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             if (TYPE_DROP_MAP.containsKey(this.getPigeonTypeString()) && this.random.nextInt(Math.max(specialDropChance, 2)) == 0) {
                 spawnItem = TYPE_DROP_MAP.get(this.getPigeonTypeString());
             } else {
-                spawnItem = new ItemStack(DROPS.get(this.random.nextInt(6)));
+                spawnItem = new ItemStack(DROPS.get(this.random.nextInt(DROPS.size())));
             }
 
             ItemScatterer.spawn(world, this.getX(), this.getY(), this.getZ(), spawnItem);

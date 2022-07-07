@@ -10,6 +10,8 @@ import net.minecraft.util.registry.Registry;
 import thepoultryman.pigeons.Pigeons;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PigeonsConfig {
     private final FileConfig config;
@@ -23,6 +25,10 @@ public class PigeonsConfig {
     private int dropChanceDay;
     private int dropChanceNight;
     private int specialDropChance;
+    private List<Item> commonDrops = new ArrayList<>();
+
+    // Config Defaults
+    private final List<Item> defaultCommonDrops = List.of(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.RAW_IRON, Items.DIRT);
 
     public PigeonsConfig() {
         this.config = FileConfig.builder(FabricLoader.getInstance().getConfigDir() + "/pleasant-pigeons.toml").defaultResource("/pleasant-pigeons.toml").autosave().build();
@@ -31,22 +37,34 @@ public class PigeonsConfig {
     public void loadConfig() {
         this.config.load();
 
-        if (this.useJsonConfig()) {
-            return;
+        if (!this.useJsonConfig()) {
+            this.cityDrop = this.getItemStack(this.config.getOrElse("special_drops.city.item", "minecraft:diamond"),
+                    this.config.getOrElse("special_drops.city.count", 1));
+            this.antwerpBrownDrop = this.getItemStack(this.config.getOrElse("special_drops.antwerp_brown.item", "minecraft:raw_iron"),
+                    this.config.getOrElse("special_drops.antwerp_brown.count", 3));
+            this.antwerpGrayDrop = this.getItemStack(this.config.getOrElse("special_drops.antwerp_gray.item", "minecraft:raw_copper"),
+                    this.config.getOrElse("special_drops.antwerp_gray.count", 7));
+            this.egyptianDrop = this.getItemStack(this.config.getOrElse("special_drops.egyptian.item", "minecraft:cooked_beef"),
+                    this.config.getOrElse("special_drops.egyptian.count", 5));
+
+            this.dropChanceDay = this.config.getOrElse("drop_chances.day", 17000);
+            this.dropChanceNight = this.config.getOrElse("drop_chances.night", 5700);
+            this.specialDropChance = this.config.getOrElse("drop_chances.special", 100);
         }
 
-        this.cityDrop = this.getItemStack(this.config.getOrElse("special_drops.city.item", "minecraft:diamond"),
-                this.config.getOrElse("special_drops.city.count", 1));
-        this.antwerpBrownDrop = this.getItemStack(this.config.getOrElse("special_drops.antwerp_brown.item", "minecraft:raw_iron"),
-                this.config.getOrElse("special_drops.antwerp_brown.count", 3));
-        this.antwerpGrayDrop = this.getItemStack(this.config.getOrElse("special_drops.antwerp_gray.item", "minecraft:raw_copper"),
-                this.config.getOrElse("special_drops.antwerp_gray.count", 7));
-        this.egyptianDrop = this.getItemStack(this.config.getOrElse("special_drops.egyptian.item", "minecraft:cooked_beef"),
-                this.config.getOrElse("special_drops.egyptian.count", 5));
-
-        this.dropChanceDay = this.config.getOrElse("drop_chances.day", 17000);
-        this.dropChanceNight = this.config.getOrElse("drop_chances.night", 5700);
-        this.specialDropChance = this.config.getOrElse("drop_chances.special", 100);
+        // Add "common_drops" section to config file.
+        if (!this.config.contains("common_drops.drops")) {
+            this.commonDrops = this.defaultCommonDrops;
+            List<String> items = new ArrayList<>();
+            for (Item drop : this.defaultCommonDrops) {
+                items.add(this.getItemIdentifier(drop));
+            }
+            this.config.set("common_drops.drops", items);
+        } else {
+            for (String itemIdentifier : (List<String>) this.config.get("common_drops.drops")) {
+                this.commonDrops.add(Registry.ITEM.get(new Identifier(itemIdentifier)));
+            }
+        }
     }
 
     private boolean useJsonConfig() {
@@ -115,6 +133,10 @@ public class PigeonsConfig {
 
     public int getSpecialDropChance() {
         return this.specialDropChance;
+    }
+
+    public List<Item> getCommonDrops() {
+        return this.commonDrops;
     }
 
     private String getItemIdentifier(Item item) {

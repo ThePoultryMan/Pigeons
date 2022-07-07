@@ -22,3 +22,13 @@
     [special_drops.antwerp_brown]
         item = "minecraft:raw_iron"
         count = 3
+
+[common_drops]
+    drops = [
+        "minecraft:wheat_seeds",
+        "minecraft:beetroot_seeds",
+        "minecraaft:melon_seeds",
+        "minecraft:pumpkin_seeds",
+        "minecraft:raw_iron",
+        "minecraft:dirt"
+    ]

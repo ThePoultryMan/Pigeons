@@ -50,8 +50,6 @@ public class Pigeons implements ModInitializer {
     public void onInitialize() {
         LOGGER.info("Initializing a pigeon army");
 
-        CONFIG.loadConfig();
-
         // Pigeon Spawner
         BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_H), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 65, 3, 9);
         BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_M), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE, 45, 2, 6);
@@ -62,5 +60,7 @@ public class Pigeons implements ModInitializer {
         Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bread_crumbs"), BREAD_CRUMBS);
 
         ItemRegistry.registerItems();
+
+        CONFIG.loadConfig();
     }
 }
