@@ -26,9 +26,12 @@ public class PigeonsConfig {
     private int dropChanceNight;
     private int specialDropChance;
     private List<Item> commonDrops = new ArrayList<>();
+    private final SpawnConfig[] spawnConfigs = new SpawnConfig[3];
 
     // Config Defaults
     private final List<Item> defaultCommonDrops = List.of(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.RAW_IRON, Items.DIRT);
+    private final SpawnConfig[] defaultSpawnConfigs = new SpawnConfig[] {new SpawnConfig(65, 3, 9), new SpawnConfig(45, 2, 6),
+            new SpawnConfig(15, 1, 2)};
 
     public PigeonsConfig() {
         this.config = FileConfig.builder(FabricLoader.getInstance().getConfigDir() + "/pleasant-pigeons.toml").defaultResource("/pleasant-pigeons.toml").autosave().build();
@@ -63,6 +66,20 @@ public class PigeonsConfig {
         } else {
             for (String itemIdentifier : (List<String>) this.config.get("common_drops.drops")) {
                 this.commonDrops.add(Registry.ITEM.get(new Identifier(itemIdentifier)));
+            }
+        }
+
+        String[] spawnLevels = new String[] {"spawning.high", "spawning.medium", "spawning.low"};
+        if (!this.config.contains("spawning.high") || !this.config.contains("spawning.medium") || !this.config.contains("spawning.low")) {
+            for (int i = 0; i < 3; ++i) {
+                this.config.set(spawnLevels[i] + ".weight", this.defaultSpawnConfigs[i].getWeight());
+                this.config.set(spawnLevels[i] + ".min_group", this.defaultSpawnConfigs[i].getMinGroup());
+                this.config.set(spawnLevels[i] + ".max_group", this.defaultSpawnConfigs[i].getMaxGroup());
+            }
+        } else {
+            for (int i = 0; i < 3; ++i) {
+                this.spawnConfigs[i] = new SpawnConfig(this.config.get(spawnLevels[i] + ".weight"), this.config.get(spawnLevels[i] + ".min_group"),
+                        this.config.get(spawnLevels[i] + ".max_group"));
             }
         }
     }
@@ -139,7 +156,35 @@ public class PigeonsConfig {
         return this.commonDrops;
     }
 
+    public SpawnConfig getSpawnConfig(int index) {
+        return this.spawnConfigs[index];
+    }
+
     private String getItemIdentifier(Item item) {
         return Registry.ITEM.getId(item).toString();
+    }
+
+    public static class SpawnConfig {
+        private final int weight;
+        private final int minGroup;
+        private final int maxGroup;
+
+        public SpawnConfig(int weight, int minGroup, int maxGroup) {
+            this.weight = weight;
+            this.minGroup = minGroup;
+            this.maxGroup = maxGroup;
+        }
+
+        public int getWeight() {
+            return this.weight;
+        }
+
+        public int getMinGroup() {
+            return this.minGroup;
+        }
+
+        public int getMaxGroup() {
+            return this.maxGroup;
+        }
     }
 }
