@@ -40,23 +40,6 @@
         item = "minecraft:raw_iron"
         count = 3
 
-[spawning]
-
-    [spawning.high]
-        weight = 65
-        min_group = 3
-        max_group = 9
-
-    [spawning.medium]
-        weight = 45
-        min_group = 2
-        max_group = 6
-
-    [spawning.low]
-        weight = 15
-        min_group = 1
-        max_group = 2
-
 [common_drops]
     drops = [
         "minecraft:wheat_seeds",
