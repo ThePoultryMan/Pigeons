@@ -61,7 +61,6 @@ public class Pigeons implements ModInitializer {
         // Pigeon Spawner
 
         PigeonsConfig.SpawnConfig highSpawnConfig = CONFIG.getSpawnConfig(0);
-        LOGGER.info(highSpawnConfig.getWeight() + " yay");
         BiomeModifications.addSpawn(BiomeSelectors.tag(PIGEON_SPAWN_BIOMES_H), SpawnGroup.CREATURE, PIGEON_ENTITY_TYPE,
                 highSpawnConfig.getWeight(), highSpawnConfig.getMinGroup(), highSpawnConfig.getMaxGroup());
         PigeonsConfig.SpawnConfig mediumSpawnConfig = CONFIG.getSpawnConfig(1);
