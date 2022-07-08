@@ -5,18 +5,20 @@
     night = 5700
     day = 17000
 
+# Weight: (Basically) How often the pigeons will spawn. Max Group: The upper limit for how many pigeons
+# will spawn in a group. Min Group: The lower limit for how many pigeons will spawn in a group.
 [spawning]
-
+    # No biomes are in here, by default.
     [spawning.high]
         weight = 65
         max_group = 9
         min_group = 3
-
+    # Jungle and Savanna are include,d by default.
     [spawning.low]
         weight = 15
         max_group = 2
         min_group = 1
-
+    # Plains and Forest (oak) are included, by default.
     [spawning.medium]
         weight = 45
         max_group = 6
