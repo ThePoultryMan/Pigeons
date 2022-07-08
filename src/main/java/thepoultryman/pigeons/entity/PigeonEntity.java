@@ -41,9 +41,9 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 import thepoultryman.pigeons.Pigeons;
-import thepoultryman.pigeons.config.DropConfig;
 import thepoultryman.pigeons.registry.ItemRegistry;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -56,23 +56,22 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
     private static final TrackedData<Integer> IDLE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.INTEGER);
     private static final List<String> TYPES = List.of("city", "antwerp_smerle_brown", "antwerp_smerle_gray", "egyptian_swift");
     private static final HashMap<String, ItemStack> TYPE_DROP_MAP = new HashMap<>();
-    private static final List<Item> DROPS = List.of(Items.WHEAT_SEEDS, Items.BEETROOT_SEEDS, Items.MELON_SEEDS, Items.PUMPKIN_SEEDS, Items.RAW_IRON, Items.DIRT);
+    private static List<Item> DROPS = new ArrayList<>();
     private static final List<String> ACCESSORIES = List.of("none", "top_hat", "beanie", "dress_shoes", "tie", "moss_carpet");
     private static final HashMap<String, Item> ACCESSORY_NAME_ITEM_MAP = new HashMap<>();
 
     // Config values for drops
-    private static final int dropChanceDay = DropConfig.getDropChanceDay();
-    private static final int dropChanceNight = DropConfig.getDropChanceNight();
-    private static final int specialDropChance = DropConfig.getSpecialDropChance();
+    private static int dropChanceDay;
+    private static int dropChanceNight;
+    private static int specialDropChance;
 
     public PigeonEntity(EntityType<? extends TameableEntity> entityType, World world) {
         super(entityType, world);
         this.moveControl = new FlightMoveControl(this, 10, false);
         // Type-Specific Drops
-        TYPE_DROP_MAP.put(TYPES.get(0), DropConfig.getSpecialDrop(TYPES.get(0)));
-        TYPE_DROP_MAP.put(TYPES.get(1), DropConfig.getSpecialDrop(TYPES.get(1)));
-        TYPE_DROP_MAP.put(TYPES.get(2), DropConfig.getSpecialDrop(TYPES.get(2)));
-        TYPE_DROP_MAP.put(TYPES.get(3), DropConfig.getSpecialDrop(TYPES.get(3)));
+        for (String type : TYPES) {
+            TYPE_DROP_MAP.put(type, Pigeons.CONFIG.getSpecialDrop(type));
+        }
         // Accessories map defined by string keys
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(0), Items.AIR);
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(1), ItemRegistry.TOP_HAT);
@@ -80,6 +79,12 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(3), ItemRegistry.DRESS_SHOES);
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(4), ItemRegistry.TIE);
         ACCESSORY_NAME_ITEM_MAP.put(ACCESSORIES.get(5), Items.MOSS_CARPET);
+
+        DROPS = Pigeons.CONFIG.getCommonDrops();
+
+        dropChanceDay = Pigeons.CONFIG.getDropChanceDay();
+        dropChanceNight = Pigeons.CONFIG.getDropChanceNight();
+        specialDropChance = Pigeons.CONFIG.getSpecialDropChance();
     }
 
     @Override
@@ -164,7 +169,7 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             if (TYPE_DROP_MAP.containsKey(this.getPigeonTypeString()) && this.random.nextInt(Math.max(specialDropChance, 2)) == 0) {
                 spawnItem = TYPE_DROP_MAP.get(this.getPigeonTypeString());
             } else {
-                spawnItem = new ItemStack(DROPS.get(this.random.nextInt(6)));
+                spawnItem = new ItemStack(DROPS.get(this.random.nextInt(DROPS.size())));
             }
 
             ItemScatterer.spawn(world, this.getX(), this.getY(), this.getZ(), spawnItem);
