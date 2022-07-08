@@ -31,7 +31,7 @@ You can craft different accessories to put on your pigeons. Equip your pigeons w
 
 As of version 1.3.0, you can configure the special drops of the different pigeon types, and the chance of drops happening. See [this page](https://github.com/ThePoultryMan/Pigeons/wiki/Configuration) of the wiki for more instruction.
 
-As of version 1.4.0, you can configure where they spawn using tags. Please refer to the [tag page](https://github.com/ThePoultryMan/Pigeons/wiki/Tags) in the wiki for more information.
+As of version 1.5.0, you can configure what biomes pigeons will spawn in using tags. Refer to the [tag page](https://github.com/ThePoultryMan/Pigeons/wiki/Tags) of the wiki for more information. Using the configuration file you can configure the settings of each tag. Refer to the [configuration page](https://github.com/ThePoultryMan/Pigeons/wiki/Configuration) of the wiki for more information.
 
 ## Other
 
