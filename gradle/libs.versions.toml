@@ -1,0 +1,28 @@
+[versions]
+# The latest versions are available at https://lambdaurora.dev/tools/import_quilt.html
+minecraft = "1.19"
+quilt_mappings = "1.19+build.1"
+quilt_loader = "0.17.1-beta.6"
+
+quilted_fabric_api = "2.0.0-beta.4+0.57.0-1.19"
+
+geckolib_version = "3.1.6"
+nightconfig_version = "3.6.5"
+
+[libraries]
+minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
+quilt_mappings = { module = "org.quiltmc:quilt-mappings", version.ref = "quilt_mappings" }
+quilt_loader = { module = "org.quiltmc:quilt-loader", version.ref = "quilt_loader" }
+
+quilted_fabric_api = { module = "org.quiltmc.quilted-fabric-api:quilted-fabric-api", version.ref = "quilted_fabric_api" }
+
+geckolib = { module = "software.bernie.geckolib:geckolib-quilt-1.19", version.ref = "geckolib_version" }
+nightconfig_core = { module = "com.electronwill.night-config:core", version.ref = "nightconfig_version" }
+nightconfig_toml = { module = "com.electronwill.night-config:toml", version.ref = "nightconfig_version" }
+
+# If you have multiple similar dependencies, you can declare a dependency bundle and reference it on the build script with "libs.bundles.example".
+# [bundles]
+# example = ["example-a", "example-b", "example-c"]
+
+[plugins]
+quilt_loom = { id = "org.quiltmc.loom", version = "0.12.+" }

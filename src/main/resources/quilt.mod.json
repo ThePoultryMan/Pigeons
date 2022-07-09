@@ -1,0 +1,35 @@
+{
+    "schema_version": 1,
+    "quilt_loader": {
+        "group": "io.github.thepoultryman",
+        "id": "pigeons",
+        "version": "${version}",
+        "metadata": {
+            "name": "Pleasant Pigeons",
+            "description": "Adds Pigeons to Minecraft.",
+            "contributors": {
+                "Me!": "ThePoultryMan"
+            },
+            "icon": "assets/pigeons/icon.png"
+        },
+        "intermediate_mappings": "net.fabricmc:intermediary",
+        "entrypoints": {
+            "init": "io.github.thepoultryman.pigeons.Pigeons",
+            "client_init": "io.github.thepoultryman.pigeons.PigeonsClient"
+        },
+        "depends": [
+            {
+                "id": "quilt_loader",
+                "versions": ">=0.16.0-"
+            },
+            {
+                "id": "quilted_fabric_api",
+                "versions": ">=1.0.0-"
+            },
+            {
+                "id": "minecraft",
+                "versions": ">=1.18.2"
+            }
+        ]
+    }
+}

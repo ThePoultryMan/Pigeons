@@ -1,13 +1,14 @@
 pluginManagement {
+    enableFeaturePreview('VERSION_CATALOGS')
     repositories {
+        maven {
+            name = 'Quilt'
+            url = "https://maven.quiltmc.org/repository/release"
+        }
         maven {
             name = 'Fabric'
             url = 'https://maven.fabricmc.net/'
         }
-        mavenCentral()
         gradlePluginPortal()
-        maven {
-            url = "https://maven.quiltmc.org/repository/release"
-        }
     }
 }
