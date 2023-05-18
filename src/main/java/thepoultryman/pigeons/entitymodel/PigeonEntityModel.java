@@ -1,14 +1,11 @@
 package thepoultryman.pigeons.entitymodel;
 
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.processor.IBone;
-import software.bernie.geckolib3.model.AnimatedGeoModel;
-import software.bernie.geckolib3.model.provider.data.EntityModelData;
+import software.bernie.geckolib.model.GeoModel;
 import thepoultryman.pigeons.Pigeons;
 import thepoultryman.pigeons.entity.PigeonEntity;
 
-public class PigeonEntityModel extends AnimatedGeoModel<PigeonEntity> {
+public class PigeonEntityModel extends GeoModel<PigeonEntity> {
 
     @Override
     public Identifier getModelResource(PigeonEntity object) {
@@ -25,7 +22,6 @@ public class PigeonEntityModel extends AnimatedGeoModel<PigeonEntity> {
         return new Identifier(Pigeons.MOD_ID, "animations/pigeon.animation.json");
     }
 
-    @Override
     public void setLivingAnimations(PigeonEntity entity, Integer uniqueID, AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
 

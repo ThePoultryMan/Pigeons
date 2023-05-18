@@ -33,13 +33,12 @@ import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
-import software.bernie.geckolib3.core.IAnimatable;
-import software.bernie.geckolib3.core.PlayState;
-import software.bernie.geckolib3.core.builder.AnimationBuilder;
-import software.bernie.geckolib3.core.controller.AnimationController;
-import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
-import software.bernie.geckolib3.core.manager.AnimationData;
-import software.bernie.geckolib3.core.manager.AnimationFactory;
+import software.bernie.geckolib.core.animatable.GeoAnimatable;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimationState;
+import software.bernie.geckolib.core.animation.RawAnimation;
+import software.bernie.geckolib.core.object.PlayState;
+import software.bernie.geckolib.util.GeckoLibUtil;
 import thepoultryman.pigeons.Pigeons;
 import thepoultryman.pigeons.registry.ItemRegistry;
 
@@ -48,8 +47,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
-public class PigeonEntity extends TameableEntity implements IAnimatable, Flutterer {
-    private final AnimationFactory factory = new AnimationFactory(this);
+public class PigeonEntity extends TameableEntity implements GeoAnimatable, Flutterer {
+    private final AnimatableInstanceCache instanceCache = GeckoLibUtil.createInstanceCache(this);
+    public static final RawAnimation FLY_ANIMATION = RawAnimation.begin().thenPlay("animation.pigeon.fly");
+    public static final RawAnimation WALK_ANIMATION = RawAnimation.begin().thenPlay("animation.pigeon.walk");
+    public static final RawAnimation SIT_ANIMATION = RawAnimation.begin().thenPlay("animation.pigeon.sit");
+    public static final RawAnimation[] IDLE_ANIMATIONS = new RawAnimation[4];
+
     private static final TrackedData<String> TYPE = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.STRING);
     private static final TrackedData<String> ACCESSORY = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.STRING);
     private static final TrackedData<Boolean> SITTING = DataTracker.registerData(PigeonEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
@@ -115,32 +119,22 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
         return super.initialize(world, difficulty, spawnReason, entityData, entityNbt);
     }
 
-    private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+    private <E extends GeoAnimatable> PlayState predicate(AnimationState<E> event) {
         if (this.isInAir() && event.isMoving() && !this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.fly", true));
+            event.getController().setAnimation(FLY_ANIMATION);
             return PlayState.CONTINUE;
         } else if (!this.isInAir() && event.isMoving()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.walk", false));
+            event.getController().setAnimation(WALK_ANIMATION);
             return PlayState.CONTINUE;
         } else if (this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.sit", true));
+            event.getController().setAnimation(SIT_ANIMATION);
             return PlayState.CONTINUE;
         } else if (this.getIdle() > 0 && !this.isSitting()) {
-            event.getController().setAnimation(new AnimationBuilder().addAnimation("animation.pigeon.idle" + this.getIdle().toString(), false));
+            RawAnimation animation = switch (this.getIdle())
             return PlayState.CONTINUE;
         }
 
         return PlayState.STOP;
-    }
-
-    @Override
-    public void registerControllers(AnimationData animationData) {
-        animationData.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
-    }
-
-    @Override
-    public AnimationFactory getFactory() {
-        return this.factory;
     }
 
     public static DefaultAttributeContainer.Builder createPigeonAttributes() {
@@ -405,5 +399,11 @@ public class PigeonEntity extends TameableEntity implements IAnimatable, Flutter
             this.setSitting(nbt.getBoolean("Sitting"));
         if (nbt.contains("PigeonAccessory"))
 			this.setAccessoryFromString(nbt.getString("PigeonAccessory"));
+    }
+
+    static {
+        for (int i = 1; i <= IDLE_ANIMATIONS.length; i++) {
+            IDLE_ANIMATIONS[i] = RawAnimation.begin().thenPlay("animation.pigeon.idle" + i);
+        }
     }
 }

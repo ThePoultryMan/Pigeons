@@ -2,7 +2,7 @@ package thepoultryman.pigeons.enitityrenderer;
 
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.util.Identifier;
-import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+import software.bernie.geckolib.renderer.GeoEntityRenderer;
 import thepoultryman.pigeons.accessory.AccessoryEntityRenderer;
 import thepoultryman.pigeons.accessory.AccessoryFeatureRenderer;
 import thepoultryman.pigeons.entity.PigeonEntity;

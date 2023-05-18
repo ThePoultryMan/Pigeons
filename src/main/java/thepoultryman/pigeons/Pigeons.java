@@ -12,9 +12,11 @@ import net.minecraft.item.FoodComponent;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.SpawnEggItem;
-import net.minecraft.tag.TagKey;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.Registry;
+import net.minecraft.registry.RegistryKeys;
+import net.minecraft.registry.tag.TagKey;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.Heightmap;
 import net.minecraft.world.biome.Biome;
 import org.slf4j.Logger;
@@ -29,30 +31,31 @@ public class Pigeons implements ModInitializer {
 
     public static final PigeonsConfig CONFIG = new PigeonsConfig();
 
-    public static final EntityType<PigeonEntity> PIGEON_ENTITY_TYPE = Registry.register(Registry.ENTITY_TYPE, new Identifier(MOD_ID, "pigeon"),
-            FabricEntityTypeBuilder.<PigeonEntity>createMob().spawnGroup(SpawnGroup.CREATURE).entityFactory(PigeonEntity::new)
-                    .defaultAttributes(PigeonEntity::createPigeonAttributes)
-                    .dimensions(EntityDimensions.changing(0.45f, 0.5f))
-                    .spawnRestriction(SpawnRestriction.Location.NO_RESTRICTIONS, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PigeonEntity::canSpawn).build());
+    public static final EntityType<PigeonEntity> PIGEON_ENTITY_TYPE = FabricEntityTypeBuilder.createMob()
+            .entityFactory(PigeonEntity::new)
+            .spawnGroup(SpawnGroup.CREATURE)
+            .dimensions((EntityDimensions.changing(0.45f, 0.5f)))
+            .spawnRestriction(SpawnRestriction.Location.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, PigeonEntity::canSpawn)
+            .build();
 
     // Items
     public static final Item PIGEON_SPAWN_EGG = new SpawnEggItem(PIGEON_ENTITY_TYPE, 7830400, 7628935, new Item.Settings().group(ItemGroup.MISC));
     public static final Item BREAD_CRUMBS = new Item(new Item.Settings().group(ItemGroup.FOOD).food(new FoodComponent.Builder().hunger(1).build()));
 
     // Tags
-    public static final TagKey<Biome> PIGEON_SPAWN_BIOMES_H = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "pigeon_spawn_biomes_high"));
-    public static final TagKey<Biome> PIGEON_SPAWN_BIOMES_M = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "pigeon_spawn_biomes_medium"));
-    public static final TagKey<Biome> PIGEON_SPAWN_BIOMES_L = TagKey.of(Registry.BIOME_KEY, new Identifier(MOD_ID, "pigeon_spawn_biomes_low"));
-    public static final TagKey<Item> PIGEON_LIKE_FOODS = TagKey.of(Registry.ITEM_KEY, new Identifier(MOD_ID, "pigeon_like_foods"));
-    public static final TagKey<Item> PIGEON_LOVE_FOODS = TagKey.of(Registry.ITEM_KEY, new Identifier(MOD_ID, "pigeon_love_foods"));
+    public static final TagKey<Biome> PIGEON_SPAWN_BIOMES_H = TagKey.of(RegistryKeys.BIOME, new Identifier(MOD_ID, "pigeon_spawn_biomes_high"));
+    public static final TagKey<Biome> PIGEON_SPAWN_BIOMES_M = TagKey.of(RegistryKeys.BIOME, new Identifier(MOD_ID, "pigeon_spawn_biomes_medium"));
+    public static final TagKey<Biome> PIGEON_SPAWN_BIOMES_L = TagKey.of(RegistryKeys.BIOME, new Identifier(MOD_ID, "pigeon_spawn_biomes_low"));
+    public static final TagKey<Item> PIGEON_LIKE_FOODS = TagKey.of(RegistryKeys.ITEM, new Identifier(MOD_ID, "pigeon_like_foods"));
+    public static final TagKey<Item> PIGEON_LOVE_FOODS = TagKey.of(RegistryKeys.ITEM, new Identifier(MOD_ID, "pigeon_love_foods"));
 
     @Override
     public void onInitialize() {
         LOGGER.info("Initializing a pigeon army");
 
         // Items
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "pigeon_spawn_egg"), PIGEON_SPAWN_EGG);
-        Registry.register(Registry.ITEM, new Identifier(MOD_ID, "bread_crumbs"), BREAD_CRUMBS);
+        Registry.register(Registries.ITEM, new Identifier(MOD_ID, "pigeon_spawn_egg"), PIGEON_SPAWN_EGG);
+        Registry.register(Registries.ITEM, new Identifier(MOD_ID, "bread_crumbs"), BREAD_CRUMBS);
 
         ItemRegistry.registerItems();
 
